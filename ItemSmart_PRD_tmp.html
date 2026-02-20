@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ItemSmart_PRD.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="itemsmart--product-requirements-document-prd">ItemSmart — Product Requirements Document (PRD)</h1>
+<p><strong>Document Version:</strong> 1.0<br>
+<strong>Source:</strong> MTP Jira Project — User Stories &amp; Confluence<br>
+<strong>Jira Project:</strong> <a href="https://impactanalytics.atlassian.net/jira/software/c/projects/MTP/summary">MTP Summary</a><br>
+<strong>Last Updated:</strong> February 2026</p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>ItemSmart is an <strong>SKU-level sales planning tool</strong> within the Impact Analytics (IA) Smart Platform. It uses forecast data (12+ month horizon), planning metrics (e.g., WOS, ST%), and receipt recommendations to support buy placement and item planning. Users view past, present, and future demand alongside constraints and SKU attributes over a configurable time horizon.</p>
+<p>This PRD consolidates product requirements derived from <strong>ItemSmart-related user stories</strong> in the MTP Jira project and supporting Confluence documentation (Data Flow, Architecture, Integration). It is intended for product, engineering, and QA to align on scope, acceptance criteria, and priorities.</p>
+<hr>
+<h2 id="2-product-overview">2. Product Overview</h2>
+<h3 id="21-purpose">2.1 Purpose</h3>
+<ul>
+<li><strong>Primary:</strong> Enable planners to plan at <strong>item/SKU–week level</strong> with forecast, KPIs, and receipt recommendations in one place.</li>
+<li><strong>Outcomes:</strong> Streamlined workflow, data consistency across planning levels, and reliable handoff to Ordering/OMS, AssortSmart, and PlanSmart.</li>
+</ul>
+<h3 id="22-planning-context">2.2 Planning Context</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Planning type</strong></td>
+<td>Bottom-up, pre-season (12–18 months prior)</td>
+</tr>
+<tr>
+<td><strong>Planning level</strong></td>
+<td>Item–week level (SKU × channel × time)</td>
+</tr>
+<tr>
+<td><strong>Key inputs</strong></td>
+<td>Forecast (IAF), LY/LLY, actuals, item facts, constraints</td>
+</tr>
+<tr>
+<td><strong>Key outputs</strong></td>
+<td>Receipt recommendations, plan values (WP), handoff to downstream systems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-user-personas">2.3 User Personas</h3>
+<ul>
+<li><strong>Planner</strong> — Day-to-day editing of KPIs, viewing dashboards, applying filters, managing product groups.</li>
+<li><strong>Executive / DPM</strong> — Review and approval; high-level visibility via KPIs and summaries.</li>
+<li><strong>Admin / Superuser</strong> — Configuration, access control, and integration settings.</li>
+</ul>
+<h3 id="24-ecosystem-position">2.4 Ecosystem Position</h3>
+<p>ItemSmart sits within the MTP ecosystem with the following integration points (from <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1250066535">Confluence: ItemSmart Integration</a>):</p>
+<ul>
+<li><strong>Upstream:</strong> PlanSmart (assortment plan, PO-level inputs); optional PIM (e.g., Arhaus) for item facts.</li>
+<li><strong>Downstream:</strong> Ordering, OMS (InventorySmart), AssortSmart, PlanSmart (depending on client setup).</li>
+<li><strong>Use cases:</strong> ItemSmart-only for core planning; PlanSmart + ItemSmart; PlanSmart + AssortSmart + ItemSmart/OMS (e.g., Carter’s).</li>
+</ul>
+<hr>
+<h2 id="3-goals--success-criteria">3. Goals &amp; Success Criteria</h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Usability</strong></td>
+<td>Planners can open ItemSmart from the IA platform and reach the right planning view with minimal clicks.</td>
+</tr>
+<tr>
+<td><strong>Data consistency</strong></td>
+<td>Edits at any hierarchy level (SKU/class/department; week/month) propagate correctly via defined aggregation/disaggregation rules.</td>
+</tr>
+<tr>
+<td><strong>Integration</strong></td>
+<td>Clear, documented flows and cadence for Ordering ↔ ItemSmart, ItemSmart → AssortSmart, ItemSmart → PlanSmart.</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Dashboard and grid load within agreed SLAs; no material impact on login or refresh times.</td>
+</tr>
+<tr>
+<td><strong>Accessibility</strong></td>
+<td>Features meet agreed accessibility standards and work across supported devices.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-functional-requirements">4. Functional Requirements</h2>
+<p>Requirements below are grouped by theme and tied to MTP Jira user stories where applicable.</p>
+<hr>
+<h3 id="41-authentication--access-control">4.1 Authentication &amp; Access Control</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AUTH-1</td>
+<td>Secure login using email and password.</td>
+<td>MTP-50997</td>
+<td>Email/password verified securely; session created on success; clear feedback on failure without leaking which part failed.</td>
+</tr>
+<tr>
+<td>AUTH-2</td>
+<td>Session management (active until logout or inactivity).</td>
+<td>MTP-50997</td>
+<td>Session remains active per policy; logout and timeout behave as specified.</td>
+</tr>
+<tr>
+<td>AUTH-3</td>
+<td>Password reset via verified email link.</td>
+<td>MTP-50997</td>
+<td>Users can request and complete password reset through email.</td>
+</tr>
+<tr>
+<td>AUTH-4</td>
+<td>Role-based access control (RBAC).</td>
+<td>MTP-50997</td>
+<td>Users only see features and data allowed for their role.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="42-navigation--entry">4.2 Navigation &amp; Entry</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NAV-1</td>
+<td>Direct access to ItemSmart from IA Smart Platform homepage.</td>
+<td>MTP-50998</td>
+<td>Clearly labeled link/button; minimal load time and redirections.</td>
+</tr>
+<tr>
+<td>NAV-2</td>
+<td>Remember last location when returning to ItemSmart.</td>
+<td>MTP-50998</td>
+<td>User returns to last page/context when re-entering ItemSmart.</td>
+</tr>
+<tr>
+<td>NAV-3</td>
+<td>Navigation works across devices and is accessible.</td>
+<td>MTP-50998</td>
+<td>Responsive and compliant with agreed accessibility standards.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="43-dashboard--filters">4.3 Dashboard &amp; Filters</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DASH-1</td>
+<td>Customizable dashboard filters (time, product category, department, KPIs).</td>
+<td>MTP-50999</td>
+<td>Multiple filter types; intuitive UI; real-time view updates when filters change.</td>
+</tr>
+<tr>
+<td>DASH-2</td>
+<td>Save filter configurations for future sessions.</td>
+<td>MTP-50999</td>
+<td>Users can save and reload filter sets.</td>
+</tr>
+<tr>
+<td>DASH-3</td>
+<td>Multi-select within filter categories.</td>
+<td>MTP-50999</td>
+<td>Multiple options per filter (e.g., multiple departments) with aggregated data.</td>
+</tr>
+<tr>
+<td>DASH-4</td>
+<td>Clear-all-filters option.</td>
+<td>MTP-50999</td>
+<td>One action restores default dashboard view.</td>
+</tr>
+<tr>
+<td>DASH-5</td>
+<td>Dynamic KPI cards (selectable KPIs, layout, real-time/scheduled refresh).</td>
+<td>MTP-51000</td>
+<td>Users choose KPIs and layout; data refreshes per policy; tooltips and drill-down where specified.</td>
+</tr>
+<tr>
+<td>DASH-6</td>
+<td>Visual indicators for performance vs target (e.g., color coding).</td>
+<td>MTP-51000</td>
+<td>At-a-glance indication of on/off target.</td>
+</tr>
+<tr>
+<td>DASH-7</td>
+<td>KPI cards responsive and accessible.</td>
+<td>MTP-51000</td>
+<td>Usable on desktop, tablet, mobile; meets accessibility guidelines.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="44-product-groups">4.4 Product Groups</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PG-1</td>
+<td>Create and edit product groups with configurable criteria (e.g., product type, brand, velocity, inventory status).</td>
+<td>MTP-51001, MTP-35081</td>
+<td>Create/edit/name groups; add/remove products; change criteria.</td>
+</tr>
+<tr>
+<td>PG-2</td>
+<td>Organize and prioritize product groups (e.g., drag-and-drop).</td>
+<td>MTP-51001</td>
+<td>Reorder groups for display.</td>
+</tr>
+<tr>
+<td>PG-3</td>
+<td>Integrate product groups with dashboard filters.</td>
+<td>MTP-51001</td>
+<td>Filter view by selected product group(s).</td>
+</tr>
+<tr>
+<td>PG-4</td>
+<td>Toggle visibility of product groups on dashboard.</td>
+<td>MTP-51001</td>
+<td>Show/hide specific groups.</td>
+</tr>
+<tr>
+<td>PG-5</td>
+<td>Aggregated analytics per product group (e.g., sales, inventory, KPIs).</td>
+<td>MTP-51001</td>
+<td>Group-level metrics displayed.</td>
+</tr>
+<tr>
+<td>PG-6</td>
+<td>View SKUs of a hierarchy/period as product groups with KPIs; drill to SKU list.</td>
+<td>MTP-51031</td>
+<td>Product group table shows KPIs; user can open detailed SKU list for a group.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="45-alerts--proactive-management">4.5 Alerts &amp; Proactive Management</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ALT-1</td>
+<td>Create custom alerts (e.g., inventory thresholds, sales trends, KPI deviations).</td>
+<td>MTP-51003</td>
+<td>Configurable conditions and parameters.</td>
+</tr>
+<tr>
+<td>ALT-2</td>
+<td>Group alerts by category (e.g., Inventory, Sales, Planning).</td>
+<td>MTP-51003</td>
+<td>Alerts grouped and manageable by category.</td>
+</tr>
+<tr>
+<td>ALT-3</td>
+<td>Real-time in-dashboard notifications; optional email/mobile.</td>
+<td>MTP-51003</td>
+<td>Notifications fire when conditions are met; channels as configured.</td>
+</tr>
+<tr>
+<td>ALT-4</td>
+<td>Severity levels (e.g., Low, Medium, High).</td>
+<td>MTP-51003</td>
+<td>Alerts assignable to severity; prioritization supported.</td>
+</tr>
+<tr>
+<td>ALT-5</td>
+<td>Manage alerts (create, edit, disable, delete, filter, sort).</td>
+<td>MTP-51003</td>
+<td>Full CRUD and list management.</td>
+</tr>
+<tr>
+<td>ALT-6</td>
+<td>Alert Group Table shows groups and KPIs per pre-determined criteria.</td>
+<td>MTP-51062</td>
+<td>QA validation of alert table behavior per story.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="46-kpi-edit-aggregation--disaggregation">4.6 KPI Edit, Aggregation &amp; Disaggregation</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KPI-1</td>
+<td>Edit key KPIs: W Sls $, W Sls U, W DR%, OO U (TTL-UP), Net Inv Adj U; system updates dependent KPIs per defined flow.</td>
+<td>MTP-51032</td>
+<td>Editable KPIs listed; dependent KPIs auto-update; flow logic as per <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1081376882">Aggregation/Disaggregation Logic</a>.</td>
+</tr>
+<tr>
+<td>KPI-2</td>
+<td>Updates reflect across SKU/Class/Department.</td>
+<td>MTP-51032</td>
+<td>Consistency across hierarchy levels.</td>
+</tr>
+<tr>
+<td>KPI-3</td>
+<td>Preview changes before save; undo/redo/reset.</td>
+<td>MTP-51032</td>
+<td>Preview and revert options available.</td>
+</tr>
+<tr>
+<td>KPI-4</td>
+<td>Warn on unsaved changes; options to continue, discard, or save.</td>
+<td>MTP-51032</td>
+<td>Explicit handling of dirty state.</td>
+</tr>
+<tr>
+<td>KPI-5</td>
+<td>Persist changes via update API on user confirm.</td>
+<td>MTP-51032</td>
+<td>Changes saved and reflected in DB.</td>
+</tr>
+<tr>
+<td>KPI-6</td>
+<td>When higher-level KPI is edited, disaggregate to lower levels proportionally (e.g., by contribution).</td>
+<td>MTP-51033, MTP-51052</td>
+<td>Disaggregation order: Product → Channel → Time; proportional split as specified.</td>
+</tr>
+<tr>
+<td>KPI-7</td>
+<td>When lower-level KPI is edited, aggregate to higher levels.</td>
+<td>MTP-51033</td>
+<td>Higher-level KPIs recomputed (e.g., W Sls $ = sum(lower), W AUR = W Sls $ / W Sls U, etc.).</td>
+</tr>
+<tr>
+<td>KPI-8</td>
+<td>Handle zero higher-level edge case (e.g., equal distribution to lower levels).</td>
+<td>MTP-51033</td>
+<td>No invalid or undefined behavior when higher level is zero.</td>
+</tr>
+<tr>
+<td>KPI-9</td>
+<td>Option to lock levels to prevent automatic scaling.</td>
+<td>MTP-51033</td>
+<td>Lock/hold behavior as designed.</td>
+</tr>
+<tr>
+<td>KPI-10</td>
+<td>UI updates immediately for visible levels; persistence on confirm.</td>
+<td>MTP-51033, MTP-51052</td>
+<td>Immediate UI feedback and durable save.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="47-hard-kit-hkt-editing">4.7 Hard Kit (HKT) Editing</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HKT-1</td>
+<td>W/D Sls $ edit on HKT: prorate to components by % contribution of component AUC to total HKT AUC; then apply editable flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Proration and flow applied correctly.</td>
+</tr>
+<tr>
+<td>HKT-2</td>
+<td>W/D Sls U edit on HKT: replicate value to all components; then apply editable flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Same units on all components; flow applied.</td>
+</tr>
+<tr>
+<td>HKT-3</td>
+<td>AIR edit: prorate by component AUC contribution; apply flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Same as HKT-1 logic for AIR.</td>
+</tr>
+<tr>
+<td>HKT-4</td>
+<td>Discount %: replicate same value to all components; apply flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Single discount % across components.</td>
+</tr>
+<tr>
+<td>HKT-5</td>
+<td>Inv adjusted U: replicate to all components; apply flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Same adjusted units on components.</td>
+</tr>
+<tr>
+<td>HKT-6</td>
+<td>Inv adjusted $: split by AUC proportion; apply flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Proportional $ split.</td>
+</tr>
+<tr>
+<td>HKT-7</td>
+<td>On order unplaced receipt units: replicate to components; apply flow.</td>
+<td>MTP-51050, MTP-51051</td>
+<td>Same OO U on components.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="48-data-flow--versions-from-confluence">4.8 Data Flow &amp; Versions (from Confluence)</h3>
+<p>ItemSmart uses multiple data versions; behavior is defined in <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1090716817">Data Flow in ItemSmart</a>. Summary:</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Purpose</th>
+<th>Update mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IAF</strong></td>
+<td>Forecast-driven demand; initial source for WP</td>
+<td>Weekly/daily refresh; baseline discount filter; no WP edits copied back.</td>
+</tr>
+<tr>
+<td><strong>LY</strong></td>
+<td>Last year (1y + 9m history)</td>
+<td>Weekly refresh; full weeks only; not editable from tool.</td>
+</tr>
+<tr>
+<td><strong>LLY</strong></td>
+<td>Last last year (2y + 9m history)</td>
+<td>Weekly refresh; full weeks only; not editable from tool.</td>
+</tr>
+<tr>
+<td><strong>Actual</strong></td>
+<td>Past actuals (e.g., 9m prior to current week)</td>
+<td>Shown as WP for actualized periods; non-editable; weekly refresh.</td>
+</tr>
+<tr>
+<td><strong>WP</strong></td>
+<td>Working plan (user-editable)</td>
+<td>Seeded from IAF; only seeding, match-with, and manual edits update WP; weekly refresh does not overwrite WP; actuals replace WP for completed full weeks.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relevant requirements:</strong></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATA-1</td>
+<td>IAF generation and refresh per defined rules (SKU selection, horizon, baseline discount).</td>
+<td>As per Data Flow: 8 weeks before launch to max date; 26 weeks past exit or 18 months; weekly/daily refresh as configured.</td>
+</tr>
+<tr>
+<td>DATA-2</td>
+<td>WP seeded from IAF; receipt recalculated on the fly where specified.</td>
+<td>Seeding and receipt logic as documented.</td>
+</tr>
+<tr>
+<td>DATA-3</td>
+<td>Actualized weeks replace WP in UI (and optionally in DB).</td>
+<td>No WP edits overwrite actuals; actuals overwrite WP for completed weeks.</td>
+</tr>
+<tr>
+<td>DATA-4</td>
+<td>Date selection follows Gregorian calendar.</td>
+<td>All date logic calendar-consistent.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="49-item-facts--pim-sync-eg-arhaus">4.9 Item Facts &amp; PIM Sync (e.g., Arhaus)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PIM-1</td>
+<td>New items: item facts from PIM feed; daily ingestion updates ItemSmart and KPIs.</td>
+<td>MTP-51042</td>
+<td>New SKUs receive PIM facts and refresh correctly.</td>
+</tr>
+<tr>
+<td>PIM-2</td>
+<td>Existing items, no ItemSmart edit: PIM remains source; daily feed updates item facts and KPIs.</td>
+<td>MTP-51042</td>
+<td>Unedited items stay in sync with PIM.</td>
+</tr>
+<tr>
+<td>PIM-3</td>
+<td>Existing items, edited in ItemSmart: ItemSmart is source of truth for edited facts; feed updates ignored for those facts.</td>
+<td>MTP-51042</td>
+<td>Edited facts not overwritten by feed.</td>
+</tr>
+<tr>
+<td>PIM-4</td>
+<td>Daily deviation report to client (e.g., Arhaus) listing edited item facts for PIM reconciliation.</td>
+<td>MTP-51042</td>
+<td>Report generated and delivered per cadence.</td>
+</tr>
+<tr>
+<td>PIM-5</td>
+<td>Conflict handling when ItemSmart edits and PIM differ.</td>
+<td>MTP-51042</td>
+<td>Clear, documented behavior (e.g., ItemSmart wins for edited fields).</td>
+</tr>
+<tr>
+<td>PIM-6</td>
+<td>(Future) User choice of source of truth after PIM is updated from deviation report.</td>
+<td>MTP-51043</td>
+<td>Documented and implemented when prioritized.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="410-integrations-cross-product">4.10 Integrations (Cross-Product)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INT-1</td>
+<td><strong>Ordering → ItemSmart:</strong> Define and implement data/KPI integration (requirements, flow, cadence, format).</td>
+<td>MTP-128037</td>
+<td>Requirements and design documented; flow and cadence implemented per TDD (e.g., <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/2327543811">Ordering → ItemSmart Data Sync</a>).</td>
+</tr>
+<tr>
+<td>INT-2</td>
+<td><strong>ItemSmart → Ordering:</strong> Define and implement flow of data to Ordering (requirements, format, cadence).</td>
+<td>MTP-128036</td>
+<td>Same as above for reverse direction.</td>
+</tr>
+<tr>
+<td>INT-3</td>
+<td><strong>ItemSmart → AssortSmart:</strong> Define and implement data flow (requirements, logic, cadence).</td>
+<td>MTP-128018</td>
+<td>Requirements and logic documented; cadence implemented.</td>
+</tr>
+<tr>
+<td>INT-4</td>
+<td><strong>ItemSmart → PlanSmart:</strong> Define and implement data flow (requirements, level, cadence).</td>
+<td>MTP-128010</td>
+<td>Requirements and aggregation level documented; cadence implemented.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="411-row-lock--data-integrity-planned">4.11 Row Lock &amp; Data Integrity (Planned)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Source</th>
+<th>Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOCK-1</td>
+<td>Row lock control per planning row.</td>
+<td>MTP-111854</td>
+<td>Visual control (e.g., lock icon) per row.</td>
+</tr>
+<tr>
+<td>LOCK-2</td>
+<td>Locked row values not editable; subtotal edits redistribute only to unlocked rows.</td>
+<td>MTP-111854</td>
+<td>Locked rows excluded from propagation; redistribution only to unlocked rows.</td>
+</tr>
+<tr>
+<td>LOCK-3</td>
+<td>Clear visual distinction between locked and unlocked rows.</td>
+<td>MTP-111854</td>
+<td>UI clearly indicates lock state.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-non-functional-requirements">5. Non-Functional Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Dashboard and grid load within agreed SLAs; no material increase in login or refresh latency.</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Passwords stored and transmitted securely; sessions and RBAC enforced.</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>Align with MTP/platform availability targets.</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Architecture supports read replica for reporting and offload of heavy queries (per <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1611431940">Itemsmart Architecture</a>).</td>
+</tr>
+<tr>
+<td><strong>Accessibility</strong></td>
+<td>Features meet agreed web accessibility standards.</td>
+</tr>
+<tr>
+<td><strong>Responsiveness</strong></td>
+<td>Core workflows usable on supported desktop and tablet form factors.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6-architecture--technical-context">6. Architecture &amp; Technical Context</h2>
+<ul>
+<li><strong>Front-end:</strong> React; NGINX for load balancing and static assets.</li>
+<li><strong>Backend:</strong> FastAPI (Python); Core Service (auth, orchestration) + ItemSmart Backend (item/inventory operations).</li>
+<li><strong>Database:</strong> PostgreSQL (primary + read replica for reporting); BigQuery for analytics/warehouse.</li>
+<li><strong>Data sync:</strong> Ordering/OMS ↔ ItemSmart designed via CDC/outbox and event-driven sync (see Confluence TDDs).</li>
+<li><strong>Application ID:</strong> ItemSmart uses <code>APPLICATION_ID</code> and app-level DB segregation per MTP (e.g., <code>item</code>).</li>
+</ul>
+<p>Detailed diagrams and deployment notes are in Confluence (e.g., <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1611431940">Itemsmart Architecture</a>).</p>
+<hr>
+<h2 id="7-out-of-scope-for-this-prd">7. Out of Scope for This PRD</h2>
+<ul>
+<li>Client-specific forecasting methodology (e.g., Arhaus, Balsam) — documented elsewhere.</li>
+<li>Detailed ingestion pipeline and derived-table logic — see <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1348337760">ItemSmart - Derived Tables</a> and ingestion docs.</li>
+<li>Supersession (primary/secondary style mapping) — covered in <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1446772801">Supersession - Process in ItemSmart</a>.</li>
+<li>Notification service prerequisites for Edits and Match With — see <a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1521221637">Notification Service Prerequisites for ItemSmart</a>.</li>
+</ul>
+<hr>
+<h2 id="8-appendix-a--jira-story-index-itemsmart-related">8. Appendix A — Jira Story Index (ItemSmart-Related)</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Summary</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MTP-50997</td>
+<td>Secure User Authentication and Access Control</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-50998</td>
+<td>Intuitive Navigation to ItemSmart from IA Smart Platform</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-50999</td>
+<td>Customizable Dashboard Filters for Enhanced Data Visibility</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51000</td>
+<td>Dynamic KPI Cards for At-a-Glance Performance Insights</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51001</td>
+<td>Efficient Management and Customization of Product Groups</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51003</td>
+<td>Customizable Alert Groups for Proactive Management</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51031</td>
+<td>ItemSmart ----&gt;&gt; Product Groups ----&gt; BE</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51032</td>
+<td>Edit KPI Values and Update Dependent KPIs</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51033</td>
+<td>Aggregation and Disaggregation of KPIs</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51042</td>
+<td>Data Syncing with Arhaus PIM System</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51043</td>
+<td>Future Enhancement (Post first release) — PIM source of truth</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51050, MTP-51051</td>
+<td>Editing on HardKit</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51052</td>
+<td>KPI Edits: Disaggregation of KPI Edits</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-51062</td>
+<td>[QA] Alert Groups related features</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-128010</td>
+<td>Integration from ItemSmart to PlanSmart</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-128018</td>
+<td>Integration from ItemSmart to AssortSmart</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-128036</td>
+<td>Integration from ItemSmart to Ordering</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-128037</td>
+<td>Integration from Ordering to ItemSmart</td>
+<td>Story</td>
+</tr>
+<tr>
+<td>MTP-111854</td>
+<td>Grid Actions: Row Lock for Data Integrity</td>
+<td>Story</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="9-appendix-b--references">9. Appendix B — References</h2>
+<ul>
+<li><a href="https://impactanalytics.atlassian.net/jira/software/c/projects/MTP/summary">MTP Jira Project — Summary</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1090716817">Data Flow in ItemSmart</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1611431940">Itemsmart Architecture</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1250066535">2. ItemSmart Integration</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1081376882">ItemSmart Aggregation &amp; Disaggregation Logic</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/2327543811">Ordering → ItemSmart Data Sync Solution (v3.0)</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/2265284610">Technical Design Document: OMS to ItemSmart Data Sync</a></li>
+<li><a href="https://impactanalytics.atlassian.net/wiki/spaces/ISP/pages/1037238442">1.0 - ItemSmart Functional Design - Feature Detail and User Stories</a></li>
+</ul>
+<hr>
+<p><em>This PRD is derived from MTP Jira user stories and Confluence documentation. For latest story status and implementation details, refer to Jira and the linked Confluence pages.</em></p>
+
+</body>
+</html>
