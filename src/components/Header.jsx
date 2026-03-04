@@ -1,44 +1,50 @@
 import React, { useState } from 'react';
 import { ChevronDown, User, Bell } from 'lucide-react';
 
-const clients = [
-  { id: 'all', name: 'All Clients' },
-  { id: 'carters', name: "Carter's" },
-  { id: 'tommy-bahama', name: 'Tommy Bahama' },
-  { id: 'spanx', name: 'Spanx' },
-  { id: 'briscoes', name: 'Briscoes' },
-  { id: 'pacsun', name: 'Pacsun' },
-  { id: 'arhaus', name: 'Arhaus' },
+const orgs = [
+  { id: 'all', name: 'All Organizations' },
+  { id: 'optimus', name: 'Optimus Healthcare Partners' },
+  { id: 'geisinger', name: 'Geisinger Health' },
+  { id: 'banner', name: 'Banner Health' },
+  { id: 'trinity', name: 'Trinity Health' },
+  { id: 'cleveland', name: 'Cleveland Clinic' },
+  { id: 'kaiser', name: 'Kaiser Permanente' },
 ];
 
 const Header = ({ selectedClient, onClientChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const currentClient = clients.find(c => c.id === selectedClient) || clients[1];
+  const currentOrg = orgs.find(o => o.id === selectedClient) || orgs[1];
 
   return (
     <header className="app-header">
       <div className="header-left">
         <div className="header-logo">
           <div className="logo-mark">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#4285f4"/>
-              <path d="M2 17L12 22L22 17" stroke="#4285f4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 12L12 17L22 12" stroke="#4285f4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#1B2B5E"/>
+              <path d="M16 5L6 11V21L16 27L26 21V11L16 5Z" fill="none" stroke="#7C3AED" strokeWidth="1.5" strokeLinejoin="round"/>
+              <path d="M16 5L16 27" stroke="#8B5CF6" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M6 11L26 21" stroke="#8B5CF6" strokeWidth="1" strokeLinecap="round" strokeOpacity="0.6"/>
+              <path d="M26 11L6 21" stroke="#8B5CF6" strokeWidth="1" strokeLinecap="round" strokeOpacity="0.6"/>
+              <circle cx="16" cy="16" r="3" fill="#7C3AED"/>
             </svg>
           </div>
-          <span className="logo-text">Impact Flow Studio</span>
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+            <span className="logo-text" style={{ fontSize: 16, fontWeight: 700, color: '#1B2B5E', letterSpacing: '-0.3px' }}>Gravity</span>
+            <span style={{ fontSize: 10, color: '#7C3AED', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase' }}>AI Studio</span>
+          </div>
         </div>
       </div>
 
       <div className="header-right">
         <div className="client-selector">
-          <span className="client-label">Client:</span>
-          <button 
+          <span className="client-label">Org:</span>
+          <button
             className="client-dropdown-btn"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <span>{currentClient.name}</span>
+            <span>{currentOrg.name}</span>
             <ChevronDown size={16} className={isDropdownOpen ? 'rotated' : ''} />
           </button>
 
@@ -46,17 +52,17 @@ const Header = ({ selectedClient, onClientChange }) => {
             <>
               <div className="dropdown-backdrop" onClick={() => setIsDropdownOpen(false)} />
               <div className="client-dropdown">
-                {clients.map(client => (
+                {orgs.map(org => (
                   <button
-                    key={client.id}
-                    className={`client-option ${client.id === selectedClient ? 'active' : ''}`}
+                    key={org.id}
+                    className={`client-option ${org.id === selectedClient ? 'active' : ''}`}
                     onClick={() => {
-                      onClientChange(client.id);
+                      onClientChange(org.id);
                       setIsDropdownOpen(false);
                     }}
                   >
                     <span className="radio-dot" />
-                    <span>{client.name}</span>
+                    <span>{org.name}</span>
                   </button>
                 ))}
               </div>

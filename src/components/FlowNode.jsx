@@ -1,5 +1,5 @@
-import React from 'react';
-import { MoreVertical, ChevronUp, ChevronDown, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { MoreVertical, ChevronUp, ChevronDown, X, HelpCircle } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 
 const FlowNode = ({ 
@@ -12,8 +12,11 @@ const FlowNode = ({
   onMoveUp,
   onMoveDown,
   onClick,
-  isSelected
+  isSelected,
+  onShowHelp
 }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   // Dynamically get the icon component
   const IconComponent = LucideIcons[data.icon] || LucideIcons.Circle;
   
@@ -21,6 +24,15 @@ const FlowNode = ({
     // Don't trigger onClick if clicking on action buttons
     if (e.target.closest('.node-actions')) return;
     if (onClick) onClick();
+  };
+
+  const handleHelpClick = (e) => {
+    e.stopPropagation();
+    if (onShowHelp) {
+      onShowHelp(data);
+    } else {
+      setShowTooltip(!showTooltip);
+    }
   };
   
   return (
@@ -50,6 +62,22 @@ const FlowNode = ({
         </div>
 
         <div className="node-actions">
+          <button 
+            className="node-action-btn" 
+            onClick={handleHelpClick}
+            title="View step details"
+            onMouseEnter={() => !onShowHelp && setShowTooltip(true)}
+            onMouseLeave={() => !onShowHelp && setShowTooltip(false)}
+          >
+            <HelpCircle size={16} />
+          </button>
+          {showTooltip && !onShowHelp && (
+            <div className="node-help-tooltip">
+              <strong>{data.name}</strong>
+              <p>{data.description}</p>
+              {data.module && <span className="tooltip-module">{data.module}</span>}
+            </div>
+          )}
           {type === 'action' && (
             <>
               {canMoveUp && (

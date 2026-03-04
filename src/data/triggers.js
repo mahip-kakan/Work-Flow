@@ -1,4 +1,4 @@
-// Trigger configurations for Impact Flow Studio
+// Trigger configurations for Gravity AI Studio — Healthcare workflows
 export const triggerCategories = [
   {
     id: 'schedule',
@@ -10,14 +10,105 @@ export const triggerCategories = [
         name: 'On a schedule',
         description: 'Run at specific times (daily, weekly, monthly)',
         icon: 'Clock',
-        color: '#4285f4'
+        color: '#0284C7'
       },
       {
-        id: 'fiscal-calendar',
-        name: 'Fiscal calendar event',
-        description: 'Trigger on planning season start/end',
+        id: 'fiscal-quarter',
+        name: 'Fiscal quarter event',
+        description: 'Trigger at start or end of fiscal quarter',
         icon: 'Calendar',
-        color: '#4285f4'
+        color: '#0284C7'
+      },
+      {
+        id: 'contract-period',
+        name: 'Contract performance period start',
+        description: 'Trigger when a new VBC contract period begins',
+        icon: 'FileText',
+        color: '#0284C7'
+      }
+    ]
+  },
+  {
+    id: 'clinical-events',
+    name: 'Clinical Events',
+    icon: 'Heart',
+    triggers: [
+      {
+        id: 'patient-admission',
+        name: 'When patient is admitted',
+        description: 'ADT admission event received from EHR (Epic/Cerner)',
+        icon: 'LogIn',
+        color: '#DC2626'
+      },
+      {
+        id: 'patient-discharge',
+        name: 'When patient is discharged',
+        description: 'Discharge ADT event received from EHR',
+        icon: 'LogOut',
+        color: '#DC2626'
+      },
+      {
+        id: 'lab-result-received',
+        name: 'When lab result is received',
+        description: 'Critical or abnormal lab result delivered via FHIR',
+        icon: 'Microscope',
+        color: '#DC2626'
+      },
+      {
+        id: 'medication-adherence-alert',
+        name: 'When medication adherence alert fires',
+        description: 'Patient missed medication refill or dose threshold',
+        icon: 'Pill',
+        color: '#DC2626'
+      },
+      {
+        id: 'care-plan-updated',
+        name: 'When care plan is updated',
+        description: 'Care plan modified or approved in clinical system',
+        icon: 'ClipboardCheck',
+        color: '#DC2626'
+      }
+    ]
+  },
+  {
+    id: 'population-health-alerts',
+    name: 'Population Health Alerts',
+    icon: 'Users',
+    triggers: [
+      {
+        id: 'care-gap-identified',
+        name: 'When care gap is identified',
+        description: 'HEDIS measure gap detected for a patient cohort',
+        icon: 'ClipboardList',
+        color: '#7C3AED'
+      },
+      {
+        id: 'risk-score-threshold',
+        name: 'When risk score threshold is breached',
+        description: 'Patient risk score exceeds configured high-risk threshold',
+        icon: 'AlertTriangle',
+        color: '#7C3AED'
+      },
+      {
+        id: 'readmission-risk-flagged',
+        name: 'When readmission risk is flagged',
+        description: '30-day readmission probability exceeds threshold',
+        icon: 'TrendingUp',
+        color: '#7C3AED'
+      },
+      {
+        id: 'hedis-gap-detected',
+        name: 'When HEDIS measure gap is detected',
+        description: 'Quality measure non-compliance identified in cohort',
+        icon: 'BarChart2',
+        color: '#7C3AED'
+      },
+      {
+        id: 'outreach-non-response',
+        name: 'When outreach goes unanswered',
+        description: 'Patient did not respond to outreach within configured days',
+        icon: 'PhoneMissed',
+        color: '#7C3AED'
       }
     ]
   },
@@ -27,60 +118,39 @@ export const triggerCategories = [
     icon: 'Database',
     triggers: [
       {
-        id: 'data-ingestion-complete',
-        name: 'When data ingestion completes',
-        description: 'After daily sourcing pipeline finishes',
+        id: 'ehr-data-ingested',
+        name: 'When EHR data is ingested',
+        description: 'FHIR data pipeline completes for Epic, Cerner, or MEDITECH',
         icon: 'Database',
-        color: '#34a853'
+        color: '#059669'
       },
       {
-        id: 'forecast-refresh',
-        name: 'When forecast refresh completes',
-        description: 'After Vertex AI simulation pipeline runs',
-        icon: 'TrendingUp',
-        color: '#34a853'
+        id: 'claims-data-received',
+        name: 'When claims data is received',
+        description: 'Payer claims batch delivered and processed',
+        icon: 'FileSpreadsheet',
+        color: '#059669'
       },
       {
-        id: 'plan-approved',
-        name: 'When plan is approved',
-        description: 'After MFP plan approval in PlanSmart',
-        icon: 'CheckCircle',
-        color: '#34a853'
+        id: 'quality-measure-refresh',
+        name: 'When quality measure refresh completes',
+        description: 'HEDIS or Star Rating measure recalculation finishes',
+        icon: 'RefreshCw',
+        color: '#059669'
       },
       {
-        id: 'allocation-executed',
-        name: 'When allocation is executed',
-        description: 'After InventorySmart allocation run',
-        icon: 'GitBranch',
-        color: '#34a853'
-      }
-    ]
-  },
-  {
-    id: 'alerts',
-    name: 'Alerts',
-    icon: 'Bell',
-    triggers: [
-      {
-        id: 'kpi-threshold',
-        name: 'When KPI threshold breached',
-        description: 'Inventory below safety stock, WOH < X weeks',
-        icon: 'AlertTriangle',
-        color: '#ea4335'
+        id: 'payer-data-sync-complete',
+        name: 'When payer data sync completes',
+        description: 'Eligibility and benefit data synced from payer',
+        icon: 'Link',
+        color: '#059669'
       },
       {
-        id: 'forecast-deviation',
-        name: 'When forecast deviation detected',
-        description: 'IA forecast vs actual sales variance',
-        icon: 'TrendingDown',
-        color: '#ea4335'
-      },
-      {
-        id: 'order-overdue',
-        name: 'When order is overdue',
-        description: 'PO not fulfilled within lead time',
-        icon: 'AlertCircle',
-        color: '#ea4335'
+        id: 'sdoh-data-updated',
+        name: 'When SDOH data is updated',
+        description: 'Social determinants of health record refreshed',
+        icon: 'Globe',
+        color: '#059669'
       }
     ]
   },
@@ -90,53 +160,32 @@ export const triggerCategories = [
     icon: 'User',
     triggers: [
       {
-        id: 'file-uploaded',
-        name: 'When file is uploaded',
-        description: 'Excel/CSV upload to any module',
-        icon: 'Upload',
-        color: '#9334ea'
-      },
-      {
-        id: 'order-approved',
-        name: 'When order is approved',
-        description: 'Manual approval in OMS',
+        id: 'care-plan-approved',
+        name: 'When care plan is approved',
+        description: 'Care team lead approves patient care plan',
         icon: 'ClipboardCheck',
-        color: '#9334ea'
+        color: '#D97706'
       },
       {
-        id: 'assortment-finalized',
-        name: 'When assortment is finalized',
-        description: 'Line plan locked in AssortSmart',
-        icon: 'Lock',
-        color: '#9334ea'
-      }
-    ]
-  },
-  {
-    id: 'product-events',
-    name: 'Product Events',
-    icon: 'Package',
-    triggers: [
-      {
-        id: 'new-store-added',
-        name: 'When new store is added',
-        description: 'New store created in Store Master',
-        icon: 'Store',
-        color: '#f59e0b'
+        id: 'patient-list-uploaded',
+        name: 'When patient list is uploaded',
+        description: 'CSV or Excel patient roster uploaded by care coordinator',
+        icon: 'Upload',
+        color: '#D97706'
       },
       {
-        id: 'new-sku-added',
-        name: 'When new SKU is added',
-        description: 'New product added to Product Master',
-        icon: 'Package',
-        color: '#f59e0b'
+        id: 'quality-report-submitted',
+        name: 'When quality report is submitted',
+        description: 'Quality measure report submitted for review',
+        icon: 'Send',
+        color: '#D97706'
       },
       {
-        id: 'supersession-created',
-        name: 'When supersession is created',
-        description: 'Style replacement mapping added',
-        icon: 'RefreshCw',
-        color: '#f59e0b'
+        id: 'contract-milestone-reached',
+        name: 'When contract milestone is reached',
+        description: 'VBC contract target or milestone manually marked achieved',
+        icon: 'Award',
+        color: '#D97706'
       }
     ]
   }

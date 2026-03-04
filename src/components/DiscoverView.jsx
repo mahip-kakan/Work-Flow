@@ -3,75 +3,76 @@ import * as LucideIcons from 'lucide-react';
 
 const templates = [
   {
-    id: 'morning-briefing',
-    category: 'Stay on top of business',
-    title: 'Get a daily business summary',
-    description: 'Receive MondaySmart insights every morning',
-    icons: ['Clock', 'BarChart2', 'MessageSquare'],
-    color: '#4285f4',
-    product: 'MondaySmart'
+    id: 'daily-pop-health-briefing',
+    category: 'Stay on top of your population',
+    title: 'Daily population health briefing',
+    description: 'Run risk stratification each morning and send a population summary to clinical leads',
+    icons: ['Clock', 'Activity', 'MessageSquare'],
+    color: '#7C3AED',
+    module: 'Population Health'
   },
   {
-    id: 'low-inventory-alert',
-    category: 'Respond quickly',
-    title: 'Alert on low inventory',
-    description: 'Notify when WOH falls below threshold',
-    icons: ['AlertTriangle', 'Package', 'Mail'],
-    color: '#ea4335',
-    product: 'InventorySmart'
+    id: 'care-gap-alert',
+    category: 'Close care gaps faster',
+    title: 'Alert on care gaps',
+    description: 'Detect HEDIS measure gaps and generate prioritized outreach lists automatically',
+    icons: ['ClipboardList', 'Users', 'Mail'],
+    color: '#7C3AED',
+    module: 'Population Health'
   },
   {
-    id: 'plan-sync',
-    category: 'Stay organized',
-    title: 'Auto-sync approved plans',
-    description: 'Push PlanSmart data to ItemSmart on approval',
-    icons: ['CheckCircle', 'ArrowRight', 'Layers'],
-    color: '#34a853',
-    product: 'PlanSmart'
+    id: 'post-discharge-followup',
+    category: 'Close care loops',
+    title: 'Post-discharge follow-up',
+    description: 'Create care tasks and notify care managers within minutes of patient discharge',
+    icons: ['LogOut', 'ClipboardCheck', 'Bell'],
+    color: '#DC2626',
+    module: 'Clinical Care'
   },
   {
-    id: 'forecast-deviation',
-    category: 'Track anomalies',
-    title: 'Detect forecast deviations',
-    description: 'Alert when forecast vs actual exceeds 15%',
-    icons: ['TrendingDown', 'Search', 'Bell'],
-    color: '#f59e0b',
-    product: 'ItemSmart'
+    id: 'readmission-risk-alert',
+    category: 'Prevent adverse events',
+    title: 'Readmission risk alert',
+    description: 'Flag high-risk patients at discharge and trigger immediate care team follow-up',
+    icons: ['AlertTriangle', 'LogOut', 'ClipboardCheck'],
+    color: '#DC2626',
+    module: 'Clinical Care'
   },
   {
-    id: 'order-notification',
-    category: 'Review quickly',
-    title: 'Notify on pending orders',
-    description: 'Send reminders for orders awaiting approval',
-    icons: ['ShoppingCart', 'Clock', 'MessageCircle'],
-    color: '#9333ea',
-    product: 'InventorySmart'
+    id: 'appointment-reminder',
+    category: 'Improve patient access',
+    title: 'Appointment reminder automation',
+    description: 'Send personalized appointment reminders via patient preferred channel',
+    icons: ['Calendar', 'Bell', 'MessageCircle'],
+    color: '#D97706',
+    module: 'Patient Experience'
   },
   {
-    id: 'data-quality',
-    category: 'Maintain data health',
-    title: 'Daily data quality check',
-    description: 'Run QC and alert on data issues',
-    icons: ['Database', 'CheckSquare', 'AlertCircle'],
-    color: '#0891b2',
-    product: 'ItemSmart'
+    id: 'satisfaction-survey',
+    category: 'Measure patient satisfaction',
+    title: 'Post-visit satisfaction survey',
+    description: 'Automatically send satisfaction survey after appointment completion',
+    icons: ['CheckCircle', 'MessageSquare', 'TrendingUp'],
+    color: '#D97706',
+    module: 'Patient Experience'
   }
 ];
 
-const products = [
-  { name: 'InventorySmart', icon: 'Package', color: '#2563eb', count: 12 },
-  { name: 'PlanSmart', icon: 'BarChart3', color: '#16a34a', count: 8 },
-  { name: 'AssortSmart', icon: 'Grid3X3', color: '#9333ea', count: 6 },
-  { name: 'MondaySmart', icon: 'BarChart2', color: '#f59e0b', count: 10 },
-  { name: 'ItemSmart', icon: 'Layers', color: '#0891b2', count: 7 },
+const domains = [
+  { name: 'Population Health', icon: 'Users', color: '#7C3AED', count: 6 },
+  { name: 'Value-Based Care', icon: 'TrendingUp', color: '#059669', count: 9 },
+  { name: 'RCM', icon: 'DollarSign', color: '#0284C7', count: 7 },
+  { name: 'Clinical Care', icon: 'Heart', color: '#DC2626', count: 6 },
+  { name: 'Provider Engagement', icon: 'UserCheck', color: '#0891b2', count: 6 },
+  { name: 'Patient Experience', icon: 'Smile', color: '#D97706', count: 6 },
 ];
 
 const DiscoverView = ({ onSelectTemplate, onSelectProduct }) => {
   return (
     <div className="discover-view">
-      <h1 className="discover-title">Discover Flows</h1>
+      <h1 className="discover-title">Discover Agent Templates</h1>
       <p className="discover-subtitle">
-        Pre-built automation templates for Impact Analytics products
+        Pre-built automation workflows for Gravity healthcare domains — powered by HMCP and Gravity AI agents
       </p>
 
       <div className="template-grid">
@@ -81,7 +82,7 @@ const DiscoverView = ({ onSelectTemplate, onSelectProduct }) => {
             className="template-card"
             onClick={() => onSelectTemplate(template)}
           >
-            <span 
+            <span
               className="template-category"
               style={{ color: template.color }}
             >
@@ -93,8 +94,8 @@ const DiscoverView = ({ onSelectTemplate, onSelectProduct }) => {
               {template.icons.map((iconName, index) => {
                 const IconComponent = LucideIcons[iconName] || LucideIcons.Circle;
                 return (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="template-icon"
                     style={{ backgroundColor: template.color + '15', color: template.color }}
                   >
@@ -108,24 +109,24 @@ const DiscoverView = ({ onSelectTemplate, onSelectProduct }) => {
       </div>
 
       <div className="product-sections">
-        <h2>By Product</h2>
+        <h2>By Domain</h2>
         <div className="product-cards">
-          {products.map(product => {
-            const IconComponent = LucideIcons[product.icon];
+          {domains.map(domain => {
+            const IconComponent = LucideIcons[domain.icon];
             return (
-              <button 
-                key={product.name} 
+              <button
+                key={domain.name}
                 className="product-card"
-                onClick={() => onSelectProduct(product.name)}
+                onClick={() => onSelectProduct(domain.name)}
               >
-                <div 
+                <div
                   className="product-icon"
-                  style={{ backgroundColor: product.color + '15', color: product.color }}
+                  style={{ backgroundColor: domain.color + '15', color: domain.color }}
                 >
                   <IconComponent size={24} />
                 </div>
-                <span className="product-name">{product.name}</span>
-                <span className="product-count">{product.count} flows</span>
+                <span className="product-name">{domain.name}</span>
+                <span className="product-count">{domain.count} agents</span>
               </button>
             );
           })}

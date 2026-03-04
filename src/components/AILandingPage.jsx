@@ -1,95 +1,121 @@
-import React, { useState } from 'react';
-import { Sparkles, ArrowRight, Zap, Clock, TrendingUp, Bell, Package, BarChart3, Layers, Grid3X3, BarChart2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Sparkles, ArrowRight, Zap, Users, TrendingUp, Heart, UserCheck, Smile, DollarSign, MessageCircle, Search, Briefcase, Globe } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import AIChatPanel from './AIChatPanel';
 
 const quickTemplates = [
   {
-    id: 'forecast-alerts',
-    category: 'Review quickly',
-    title: 'Notify me about forecast deviations',
-    description: 'Get alerts when forecast vs actual exceeds threshold',
-    icons: ['TrendingDown', 'Bell', 'Mail'],
-    color: '#ea4335',
+    id: 'post-discharge-followup',
+    category: 'Prevent readmissions',
+    title: 'Post-discharge follow-up',
+    description: 'Automatically create care team tasks and notify care managers after patient discharge',
+    icons: ['LogOut', 'ClipboardCheck', 'MessageCircle'],
+    color: '#DC2626',
     trigger: {
-      id: 'forecast-deviation',
-      name: 'When forecast deviation detected',
-      description: 'IA forecast vs actual sales variance > 15%',
-      icon: 'TrendingDown',
-      color: '#ea4335'
+      id: 'patient-discharge',
+      name: 'When patient is discharged',
+      description: 'Discharge ADT event received from EHR',
+      icon: 'LogOut',
+      color: '#DC2626'
     },
     actions: [
-      { id: 'in-app-notification', name: 'Push in-app notification', icon: 'Bell', color: '#4285f4' },
-      { id: 'send-email', name: 'Send email with report', icon: 'Mail', color: '#ea4335' }
+      { id: 'create-care-plan', name: 'Create care plan', icon: 'FileText', color: '#DC2626' },
+      { id: 'create-care-task', name: 'Create care team task', icon: 'ClipboardCheck', color: '#DC2626' },
+      { id: 'send-teams', name: 'Send Teams message', icon: 'MessageCircle', color: '#5558af' }
     ]
   },
   {
-    id: 'daily-sync',
-    category: 'Stay organized',
-    title: 'Daily sync from PlanSmart',
-    description: 'Automatically sync approved plans to ItemSmart',
-    icons: ['RefreshCw', 'ArrowRight', 'Layers'],
-    color: '#34a853',
+    id: 'readmission-risk-alert',
+    category: 'Prevent adverse events',
+    title: 'Readmission risk alert',
+    description: 'Flag high-risk patients at discharge and trigger immediate care team follow-up',
+    icons: ['AlertTriangle', 'Activity', 'Bell'],
+    color: '#DC2626',
     trigger: {
-      id: 'plan-approved',
-      name: 'When plan is approved',
-      description: 'MFP plan approved in PlanSmart',
-      icon: 'CheckCircle',
-      color: '#34a853'
+      id: 'readmission-risk-flagged',
+      name: 'When readmission risk is flagged',
+      description: '30-day readmission probability > 40%',
+      icon: 'AlertTriangle',
+      color: '#DC2626'
     },
     actions: [
-      { id: 'run-data-refresh', name: 'Run data refresh', icon: 'RefreshCw', color: '#64748b' },
-      { id: 'sync-to-itemsmart', name: 'Sync plan to ItemSmart', icon: 'ArrowRight', color: '#16a34a' }
+      { id: 'run-readmission-model', name: 'Run Readmission Risk Model', icon: 'Activity', color: '#7C3AED' },
+      { id: 'create-care-plan', name: 'Create enhanced care plan', icon: 'FileText', color: '#DC2626' },
+      { id: 'in-app-notification', name: 'Push in-app notification', icon: 'Bell', color: '#1B2B5E' }
     ]
   },
   {
-    id: 'weekly-reports',
-    category: 'Stay on top',
-    title: 'Weekly business summary',
-    description: 'Get insights delivered every Monday morning',
-    icons: ['Clock', 'BarChart2', 'MessageSquare'],
-    color: '#4285f4',
+    id: 'appointment-reminder',
+    category: 'Improve patient access',
+    title: 'Appointment reminder automation',
+    description: 'Send personalized appointment reminders via patient preferred channel',
+    icons: ['Calendar', 'Bell', 'MessageCircle'],
+    color: '#D97706',
     trigger: {
-      id: 'on-schedule',
-      name: 'On a schedule',
-      description: 'Every Monday at 8:00 AM',
-      icon: 'Clock',
-      color: '#4285f4'
+      id: 'appointment-scheduled',
+      name: 'When appointment is scheduled',
+      description: 'New appointment created in scheduling system',
+      icon: 'Calendar',
+      color: '#D97706'
     },
     actions: [
-      { id: 'generate-summary', name: 'Generate business summary', icon: 'FileText', color: '#f59e0b' },
-      { id: 'send-slack', name: 'Send Slack message', icon: 'MessageSquare', color: '#4a154b' }
+      { id: 'send-appointment-reminder', name: 'Send appointment reminder', icon: 'Bell', color: '#D97706' },
+      { id: 'send-pre-visit-instructions', name: 'Send pre-visit instructions', icon: 'FileText', color: '#D97706' }
     ]
   }
 ];
 
-const products = [
-  { name: 'ItemSmart', icon: 'Layers', color: '#0891b2' },
-  { name: 'InventorySmart', icon: 'Package', color: '#2563eb' },
-  { name: 'PlanSmart', icon: 'BarChart3', color: '#16a34a' },
-  { name: 'AssortSmart', icon: 'Grid3X3', color: '#9333ea' },
-  { name: 'MondaySmart', icon: 'BarChart2', color: '#f59e0b' },
+const modules = [
+  { name: 'Population Health', icon: 'Users', color: '#7C3AED' },
+  { name: 'Value-Based Care', icon: 'TrendingUp', color: '#059669' },
+  { name: 'RCM', icon: 'DollarSign', color: '#0284C7' },
+  { name: 'Clinical Care', icon: 'Heart', color: '#DC2626' },
+  { name: 'Provider Engagement', icon: 'UserCheck', color: '#0891b2' },
+  { name: 'Patient Experience', icon: 'Smile', color: '#D97706' },
 ];
 
 const aiSuggestions = [
-  { query: 'low inventory', suggestion: 'Alert on low inventory levels', template: 'low-inventory-alert' },
-  { query: 'forecast', suggestion: 'Notify on forecast deviations', template: 'forecast-alerts' },
-  { query: 'weekly', suggestion: 'Weekly business summary', template: 'weekly-reports' },
-  { query: 'sync', suggestion: 'Daily sync from PlanSmart', template: 'daily-sync' },
-  { query: 'report', suggestion: 'Generate and send reports', template: 'weekly-reports' },
-  { query: 'alert', suggestion: 'Set up KPI threshold alerts', template: 'forecast-alerts' },
+  { query: 'discharge', suggestion: 'Post-discharge follow-up', template: 'post-discharge-followup' },
+  { query: 'readmission', suggestion: 'Readmission risk alert', template: 'readmission-risk-alert' },
+  { query: 'appointment', suggestion: 'Appointment reminder automation', template: 'appointment-reminder' },
+  { query: 'reminder', suggestion: 'Appointment reminder automation', template: 'appointment-reminder' },
+  { query: 'follow-up', suggestion: 'Post-discharge follow-up', template: 'post-discharge-followup' },
+  { query: 'risk', suggestion: 'Readmission risk alert', template: 'readmission-risk-alert' },
+  { query: 'patient', suggestion: 'Appointment reminder automation', template: 'appointment-reminder' },
+  { query: 'alert', suggestion: 'Readmission risk alert', template: 'readmission-risk-alert' },
+];
+
+const knowledgeBases = [
+  { id: 'local', label: 'Local', icon: Briefcase },
+  { id: 'gravity', label: 'Gravity', icon: ArrowRight },
+  { id: 'global', label: 'Global', icon: Globe },
 ];
 
 const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
   const [inputValue, setInputValue] = useState('');
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [matchedSuggestion, setMatchedSuggestion] = useState(null);
+  const [knowledgeBase, setKnowledgeBase] = useState('gravity');
+  const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const selectTriggerRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (!knowledgeBaseOpen || !selectTriggerRef.current) return;
+    const rect = selectTriggerRef.current.getBoundingClientRect();
+    setDropdownPosition({
+      top: rect.bottom + 6,
+      left: rect.left + rect.width / 2,
+    });
+  }, [knowledgeBaseOpen]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
 
     if (value.length > 2) {
-      const match = aiSuggestions.find(s => 
+      const match = aiSuggestions.find(s =>
         value.toLowerCase().includes(s.query.toLowerCase())
       );
       if (match) {
@@ -115,7 +141,6 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
         });
       }
     } else if (inputValue.trim()) {
-      // Create a new flow with just the name
       onCreateFlow({
         name: inputValue,
         trigger: null,
@@ -138,31 +163,85 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
       <div className="ai-hero">
         <div className="hero-decoration"></div>
         <h1>
-          Automate your work with{' '}
-          <span className="gradient-text">Impact Flow Studio</span>
+          Build healthcare AI with{' '}
+          <span className="gradient-text">Gravity AI Studio</span>
         </h1>
         <p className="hero-subtitle">
-          Streamline and manage tasks across IA products
+          Design, deploy, and automate clinical and operational workflows across your health system
         </p>
 
-        {/* AI Input */}
+        {/* AI Input - search bar with knowledge base */}
         <div className="ai-input-container">
-          <div className="ai-input-wrapper">
+          <div className="ai-input-wrapper ai-search-bar">
+            <div className="ai-search-bar-icons">
+              <Search size={20} className="ai-search-icon" />
+            </div>
             <input
               type="text"
-              placeholder="Describe a task to automate..."
+              placeholder="Powered by Gravity Search"
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
             />
-            <button 
+            <button
               className="ai-create-btn"
               onClick={handleCreate}
               disabled={!inputValue.trim()}
             >
               <Sparkles size={18} />
-              <span>Create</span>
+              <span>Build</span>
             </button>
+          </div>
+
+          {/* Knowledge base selector — three values: Local, Gravity, Global */}
+          <div className="knowledge-base-select-wrap">
+            <button
+              ref={selectTriggerRef}
+              type="button"
+              className="knowledge-base-select"
+              onClick={() => setKnowledgeBaseOpen((o) => !o)}
+              aria-expanded={knowledgeBaseOpen}
+              aria-haspopup="listbox"
+            >
+              <span>{knowledgeBases.find((kb) => kb.id === knowledgeBase)?.label ?? 'Select'}</span>
+              <span className={`knowledge-base-chevron ${knowledgeBaseOpen ? 'open' : ''}`}>▲</span>
+            </button>
+            {knowledgeBaseOpen && (
+              <>
+                <div className="knowledge-base-backdrop" onClick={() => setKnowledgeBaseOpen(false)} aria-hidden="true" />
+                <div
+                  ref={dropdownRef}
+                  className="knowledge-base-dropdown knowledge-base-dropdown-fixed"
+                  role="listbox"
+                  style={{
+                    top: dropdownPosition.top,
+                    left: dropdownPosition.left,
+                    transform: 'translateX(-50%)',
+                  }}
+                >
+                  <div className="knowledge-base-dropdown-header">All knowledge bases</div>
+                  {knowledgeBases.map((kb) => {
+                    const Icon = kb.icon;
+                    return (
+                      <button
+                        key={kb.id}
+                        type="button"
+                        className="knowledge-base-option"
+                        role="option"
+                        aria-selected={knowledgeBase === kb.id}
+                        onClick={() => {
+                          setKnowledgeBase(kb.id);
+                          setKnowledgeBaseOpen(false);
+                        }}
+                      >
+                        <Icon size={18} />
+                        <span>{kb.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
 
           {/* AI Suggestion */}
@@ -175,6 +254,17 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
               </button>
             </div>
           )}
+        </div>
+
+        {/* Compliance Strip */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 20, fontSize: 11, color: '#94a3b8', fontWeight: 600 }}>
+          <span>HIPAA</span>
+          <span>·</span>
+          <span>HITRUST</span>
+          <span>·</span>
+          <span>SOC 2 Type II</span>
+          <span>·</span>
+          <span>FHIR R4</span>
         </div>
       </div>
 
@@ -193,7 +283,7 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
                   {template.icons.map((iconName, idx) => {
                     const IconComponent = LucideIcons[iconName] || LucideIcons.Circle;
                     return (
-                      <div 
+                      <div
                         key={idx}
                         className="template-icon"
                         style={{ backgroundColor: template.color + '15', color: template.color }}
@@ -203,11 +293,11 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
                     );
                   })}
                 </div>
-                <button 
+                <button
                   className="turn-on-btn"
                   onClick={() => handleQuickTurnOn(template)}
                 >
-                  Turn on
+                  Deploy
                 </button>
               </div>
             </div>
@@ -215,31 +305,32 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
         </div>
       </div>
 
-      {/* Browse by Product */}
+      {/* Browse by Module */}
       <div className="browse-products-section">
-        <h2>Browse by Product</h2>
+        <h2>Browse by Domain</h2>
         <div className="product-pills">
-          {products.map(product => {
-            const IconComponent = LucideIcons[product.icon];
+          {modules.map(module => {
+            const IconComponent = LucideIcons[module.icon];
             return (
               <button
-                key={product.name}
+                key={module.name}
                 className="product-pill"
-                onClick={() => onSelectProduct(product.name)}
+                onClick={() => onSelectProduct(module.name)}
               >
-                <div 
+                <div
                   className="pill-icon"
-                  style={{ backgroundColor: product.color + '15', color: product.color }}
+                  style={{ backgroundColor: module.color + '15', color: module.color }}
                 >
                   <IconComponent size={18} />
                 </div>
-                <span>{product.name}</span>
+                <span>{module.name}</span>
                 <ArrowRight size={16} className="pill-arrow" />
               </button>
             );
           })}
         </div>
       </div>
+
     </div>
   );
 };

@@ -1,74 +1,74 @@
 import React from 'react';
-import { 
-  Workflow, Play, Clock, CheckCircle, XCircle, 
+import {
+  Brain, Play, Clock, CheckCircle, XCircle,
   TrendingUp, BarChart3, AlertTriangle, RefreshCw
 } from 'lucide-react';
 
 const metrics = [
-  { label: 'Active Flows', value: '47', icon: Workflow, color: '#4285f4', change: '+5 this week' },
-  { label: 'Executions', value: '1,247', icon: Play, color: '#34a853', change: 'This month' },
-  { label: 'Time Saved', value: '182 hrs', icon: Clock, color: '#f59e0b', change: 'This month' },
-  { label: 'Success Rate', value: '98.2%', icon: CheckCircle, color: '#16a34a', change: '+0.3%' },
+  { label: 'Active Workflows', value: '47', icon: Brain, color: '#7C3AED', change: '+5 this week' },
+  { label: 'Agent Executions', value: '1,247', icon: Play, color: '#059669', change: 'This month' },
+  { label: 'Clinical Hours Saved', value: '182 hrs', icon: Clock, color: '#D97706', change: 'This month' },
+  { label: 'Success Rate', value: '98.2%', icon: CheckCircle, color: '#059669', change: '+0.3%' },
 ];
 
 const recentExecutions = [
-  { 
-    id: 1, 
-    name: 'Weekly Forecast Refresh', 
-    status: 'success', 
-    time: 'Today 6:00 AM', 
+  {
+    id: 1,
+    name: 'Post-Discharge Follow-Up Workflow',
+    status: 'success',
+    time: 'Today 6:00 AM',
     duration: '2.3s',
-    product: 'ItemSmart'
+    module: 'Clinical Care'
   },
-  { 
-    id: 2, 
-    name: 'Daily Ingestion Pipeline', 
-    status: 'success', 
-    time: 'Today 5:45 AM', 
+  {
+    id: 2,
+    name: 'Daily EHR FHIR Data Ingestion',
+    status: 'success',
+    time: 'Today 5:45 AM',
     duration: '45.2s',
-    product: 'ItemSmart'
+    module: 'Data Operations'
   },
-  { 
-    id: 3, 
-    name: 'Low Inventory Alert', 
-    status: 'failed', 
-    time: 'Yesterday 4:30 PM', 
+  {
+    id: 3,
+    name: 'Appointment Reminder Batch',
+    status: 'failed',
+    time: 'Yesterday 4:30 PM',
     duration: '-',
-    product: 'InventorySmart',
-    error: 'Connection timeout'
+    module: 'Patient Experience',
+    error: 'SMS gateway timeout'
   },
-  { 
-    id: 4, 
-    name: 'Plan Sync from PlanSmart', 
-    status: 'success', 
-    time: 'Yesterday 2:00 PM', 
+  {
+    id: 4,
+    name: 'Readmission Risk Alert',
+    status: 'success',
+    time: 'Yesterday 2:00 PM',
     duration: '1.8s',
-    product: 'PlanSmart'
+    module: 'Clinical Care'
   },
-  { 
-    id: 5, 
-    name: 'Forecast Deviation Alert', 
-    status: 'success', 
-    time: 'Yesterday 9:00 AM', 
+  {
+    id: 5,
+    name: 'Payer Claims Sync — Geisinger',
+    status: 'success',
+    time: 'Yesterday 9:00 AM',
     duration: '0.9s',
-    product: 'ItemSmart'
+    module: 'RCM'
   },
-  { 
-    id: 6, 
-    name: 'Weekly Business Summary', 
-    status: 'success', 
-    time: 'Monday 8:00 AM', 
+  {
+    id: 6,
+    name: 'Patient Satisfaction Survey Delivery',
+    status: 'success',
+    time: 'Monday 8:00 AM',
     duration: '3.1s',
-    product: 'MondaySmart'
+    module: 'Patient Experience'
   },
 ];
 
-const flowsByProduct = [
-  { product: 'ItemSmart', count: 15, color: '#0891b2' },
-  { product: 'InventorySmart', count: 12, color: '#2563eb' },
-  { product: 'MondaySmart', count: 10, color: '#f59e0b' },
-  { product: 'PlanSmart', count: 6, color: '#16a34a' },
-  { product: 'AssortSmart', count: 4, color: '#9333ea' },
+const workflowsByDomain = [
+  { domain: 'Population Health', count: 15, color: '#7C3AED' },
+  { domain: 'Clinical Care', count: 12, color: '#DC2626' },
+  { domain: 'Patient Experience', count: 10, color: '#D97706' },
+  { domain: 'Value-Based Care', count: 7, color: '#059669' },
+  { domain: 'RCM', count: 3, color: '#0284C7' },
 ];
 
 const adoptionData = [
@@ -81,7 +81,7 @@ const adoptionData = [
 ];
 
 const AnalyticsDashboard = ({ selectedClient }) => {
-  const maxFlows = Math.max(...flowsByProduct.map(p => p.count));
+  const maxFlows = Math.max(...workflowsByDomain.map(p => p.count));
   const maxAdoption = Math.max(...adoptionData.map(d => d.flows));
 
   return (
@@ -89,7 +89,7 @@ const AnalyticsDashboard = ({ selectedClient }) => {
       <div className="dashboard-header">
         <div>
           <h1>Analytics</h1>
-          <p>Monitor your automation performance and impact</p>
+          <p>Monitor your healthcare automation performance and clinical impact</p>
         </div>
         <button className="refresh-btn">
           <RefreshCw size={16} />
@@ -104,7 +104,7 @@ const AnalyticsDashboard = ({ selectedClient }) => {
           return (
             <div key={index} className="metric-card">
               <div className="metric-header">
-                <div 
+                <div
                   className="metric-icon"
                   style={{ backgroundColor: metric.color + '15', color: metric.color }}
                 >
@@ -134,25 +134,25 @@ const AnalyticsDashboard = ({ selectedClient }) => {
               <svg viewBox="0 0 300 100" className="adoption-chart">
                 <defs>
                   <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#4285f4" />
-                    <stop offset="100%" stopColor="#34a853" />
+                    <stop offset="0%" stopColor="#1B2B5E" />
+                    <stop offset="100%" stopColor="#7C3AED" />
                   </linearGradient>
                   <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#4285f4" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#4285f4" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path
-                  d={`M 0 ${100 - (adoptionData[0].flows / maxAdoption) * 80} 
-                      ${adoptionData.map((d, i) => 
+                  d={`M 0 ${100 - (adoptionData[0].flows / maxAdoption) * 80}
+                      ${adoptionData.map((d, i) =>
                         `L ${(i / (adoptionData.length - 1)) * 300} ${100 - (d.flows / maxAdoption) * 80}`
-                      ).join(' ')} 
+                      ).join(' ')}
                       L 300 100 L 0 100 Z`}
                   fill="url(#areaGradient)"
                 />
                 <path
-                  d={`M 0 ${100 - (adoptionData[0].flows / maxAdoption) * 80} 
-                      ${adoptionData.map((d, i) => 
+                  d={`M 0 ${100 - (adoptionData[0].flows / maxAdoption) * 80}
+                      ${adoptionData.map((d, i) =>
                         `L ${(i / (adoptionData.length - 1)) * 300} ${100 - (d.flows / maxAdoption) * 80}`
                       ).join(' ')}`}
                   fill="none"
@@ -166,7 +166,7 @@ const AnalyticsDashboard = ({ selectedClient }) => {
                     cx={(i / (adoptionData.length - 1)) * 300}
                     cy={100 - (d.flows / maxAdoption) * 80}
                     r="4"
-                    fill="#4285f4"
+                    fill="#7C3AED"
                     stroke="white"
                     strokeWidth="2"
                   />
@@ -181,17 +181,17 @@ const AnalyticsDashboard = ({ selectedClient }) => {
           </div>
         </div>
 
-        {/* Product Distribution Chart */}
+        {/* Domain Distribution Chart */}
         <div className="chart-card">
-          <h3>Flows by Product</h3>
+          <h3>Workflows by Domain</h3>
           <div className="bar-chart">
-            {flowsByProduct.map((item, index) => (
+            {workflowsByDomain.map((item, index) => (
               <div key={index} className="bar-item">
-                <span className="bar-label">{item.product}</span>
+                <span className="bar-label">{item.domain}</span>
                 <div className="bar-container">
-                  <div 
+                  <div
                     className="bar-fill"
-                    style={{ 
+                    style={{
                       width: `${(item.count / maxFlows) * 100}%`,
                       backgroundColor: item.color
                     }}
@@ -222,7 +222,7 @@ const AnalyticsDashboard = ({ selectedClient }) => {
               </div>
               <div className="execution-info">
                 <span className="execution-name">{execution.name}</span>
-                <span className="execution-product">{execution.product}</span>
+                <span className="execution-product">{execution.module}</span>
               </div>
               <div className="execution-time">{execution.time}</div>
               <div className="execution-duration">

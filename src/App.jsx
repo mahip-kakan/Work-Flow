@@ -12,121 +12,137 @@ import DiscoverView from './components/DiscoverView';
 import MyFlowsView from './components/MyFlowsView';
 import ProductFlowsView from './components/ProductFlowsView';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
+import FlowHelpPanel from './components/FlowHelpPanel';
+import TestDataPanel from './components/TestDataPanel';
+import HealthcareGlossary from './components/HealthcareGlossary';
+import AIChatPanel from './components/AIChatPanel';
+import ChatAssistantButton from './components/ChatAssistantButton';
 
 function App() {
   // View state
   const [activeView, setActiveView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedClient, setSelectedClient] = useState('carters');
+  const [selectedClient, setSelectedClient] = useState('optimus');
   
+  // Chat assistant state
+  const [showChatAssistant, setShowChatAssistant] = useState(false);
+
   // Current flow being edited
   const [currentFlow, setCurrentFlow] = useState(null);
-  
+
   // Selected step for configuration
   const [selectedStep, setSelectedStep] = useState(null); // { type: 'trigger' | 'action', index?: number }
-  
+
   // All saved flows
   const [savedFlows, setSavedFlows] = useState([
     {
-      id: '1',
-      name: 'Daily Morning Briefing',
+      id: 'cc-1',
+      name: 'Post-Discharge Follow-Up',
       trigger: {
-        id: 'on-schedule',
-        name: 'On a schedule',
-        description: 'Every Monday at 8:00 AM',
-        icon: 'Clock',
-        color: '#4285f4'
+        id: 'patient-discharge',
+        name: 'When patient is discharged',
+        description: 'Discharge ADT event received from EHR',
+        icon: 'LogOut',
+        color: '#DC2626'
       },
       actions: [
         {
-          id: 'refresh-insights',
-          name: 'Refresh insights',
-          description: 'Update AI-generated insights',
-          icon: 'Sparkles',
-          color: '#f59e0b',
-          product: 'MondaySmart'
+          id: 'create-care-plan',
+          name: 'Create care plan',
+          description: 'Generate post-discharge care plan with medication reconciliation',
+          icon: 'FileText',
+          color: '#DC2626',
+          module: 'Clinical Care'
         },
         {
-          id: 'send-slack',
-          name: 'Send Slack message',
-          description: 'Alert team channels via Slack',
-          icon: 'MessageSquare',
-          color: '#4a154b',
-          product: null
+          id: 'create-care-task',
+          name: 'Create care team task',
+          description: 'Assign follow-up call task to care coordinator',
+          icon: 'ClipboardCheck',
+          color: '#DC2626',
+          module: 'Clinical Care'
+        },
+        {
+          id: 'send-teams',
+          name: 'Send Teams message',
+          description: 'Notify care team of new discharge',
+          icon: 'MessageCircle',
+          color: '#5558af',
+          module: null
         }
       ],
       isActive: true
     },
     {
       id: '2',
-      name: 'Low Inventory Alert',
+      name: 'Readmission Risk Alert',
       trigger: {
-        id: 'kpi-threshold',
-        name: 'When KPI threshold breached',
-        description: 'WOH < 2 weeks',
+        id: 'readmission-risk-flagged',
+        name: 'When readmission risk is flagged',
+        description: '30-day readmission probability > 40%',
         icon: 'AlertTriangle',
-        color: '#ea4335'
+        color: '#DC2626'
       },
       actions: [
         {
           id: 'in-app-notification',
           name: 'Push in-app notification',
-          description: 'Alert inventory managers',
+          description: 'Alert care coordinator inside Gravity',
           icon: 'Bell',
-          color: '#4285f4',
-          product: null
+          color: '#1B2B5E',
+          module: null
         }
       ],
       isActive: false
     },
     {
       id: '3',
-      name: 'Weekly Forecast Refresh',
+      name: 'Appointment Reminder Automation',
       trigger: {
-        id: 'on-schedule',
-        name: 'On a schedule',
-        description: 'Every Friday at 6:00 PM',
-        icon: 'Clock',
-        color: '#4285f4'
+        id: 'appointment-scheduled',
+        name: 'When appointment is scheduled',
+        description: 'New appointment created in scheduling system',
+        icon: 'Calendar',
+        color: '#D97706'
       },
       actions: [
         {
-          id: 'run-simulation',
-          name: 'Run simulation pipeline',
-          description: 'Execute Vertex AI simulation',
-          icon: 'Play',
-          color: '#0891b2',
-          product: 'ItemSmart'
+          id: 'send-appointment-reminder',
+          name: 'Send appointment reminder',
+          description: 'Send SMS, email, or phone call based on patient preference',
+          icon: 'Bell',
+          color: '#D97706',
+          module: 'Patient Experience'
         },
         {
-          id: 'refresh-forecast',
-          name: 'Refresh forecast',
-          description: 'Update demand forecast',
-          icon: 'TrendingUp',
-          color: '#0891b2',
-          product: 'ItemSmart'
-        },
-        {
-          id: 'send-email',
-          name: 'Send email with report',
-          description: 'Email weekly summary',
-          icon: 'Mail',
-          color: '#ea4335',
-          product: null
+          id: 'send-pre-visit-instructions',
+          name: 'Send pre-visit instructions',
+          description: 'Deliver preparation instructions and forms',
+          icon: 'FileText',
+          color: '#D97706',
+          module: 'Patient Experience'
         }
       ],
       isActive: true
     }
   ]);
-  
+
   // Panel state: null, 'trigger', 'action'
   const [activePanel, setActivePanel] = useState(null);
+
+  // Help panel state
+  const [showHelpPanel, setShowHelpPanel] = useState(false);
+  const [helpFlow, setHelpFlow] = useState(null);
+
+  // Test panel state
+  const [showTestPanel, setShowTestPanel] = useState(false);
+  const [isTestRunning, setIsTestRunning] = useState(false);
 
   // Create new flow
   const handleNewFlow = () => {
     const newFlow = {
       id: Date.now().toString(),
-      name: 'Untitled flow',
+      name: 'Untitled agent',
       trigger: null,
       actions: [],
       isActive: false
@@ -141,7 +157,7 @@ function App() {
   const handleCreateFlow = (flowData) => {
     const newFlow = {
       id: Date.now().toString(),
-      name: flowData.name || 'Untitled flow',
+      name: flowData.name || 'Untitled agent',
       trigger: flowData.trigger || null,
       actions: flowData.actions || [],
       isActive: false
@@ -202,7 +218,6 @@ function App() {
   const handleSelectTrigger = (trigger) => {
     setCurrentFlow({ ...currentFlow, trigger });
     setActivePanel(null);
-    // Open trigger config panel
     setSelectedStep({ type: 'trigger' });
   };
 
@@ -211,7 +226,6 @@ function App() {
     const newActions = [...currentFlow.actions, action];
     setCurrentFlow({ ...currentFlow, actions: newActions });
     setActivePanel(null);
-    // Open action config panel for the new action
     setSelectedStep({ type: 'action', index: newActions.length - 1 });
   };
 
@@ -261,7 +275,7 @@ function App() {
     handleNewFlow();
   };
 
-  // Handle product selection
+  // Handle product/domain selection
   const handleSelectProduct = (productName) => {
     setSelectedProduct(productName);
     setActiveView('product-flows');
@@ -271,6 +285,41 @@ function App() {
   const handleBackFromProduct = () => {
     setSelectedProduct(null);
     setActiveView('discover');
+  };
+
+  // Show help panel for current flow
+  const handleShowHelp = () => {
+    setHelpFlow(currentFlow);
+    setShowHelpPanel(true);
+  };
+
+  // Show help panel for template flow
+  const handleShowTemplateHelp = (flow) => {
+    setHelpFlow(flow);
+    setShowHelpPanel(true);
+  };
+
+  // Handle test run
+  const handleTestRun = () => {
+    setShowTestPanel(true);
+  };
+
+  // Handle flow activation/deactivation
+  const handleActivateFlow = () => {
+    if (!currentFlow) return;
+    
+    const updatedFlow = { ...currentFlow, isActive: !currentFlow.isActive };
+    setCurrentFlow(updatedFlow);
+    
+    // Update in saved flows
+    const existingIndex = savedFlows.findIndex(f => f.id === currentFlow.id);
+    if (existingIndex >= 0) {
+      const updated = [...savedFlows];
+      updated[existingIndex] = updatedFlow;
+      setSavedFlows(updated);
+    } else {
+      setSavedFlows([...savedFlows, updatedFlow]);
+    }
   };
 
   // Determine which config panel to show
@@ -283,7 +332,6 @@ function App() {
           trigger={currentFlow.trigger}
           onClose={handleCloseConfig}
           onSave={(config) => {
-            // Save trigger config
             handleCloseConfig();
           }}
         />
@@ -299,7 +347,6 @@ function App() {
             stepNumber={selectedStep.index + 2}
             onClose={handleCloseConfig}
             onSave={(config) => {
-              // Save action config
               handleCloseConfig();
             }}
           />
@@ -312,13 +359,13 @@ function App() {
 
   return (
     <div className="app">
-      <Header 
+      <Header
         selectedClient={selectedClient}
         onClientChange={setSelectedClient}
       />
-      
+
       <div className="app-body">
-        <Sidebar 
+        <Sidebar
           onNewFlow={handleNewFlow}
           activeView={activeView}
           setActiveView={(view) => {
@@ -332,7 +379,7 @@ function App() {
 
         <main className="main-content">
           {activeView === 'home' && (
-            <AILandingPage 
+            <AILandingPage
               onSelectTemplate={handleSelectTemplate}
               onSelectProduct={handleSelectProduct}
               onCreateFlow={handleCreateFlow}
@@ -344,7 +391,7 @@ function App() {
           )}
 
           {activeView === 'discover' && (
-            <DiscoverView 
+            <DiscoverView
               onSelectTemplate={handleSelectTemplate}
               onSelectProduct={handleSelectProduct}
             />
@@ -356,26 +403,32 @@ function App() {
               onBack={handleBackFromProduct}
               onSelectFlow={handleEditFlow}
               onCreateFromTemplate={handleCreateFromTemplate}
+              onShowHelp={handleShowTemplateHelp}
             />
           )}
 
           {activeView === 'my-flows' && (
-            <MyFlowsView 
+            <MyFlowsView
               flows={savedFlows}
               onEditFlow={handleEditFlow}
               onNewFlow={handleNewFlow}
             />
           )}
 
+          {activeView === 'glossary' && (
+            <HealthcareGlossary />
+          )}
+
           {activeView === 'editor' && currentFlow && (
             <div className="editor-layout">
               <div className="editor-main">
-                <FlowHeader 
+                <FlowHeader
                   flowName={currentFlow.name}
                   onBack={handleBack}
                   onNameChange={handleNameChange}
+                  onShowHelp={handleShowHelp}
                 />
-                <FlowCanvas 
+                <FlowCanvas
                   trigger={currentFlow.trigger}
                   actions={currentFlow.actions}
                   onSelectTrigger={() => setActivePanel('trigger')}
@@ -386,18 +439,22 @@ function App() {
                   onTriggerClick={handleTriggerClick}
                   onActionClick={handleActionClick}
                   selectedStep={selectedStep}
+                  onTestRun={handleTestRun}
+                  onActivate={handleActivateFlow}
+                  isActive={currentFlow.isActive}
+                  isRunning={isTestRunning}
                 />
               </div>
 
               <div className={`editor-panel ${activePanel || selectedStep ? 'open' : ''}`}>
                 {activePanel === 'trigger' && (
-                  <TriggerPanel 
+                  <TriggerPanel
                     onSelectTrigger={handleSelectTrigger}
                     onClose={() => setActivePanel(null)}
                   />
                 )}
                 {activePanel === 'action' && (
-                  <ActionPanel 
+                  <ActionPanel
                     onSelectAction={handleSelectAction}
                     onClose={() => setActivePanel(null)}
                   />
@@ -408,6 +465,47 @@ function App() {
           )}
         </main>
       </div>
+
+      {/* Help Panel */}
+      {showHelpPanel && (
+        <FlowHelpPanel
+          flow={helpFlow}
+          onClose={() => {
+            setShowHelpPanel(false);
+            setHelpFlow(null);
+          }}
+        />
+      )}
+
+      {/* Test Data Panel */}
+      {showTestPanel && currentFlow && (
+        <TestDataPanel
+          flow={currentFlow}
+          onClose={() => {
+            setShowTestPanel(false);
+            setIsTestRunning(false);
+          }}
+          onRunTest={(results) => {
+            console.log('Test results:', results);
+            setIsTestRunning(false);
+          }}
+        />
+      )}
+
+      {/* Global Chat Assistant Button */}
+      <ChatAssistantButton
+        onClick={() => setShowChatAssistant(!showChatAssistant)}
+        isOpen={showChatAssistant}
+      />
+
+      {/* Global Chat Assistant Panel */}
+      {showChatAssistant && (
+        <AIChatPanel
+          onClose={() => setShowChatAssistant(false)}
+          onCreateFlow={handleCreateFlow}
+          onSelectTemplate={handleSelectTemplate}
+        />
+      )}
     </div>
   );
 }

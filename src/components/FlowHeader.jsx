@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Pencil, TrendingUp, Share2, MoreVertical } from 'lucide-react';
+import { ArrowLeft, Pencil, TrendingUp, Share2, MoreVertical, HelpCircle } from 'lucide-react';
 
-const FlowHeader = ({ flowName, onBack, onNameChange }) => {
+const FlowHeader = ({ flowName, onBack, onNameChange, onShowHelp }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(flowName);
 
@@ -36,6 +36,11 @@ const FlowHeader = ({ flowName, onBack, onNameChange }) => {
       </div>
 
       <div className="flow-header-right">
+        {onShowHelp && (
+          <button className="header-icon-btn" title="Help & Documentation" onClick={onShowHelp}>
+            <HelpCircle size={20} />
+          </button>
+        )}
         <button className="header-icon-btn" title="Analytics">
           <TrendingUp size={20} />
         </button>

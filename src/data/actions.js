@@ -1,4 +1,4 @@
-// Action configurations for Impact Flow Studio
+// Action configurations for Gravity AI Studio — Healthcare workflows
 export const actionCategories = [
   {
     id: 'notifications',
@@ -8,10 +8,10 @@ export const actionCategories = [
       {
         id: 'send-slack',
         name: 'Send Slack message',
-        description: 'Alert team channels via Slack',
+        description: 'Alert care team channels via Slack',
         icon: 'MessageSquare',
         color: '#4a154b',
-        product: null
+        module: null
       },
       {
         id: 'send-teams',
@@ -19,210 +19,179 @@ export const actionCategories = [
         description: 'Notify via Microsoft Teams',
         icon: 'MessageCircle',
         color: '#5558af',
-        product: null
+        module: null
       },
       {
         id: 'send-email',
         name: 'Send email with report',
-        description: 'Email PDF/Excel reports to users',
+        description: 'Email clinical or operational report to users',
         icon: 'Mail',
-        color: '#ea4335',
-        product: null
-      },
-      {
-        id: 'send-gchat',
-        name: 'Send Google Chat notification',
-        description: 'Notify in Google Workspace',
-        icon: 'MessageSquare',
-        color: '#34a853',
-        product: null
+        color: '#DC2626',
+        module: null
       },
       {
         id: 'in-app-notification',
         name: 'Push in-app notification',
-        description: 'Bell icon notification in Impact Suite',
+        description: 'Bell notification inside Gravity platform',
         icon: 'Bell',
-        color: '#4285f4',
-        product: null
+        color: '#1B2B5E',
+        module: null
+      },
+      {
+        id: 'send-sms',
+        name: 'Send SMS to care team',
+        description: 'Text alert to care coordinator or provider',
+        icon: 'Smartphone',
+        color: '#059669',
+        module: null
       }
     ]
   },
   {
-    id: 'inventory-smart',
-    name: 'InventorySmart',
-    icon: 'Package',
+    id: 'clinical-workflow',
+    name: 'Clinical Workflow',
+    icon: 'Heart',
     actions: [
       {
-        id: 'run-allocation',
-        name: 'Run allocation',
-        description: 'Execute InventorySmart allocation',
-        icon: 'GitBranch',
-        color: '#2563eb',
-        product: 'InventorySmart'
+        id: 'create-care-task',
+        name: 'Create care team task',
+        description: 'Assign follow-up task to care coordinator or provider',
+        icon: 'ClipboardCheck',
+        color: '#DC2626',
+        module: 'Clinical Care'
       },
       {
-        id: 'generate-order',
-        name: 'Generate order recommendation',
-        description: 'Create OMS ordering suggestions',
-        icon: 'ShoppingCart',
-        color: '#2563eb',
-        product: 'InventorySmart'
+        id: 'update-care-plan',
+        name: 'Update care plan',
+        description: 'Modify patient care plan with new goals or interventions',
+        icon: 'FileEdit',
+        color: '#DC2626',
+        module: 'Clinical Care'
       },
       {
-        id: 'dc-transfer',
-        name: 'Create DC transfer recommendation',
-        description: 'Suggest DC-to-DC transfers',
-        icon: 'Truck',
-        color: '#2563eb',
-        product: 'InventorySmart'
+        id: 'schedule-appointment',
+        name: 'Schedule appointment',
+        description: 'Book follow-up or preventive care visit via FHIR',
+        icon: 'CalendarPlus',
+        color: '#DC2626',
+        module: 'Clinical Care'
       },
       {
-        id: 'update-safety-stock',
-        name: 'Update safety stock levels',
-        description: 'Recalculate and update safety stock',
-        icon: 'Shield',
-        color: '#2563eb',
-        product: 'InventorySmart'
-      }
-    ]
-  },
-  {
-    id: 'plan-smart',
-    name: 'PlanSmart',
-    icon: 'BarChart3',
-    actions: [
-      {
-        id: 'refresh-plan',
-        name: 'Refresh plan data',
-        description: 'Update PlanSmart with latest actuals',
-        icon: 'RefreshCw',
-        color: '#16a34a',
-        product: 'PlanSmart'
-      },
-      {
-        id: 'create-plan-version',
-        name: 'Create plan version',
-        description: 'Snapshot current plan as new version',
-        icon: 'Copy',
-        color: '#16a34a',
-        product: 'PlanSmart'
-      },
-      {
-        id: 'sync-to-itemsmart',
-        name: 'Sync plan to ItemSmart',
-        description: 'Push approved plan downstream',
-        icon: 'ArrowRight',
-        color: '#16a34a',
-        product: 'PlanSmart'
-      },
-      {
-        id: 'generate-variance-report',
-        name: 'Generate variance report',
-        description: 'Create plan vs actual comparison',
-        icon: 'FileSpreadsheet',
-        color: '#16a34a',
-        product: 'PlanSmart'
-      }
-    ]
-  },
-  {
-    id: 'assort-smart',
-    name: 'AssortSmart',
-    icon: 'Grid3X3',
-    actions: [
-      {
-        id: 'refresh-strategy',
-        name: 'Refresh strategy plan',
-        description: 'Update AssortSmart strategy data',
-        icon: 'RefreshCw',
-        color: '#9333ea',
-        product: 'AssortSmart'
-      },
-      {
-        id: 'sync-mfp',
-        name: 'Sync from MFP',
-        description: 'Pull targets from PlanSmart',
-        icon: 'Download',
-        color: '#9333ea',
-        product: 'AssortSmart'
-      },
-      {
-        id: 'run-size-optimization',
-        name: 'Run size optimization',
-        description: 'Execute size curve optimization',
-        icon: 'Maximize',
-        color: '#9333ea',
-        product: 'AssortSmart'
-      },
-      {
-        id: 'generate-line-plan',
-        name: 'Generate line plan report',
-        description: 'Export line plan summary',
+        id: 'generate-clinical-summary',
+        name: 'Generate clinical summary',
+        description: 'Create AI-powered patient summary for care team',
         icon: 'FileText',
-        color: '#9333ea',
-        product: 'AssortSmart'
+        color: '#DC2626',
+        module: 'Clinical Care'
       }
     ]
   },
   {
-    id: 'monday-smart',
-    name: 'MondaySmart',
-    icon: 'BarChart2',
+    id: 'population-health',
+    name: 'Population Health',
+    icon: 'Users',
     actions: [
       {
-        id: 'refresh-insights',
-        name: 'Refresh insights',
-        description: 'Update AI-generated insights',
-        icon: 'Sparkles',
-        color: '#f59e0b',
-        product: 'MondaySmart'
+        id: 'run-hedis-measure',
+        name: 'Run HEDIS measure',
+        description: 'Execute quality measure calculation for patient cohort',
+        icon: 'BarChart2',
+        color: '#7C3AED',
+        module: 'Population Health'
       },
       {
-        id: 'generate-summary',
-        name: 'Generate business summary',
-        description: 'Create daily business overview',
-        icon: 'FileText',
-        color: '#f59e0b',
-        product: 'MondaySmart'
+        id: 'identify-care-gaps',
+        name: 'Identify care gaps',
+        description: 'Surface patients with open preventive care gaps',
+        icon: 'ClipboardList',
+        color: '#7C3AED',
+        module: 'Population Health'
       },
       {
-        id: 'run-anomaly-detection',
-        name: 'Run anomaly detection',
-        description: 'Identify unusual patterns in data',
-        icon: 'Search',
-        color: '#f59e0b',
-        product: 'MondaySmart'
+        id: 'generate-outreach-list',
+        name: 'Generate outreach list',
+        description: 'Build prioritized patient list for outreach campaign',
+        icon: 'Users',
+        color: '#7C3AED',
+        module: 'Population Health'
+      },
+      {
+        id: 'update-patient-risk-score',
+        name: 'Update patient risk score',
+        description: 'Recalculate risk scores using latest clinical data',
+        icon: 'Activity',
+        color: '#7C3AED',
+        module: 'Population Health'
       }
     ]
   },
   {
-    id: 'item-smart',
-    name: 'ItemSmart',
-    icon: 'Layers',
+    id: 'vbc-quality',
+    name: 'VBC / Quality',
+    icon: 'TrendingUp',
     actions: [
       {
-        id: 'refresh-forecast',
-        name: 'Refresh forecast',
-        description: 'Update ItemSmart demand forecast',
+        id: 'submit-quality-measure',
+        name: 'Submit quality measure',
+        description: 'Submit HEDIS or Star Rating measure to payer or registry',
+        icon: 'Send',
+        color: '#059669',
+        module: 'Value-Based Care'
+      },
+      {
+        id: 'calculate-aco-performance',
+        name: 'Calculate ACO performance',
+        description: 'Compute shared savings and quality scores for ACO',
         icon: 'TrendingUp',
-        color: '#0891b2',
-        product: 'ItemSmart'
+        color: '#059669',
+        module: 'Value-Based Care'
       },
       {
-        id: 'run-simulation',
-        name: 'Run simulation pipeline',
-        description: 'Execute Vertex AI forecast simulation',
-        icon: 'Play',
-        color: '#0891b2',
-        product: 'ItemSmart'
-      },
-      {
-        id: 'generate-item-report',
-        name: 'Generate item planning report',
-        description: 'Export SKU-level planning data',
+        id: 'generate-contract-report',
+        name: 'Generate contract report',
+        description: 'Export VBC contract performance summary',
         icon: 'FileSpreadsheet',
-        color: '#0891b2',
-        product: 'ItemSmart'
+        color: '#059669',
+        module: 'Value-Based Care'
+      },
+      {
+        id: 'flag-hcc-coding-gap',
+        name: 'Flag HCC coding gap',
+        description: 'Identify undocumented hierarchical condition categories',
+        icon: 'AlertCircle',
+        color: '#059669',
+        module: 'Value-Based Care'
+      }
+    ]
+  },
+  {
+    id: 'rcm',
+    name: 'RCM',
+    icon: 'DollarSign',
+    actions: [
+      {
+        id: 'flag-claim-review',
+        name: 'Flag claim for review',
+        description: 'Route claim to denial management queue',
+        icon: 'Flag',
+        color: '#0284C7',
+        module: 'RCM'
+      },
+      {
+        id: 'run-prior-auth-check',
+        name: 'Run prior auth check',
+        description: 'Verify prior authorization status via payer API',
+        icon: 'ShieldCheck',
+        color: '#0284C7',
+        module: 'RCM'
+      },
+      {
+        id: 'generate-denial-report',
+        name: 'Generate denial report',
+        description: 'Summarize claim denials by reason and payer',
+        icon: 'FileX',
+        color: '#0284C7',
+        module: 'RCM'
       }
     ]
   },
@@ -232,75 +201,83 @@ export const actionCategories = [
     icon: 'Database',
     actions: [
       {
-        id: 'run-data-refresh',
-        name: 'Run data refresh',
-        description: 'Trigger specific table/module refresh',
+        id: 'refresh-fhir-data',
+        name: 'Refresh FHIR data',
+        description: 'Trigger FHIR data pull from connected EHR systems',
         icon: 'RefreshCw',
         color: '#64748b',
-        product: null
+        module: null
       },
       {
-        id: 'export-excel',
-        name: 'Export to Excel/CSV',
-        description: 'Generate downloadable report',
-        icon: 'Download',
-        color: '#64748b',
-        product: null
-      },
-      {
-        id: 'run-qc-check',
+        id: 'run-data-quality-check',
         name: 'Run data quality check',
-        description: 'Validate data completeness',
+        description: 'Validate completeness against 6000+ quality rules',
         icon: 'CheckSquare',
         color: '#64748b',
-        product: null
+        module: null
       },
       {
-        id: 'update-bigquery',
-        name: 'Update BigQuery table',
-        description: 'Write computed values to warehouse',
+        id: 'export-csv',
+        name: 'Export to CSV / Excel',
+        description: 'Generate downloadable clinical or operational report',
+        icon: 'Download',
+        color: '#64748b',
+        module: null
+      },
+      {
+        id: 'sync-ehr-data',
+        name: 'Sync EHR data',
+        description: 'Push computed values back to EHR via FHIR write',
         icon: 'Database',
         color: '#64748b',
-        product: null
+        module: null
       }
     ]
   },
   {
-    id: 'integrations',
-    name: 'Integrations',
-    icon: 'Link',
+    id: 'ai-agents',
+    name: 'AI Agents',
+    icon: 'Brain',
     actions: [
       {
-        id: 'post-sftp',
-        name: 'Post to client SFTP',
-        description: 'Send files to retailer systems',
-        icon: 'Upload',
-        color: '#334155',
-        product: null
+        id: 'invoke-provider-copilot',
+        name: 'Invoke Provider Copilot',
+        description: 'Run Gravity Provider Copilot for clinical note assistance',
+        icon: 'Stethoscope',
+        color: '#7C3AED',
+        module: 'AI Studio'
       },
       {
-        id: 'create-jira',
-        name: 'Create Jira ticket',
-        description: 'Auto-create issue in Jira',
-        icon: 'Ticket',
-        color: '#0052cc',
-        product: null
+        id: 'invoke-care-gap-agent',
+        name: 'Invoke Care Gap Agent',
+        description: 'Run HMCP Care Gap Agent across patient cohort',
+        icon: 'ClipboardList',
+        color: '#7C3AED',
+        module: 'AI Studio'
       },
       {
-        id: 'update-confluence',
-        name: 'Update Confluence page',
-        description: 'Auto-update documentation',
-        icon: 'FileText',
-        color: '#0052cc',
-        product: null
+        id: 'run-risk-model',
+        name: 'Run Risk Stratification Agent',
+        description: 'Execute predictive risk model on patient population',
+        icon: 'Activity',
+        color: '#7C3AED',
+        module: 'AI Studio'
       },
       {
-        id: 'sync-erp',
-        name: 'Sync with ERP',
-        description: 'Push data to SAP/Oracle',
-        icon: 'RefreshCw',
-        color: '#334155',
-        product: null
+        id: 'invoke-patient-outreach-agent',
+        name: 'Invoke Patient Outreach Agent',
+        description: 'Run HMCP Outreach Agent to personalize patient communications',
+        icon: 'PhoneCall',
+        color: '#7C3AED',
+        module: 'AI Studio'
+      },
+      {
+        id: 'invoke-scheduling-agent',
+        name: 'Invoke Scheduling Agent',
+        description: 'Run Gravity Scheduling Agent to optimize appointment booking',
+        icon: 'CalendarCheck',
+        color: '#7C3AED',
+        module: 'AI Studio'
       }
     ]
   }

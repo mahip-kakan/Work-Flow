@@ -3,17 +3,17 @@ import { X, MessageSquare, Mail, Play, RefreshCw, FileText, Bell, Upload } from 
 import * as LucideIcons from 'lucide-react';
 
 const slackChannels = [
-  { id: 'demand-planning', label: '#demand-planning' },
-  { id: 'inventory-alerts', label: '#inventory-alerts' },
-  { id: 'forecasting', label: '#forecasting' },
-  { id: 'planning-team', label: '#planning-team' },
+  { id: 'care-team', label: '#care-team' },
+  { id: 'care-coordination', label: '#care-coordination' },
+  { id: 'clinical-alerts', label: '#clinical-alerts' },
+  { id: 'discharge-followup', label: '#discharge-followup' },
   { id: 'general', label: '#general' },
 ];
 
 const emailRecipients = [
-  { id: 'planning-team', label: 'planning-team@impactanalytics.co' },
-  { id: 'demand-planners', label: 'demand-planners@impactanalytics.co' },
-  { id: 'leadership', label: 'leadership@impactanalytics.co' },
+  { id: 'care-team', label: 'care-team@your-org.com' },
+  { id: 'care-coordinators', label: 'care-coordinators@your-org.com' },
+  { id: 'clinical-leadership', label: 'clinical-leadership@your-org.com' },
 ];
 
 const simulationTypes = [
@@ -31,11 +31,11 @@ const reportFormats = [
 const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
   const [config, setConfig] = useState({
     // Slack configs
-    slackWorkspace: 'impact-analytics',
-    slackChannel: 'demand-planning',
+    slackWorkspace: 'gravity',
+    slackChannel: 'care-team',
     messageTemplate: '🔔 {{flow_name}} Alert\n{{kpi_name}} is {{value}}\nThreshold: {{threshold}}',
     // Email configs
-    emailRecipients: ['planning-team'],
+    emailRecipients: ['care-team'],
     emailSubject: 'Weekly Forecast Report - {{date}}',
     includeDeviation: true,
     includeExcel: true,
@@ -78,7 +78,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.slackWorkspace}
           onChange={(e) => setConfig({ ...config, slackWorkspace: e.target.value })}
         >
-          <option value="impact-analytics">Impact Analytics</option>
+          <option value="gravity">Gravity</option>
         </select>
       </div>
 

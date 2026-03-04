@@ -12,7 +12,11 @@ const FlowCanvas = ({
   onReorderAction,
   onTriggerClick,
   onActionClick,
-  selectedStep
+  selectedStep,
+  onTestRun,
+  onActivate,
+  isActive,
+  isRunning
 }) => {
   const isTriggerSelected = selectedStep?.type === 'trigger';
   
@@ -88,13 +92,21 @@ const FlowCanvas = ({
 
       {/* Footer Actions */}
       <div className="flow-footer">
-        <button className="footer-btn" disabled={!trigger}>
+        <button 
+          className="footer-btn" 
+          disabled={!trigger || isRunning}
+          onClick={onTestRun}
+        >
           <span className="play-icon">▶</span>
-          Test run
+          {isRunning ? 'Running...' : 'Test run'}
         </button>
-        <button className="footer-btn primary" disabled={!trigger || actions.length === 0}>
-          <span className="power-icon">⏻</span>
-          Turn on
+        <button 
+          className={`footer-btn primary ${isActive ? 'active' : ''}`}
+          disabled={!trigger || actions.length === 0}
+          onClick={onActivate}
+        >
+          <span className="power-icon">{isActive ? '⏸' : '⏻'}</span>
+          {isActive ? 'Turn off' : 'Turn on'}
         </button>
       </div>
     </div>

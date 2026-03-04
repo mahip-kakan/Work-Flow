@@ -3,8 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Impact-Flow/', // GitHub Pages: https://mahipkumar-dotcom.github.io/Impact-Flow/
   server: {
-    port: 2302
+    port: 2303
   }
 })
