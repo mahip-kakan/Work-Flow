@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, CheckCircle, Clock, Layers, Plus, Settings } from 'lucide-react';
+import { Play, CheckCircle, Clock, Layers, Plus, Settings, Trash2 } from 'lucide-react';
 import ScreenHeader from '../components/ScreenHeader';
 import InfoTooltip from '../components/InfoTooltip';
 
@@ -23,13 +23,7 @@ const recentRuns = [
   { id: 'run-3', trigger: 'Scheduled (nightly)', status: 'failed', duration: '4m 02s', time: '6 hours ago' },
 ];
 
-const conditionalRules = [
-  { condition: 'Code change affects API endpoints', action: 'Run load tests' },
-  { condition: 'Prompt or glossary files changed', action: 'Run AI evals suite' },
-  { condition: 'UI components changed', action: 'Run E2E visual tests' },
-];
-
-export default function OrchestrationScreen({ onBack, onOpenWorkflow, onOpenAddRule, onOpenRunDetail }) {
+export default function OrchestrationScreen({ onBack, onOpenWorkflow, onOpenAddRule, onOpenRunDetail, rules, onEditRule, onDeleteRule }) {
   return (
     <div className="screen-container">
       <ScreenHeader title="Test Orchestration" onBack={onBack} />
@@ -76,7 +70,7 @@ export default function OrchestrationScreen({ onBack, onOpenWorkflow, onOpenAddR
         </div>
 
         <div className="block-header">
-          <h3><Layers size={16} /> Conditional logic <InfoTooltip term="Conditional logic" definition="Rules that trigger specific test suites only when relevant code or config changes (e.g. run load tests only if API endpoints changed). Reduces unnecessary runs and saves time." /></h3>
+          <h3><Layers size={16} /> Conditional logic <InfoTooltip term="Conditional logic" definition="Rules that trigger specific test suites only when relevant code or config changes. Reduces unnecessary runs and saves time." /></h3>
           <button type="button" className="btn-primary btn-sm" onClick={onOpenAddRule}>
             <Plus size={14} /> Add rule
           </button>
@@ -87,13 +81,26 @@ export default function OrchestrationScreen({ onBack, onOpenWorkflow, onOpenAddR
               <tr>
                 <th>Condition</th>
                 <th>Action</th>
+                {onDeleteRule && <th style={{ width: 48 }} />}
               </tr>
             </thead>
             <tbody>
-              {conditionalRules.map((rule, i) => (
-                <tr key={i} className="clickable-row" onClick={onOpenAddRule}>
+              {rules.map((rule) => (
+                <tr key={rule.id} className="clickable-row" onClick={() => onEditRule?.(rule)}>
                   <td>{rule.condition}</td>
                   <td><span className="status-pill info">{rule.action}</span></td>
+                  {onDeleteRule && (
+                    <td>
+                      <button
+                        type="button"
+                        className="btn-ghost icon-btn"
+                        title="Delete rule"
+                        onClick={(e) => { e.stopPropagation(); onDeleteRule(rule.id); }}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -115,11 +122,7 @@ export default function OrchestrationScreen({ onBack, onOpenWorkflow, onOpenAddR
             </thead>
             <tbody>
               {recentRuns.map((run) => (
-                <tr
-                  key={run.id}
-                  className="clickable-row"
-                  onClick={() => onOpenRunDetail?.(run)}
-                >
+                <tr key={run.id} className="clickable-row" onClick={() => onOpenRunDetail?.(run)}>
                   <td>{run.trigger}</td>
                   <td>
                     <span className={`status-pill ${run.status === 'passed' ? 'success' : 'error'}`}>

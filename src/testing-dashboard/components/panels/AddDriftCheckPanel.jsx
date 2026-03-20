@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-export default function AddDriftCheckPanel({ onClose, onSave }) {
-  const [metric, setMetric] = useState('');
-  const [baseline, setBaseline] = useState('');
+export default function AddDriftCheckPanel({ onClose, onSave, initialData }) {
+  const [metric, setMetric] = useState(initialData?.check || '');
+  const [baseline, setBaseline] = useState(initialData?.baseline || '');
   const [thresholdPercent, setThresholdPercent] = useState(5);
+
+  const isEdit = !!initialData;
 
   const handleSave = () => {
     onSave?.({
@@ -19,14 +21,14 @@ export default function AddDriftCheckPanel({ onClose, onSave }) {
     <div className="overlay-backdrop" onClick={onClose}>
       <div className="overlay-panel" onClick={(e) => e.stopPropagation()}>
         <div className="panel-header">
-          <h3>Add drift check</h3>
+          <h3>{isEdit ? 'Edit drift check' : 'Add drift check'}</h3>
           <button type="button" className="panel-close" onClick={onClose} aria-label="Close">
             <X size={20} />
           </button>
         </div>
         <div className="panel-body">
           <p className="panel-hint">
-            Monitor a metric (e.g. glossary match rate, fallback rate). Alert when current value drifts from baseline by more than the threshold. Used with DataDog / Grafana.
+            Monitor a metric and alert when current value drifts from baseline by more than the threshold.
           </p>
           <div className="form-group">
             <label>Metric name</label>
@@ -58,7 +60,7 @@ export default function AddDriftCheckPanel({ onClose, onSave }) {
           </div>
           <div className="panel-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="button" className="btn-primary" onClick={handleSave}>Add check</button>
+            <button type="button" className="btn-primary" onClick={handleSave}>{isEdit ? 'Save changes' : 'Add check'}</button>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitBranch, Brain, Zap, Eye, ArrowRight } from 'lucide-react';
+import { GitBranch, Brain, Zap, Eye, Settings, ArrowRight } from 'lucide-react';
 
 const categories = [
   {
@@ -32,13 +32,23 @@ const categories = [
   },
 ];
 
-export default function DashboardScreen({ onSelectCategory }) {
+const adminCategory = {
+  id: 'settings',
+  title: 'Settings',
+  description: 'Configure eval thresholds, CI/CD integrations, and team access. Admin only.',
+  icon: Settings,
+  color: 'var(--health-green)',
+};
+
+export default function DashboardScreen({ onSelectCategory, isAdmin }) {
+  const visibleCategories = isAdmin ? [...categories, adminCategory] : categories;
+
   return (
     <div className="dashboard-screen">
       <h2 className="dashboard-title">Testing Dashboard</h2>
       <p className="dashboard-subtitle">Choose a category to manage tests, evals, and monitoring.</p>
       <div className="category-grid">
-        {categories.map((cat) => {
+        {visibleCategories.map((cat) => {
           const Icon = cat.icon;
           return (
             <button

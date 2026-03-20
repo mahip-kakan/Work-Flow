@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, DollarSign, GitCompare, Plus } from 'lucide-react';
+import { BarChart3, DollarSign, GitCompare, Plus, Trash2 } from 'lucide-react';
 import ScreenHeader from '../components/ScreenHeader';
 import InfoTooltip from '../components/InfoTooltip';
 
@@ -16,13 +16,9 @@ const costByFeature = [
   { feature: 'Evals / regression runs', cost: '$600', share: '25%' },
 ];
 
-const driftChecks = [
-  { id: 'd1', check: 'Glossary term match rate', baseline: '96%', current: '95.8%', status: 'ok' },
-  { id: 'd2', check: 'Template routing distribution', baseline: 'Post-discharge 40%', current: '38%', status: 'ok' },
-  { id: 'd3', check: 'Fallback rate (no match)', baseline: '12%', current: '18%', status: 'review' },
-];
+export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDetail, driftChecks, onDeleteDriftCheck }) {
+  const alertCount = driftChecks.filter(d => d.status === 'review').length;
 
-export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDetail }) {
   return (
     <div className="screen-container">
       <ScreenHeader title="Observability" onBack={onBack} />
@@ -36,23 +32,23 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
 
         <div className="card-grid" style={{ marginBottom: 24 }}>
           <div className="metric-card">
-            <div className="label">Error rate (24h) <InfoTooltip term="Error rate" definition="Percentage of requests or actions that fail (e.g. message send failures, API errors). Track over 24h or 7d. Low error rate keeps user trust and avoids lost workflows." /></div>
+            <div className="label">Error rate (24h) <InfoTooltip term="Error rate" definition="Percentage of requests that fail. Track over 24h or 7d to keep user trust." /></div>
             <div className="value" style={{ color: 'var(--health-green)' }}>0.1%</div>
             <div className="hint">Message send failures</div>
           </div>
           <div className="metric-card">
-            <div className="label">Cost (MTD) <InfoTooltip term="Cost (MTD)" definition="Month-to-date spend on AI features (e.g. chat, evals, API calls). Used to track budget and attribute cost by feature or team." /></div>
+            <div className="label">Cost (MTD) <InfoTooltip term="Cost (MTD)" definition="Month-to-date spend on AI features. Used to track budget and attribute cost by feature." /></div>
             <div className="value">$2,400</div>
             <div className="hint">AI feature spend</div>
           </div>
           <div className="metric-card">
-            <div className="label">Drift alerts <InfoTooltip term="Drift check / drift alert" definition="A check that monitors a metric over time and alerts when the current value moves too far from a baseline (e.g. glossary match rate drops from 96% to 90%). Helps catch model or behavior regression." /></div>
-            <div className="value">1</div>
-            <div className="hint">Fallback rate — review</div>
+            <div className="label">Drift alerts <InfoTooltip term="Drift check / drift alert" definition="Alerts when a metric moves too far from baseline. Helps catch model or behavior regression." /></div>
+            <div className="value" style={{ color: alertCount > 0 ? 'var(--alert-red)' : 'var(--health-green)' }}>{alertCount}</div>
+            <div className="hint">{alertCount > 0 ? 'Checks need review' : 'All checks OK'}</div>
           </div>
         </div>
 
-        <h3 className="block-title"><BarChart3 size={16} /> User interaction analytics <InfoTooltip term="User interaction analytics" definition="Metrics about how users use the AI assistant: e.g. chat panel open rate, messages per session, flow-created-from-chat rate. Used to improve adoption and UX." /></h3>
+        <h3 className="block-title"><BarChart3 size={16} /> User interaction analytics <InfoTooltip term="User interaction analytics" definition="Metrics about how users use the AI assistant: chat open rate, messages per session, flow creation rate." /></h3>
         <div className="table-wrap">
           <table className="data-table">
             <thead>
@@ -64,7 +60,7 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
             </thead>
             <tbody>
               {realtimeMetrics.map((row, i) => (
-                <tr key={i} className="clickable-row">
+                <tr key={i}>
                   <td>{row.name}</td>
                   <td><strong>{row.value}</strong></td>
                   <td style={{ color: row.change.startsWith('+') ? 'var(--health-green)' : row.change.startsWith('-') ? 'var(--alert-red)' : 'var(--text-muted)' }}>{row.change}</td>
@@ -74,7 +70,7 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
           </table>
         </div>
 
-        <h3 className="block-title"><DollarSign size={16} /> Cost by feature <InfoTooltip term="Cost by feature" definition="Breakdown of spend by feature (e.g. AI Chat, Landing suggestions, Evals). Helps attribute cost and optimize where to reduce usage or tune models." /></h3>
+        <h3 className="block-title"><DollarSign size={16} /> Cost by feature <InfoTooltip term="Cost by feature" definition="Breakdown of spend by feature. Helps attribute cost and optimize where to reduce usage or tune models." /></h3>
         <div className="table-wrap">
           <table className="data-table">
             <thead>
@@ -86,7 +82,7 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
             </thead>
             <tbody>
               {costByFeature.map((row, i) => (
-                <tr key={i} className="clickable-row">
+                <tr key={i}>
                   <td>{row.feature}</td>
                   <td><strong>{row.cost}</strong></td>
                   <td>{row.share}</td>
@@ -97,7 +93,7 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
         </div>
 
         <div className="block-header">
-          <h3><GitCompare size={16} /> Model drift detection <InfoTooltip term="Model drift detection" definition="Monitoring key metrics (e.g. glossary match rate, template distribution, fallback rate) and alerting when they drift from baseline. Surfaces regressions or behavior change over time." /></h3>
+          <h3><GitCompare size={16} /> Model drift detection <InfoTooltip term="Model drift detection" definition="Monitoring key metrics and alerting when they drift from baseline. Surfaces regressions or behavior change over time." /></h3>
           <button type="button" className="btn-secondary btn-sm" onClick={onAddDriftCheck}>
             <Plus size={14} /> Add check
           </button>
@@ -110,15 +106,12 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
                 <th>Baseline</th>
                 <th>Current</th>
                 <th>Status</th>
+                {onDeleteDriftCheck && <th style={{ width: 48 }} />}
               </tr>
             </thead>
             <tbody>
               {driftChecks.map((row) => (
-                <tr
-                  key={row.id}
-                  className="clickable-row"
-                  onClick={() => (onDriftDetail || onAddDriftCheck)?.(row)}
-                >
+                <tr key={row.id} className="clickable-row" onClick={() => onDriftDetail?.(row)}>
                   <td>{row.check}</td>
                   <td>{row.baseline}</td>
                   <td>{row.current}</td>
@@ -127,6 +120,18 @@ export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDe
                       {row.status === 'ok' ? 'OK' : 'Review'}
                     </span>
                   </td>
+                  {onDeleteDriftCheck && (
+                    <td>
+                      <button
+                        type="button"
+                        className="btn-ghost icon-btn"
+                        title="Delete check"
+                        onClick={(e) => { e.stopPropagation(); onDeleteDriftCheck(row.id); }}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

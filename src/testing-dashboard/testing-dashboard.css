@@ -1,39 +1,45 @@
-:root {
-  --primary-blue: #1B2B5E;
-  --primary-dark: #111C3D;
-  --gravity-purple: #7C3AED;
-  --gravity-purple-light: #8B5CF6;
-  --health-green: #059669;
-  --data-blue: #0284C7;
-  --alert-red: #DC2626;
-  --amber: #D97706;
-  --bg-light: #f8fafc;
-  --bg-white: #ffffff;
+/* Scoped to avoid clashing with main studio .app layout. :root tokens come from src/index.css */
+
+.testing-dashboard-root {
   --bg-card: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --border-color: #e2e8f0;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
-  --header-height: 56px;
+  min-height: calc(100vh - var(--header-height));
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg-light);
-  color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
-}
-
-.app {
+/* Used only if this bundle is run standalone (not current main-app embed path) */
+.testing-dashboard-root--standalone {
   min-height: 100vh;
   padding-top: var(--header-height);
+}
+
+.testing-dashboard-embed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--primary-blue);
+  color: white;
+  padding: 16px 24px;
+  margin: 0 0 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.testing-dashboard-embed-header h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.testing-dashboard-embed-header .badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .dashboard-header {
@@ -383,13 +389,21 @@ table.data-table tr:hover { background: var(--bg-light); }
   cursor: pointer;
 }
 .btn-ghost:hover { color: var(--alert-red); }
+.btn-ghost.icon-btn {
+  padding: 4px 6px;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+}
+tr:hover .btn-ghost.icon-btn { opacity: 1; }
+.btn-ghost.icon-btn:hover { color: var(--alert-red); opacity: 1; }
 
 /* ===== Overlay & panels ===== */
 .overlay-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 200;
+  z-index: 280;
   display: flex;
   align-items: center;
   justify-content: center;

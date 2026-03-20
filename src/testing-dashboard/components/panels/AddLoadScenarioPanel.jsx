@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-export default function AddLoadScenarioPanel({ onClose, onSave }) {
-  const [name, setName] = useState('');
-  const [concurrent, setConcurrent] = useState(50);
+function parseLatencyMs(latencyStr) {
+  if (!latencyStr) return 2000;
+  const num = parseFloat(latencyStr);
+  if (latencyStr.endsWith('ms')) return Math.round(num);
+  return Math.round(num * 1000);
+}
+
+export default function AddLoadScenarioPanel({ onClose, onSave, initialData }) {
+  const [name, setName] = useState(initialData?.scenario || '');
+  const [concurrent, setConcurrent] = useState(initialData?.rps || 50);
   const [durationSec, setDurationSec] = useState(60);
-  const [targetLatencyMs, setTargetLatencyMs] = useState(2000);
+  const [targetLatencyMs, setTargetLatencyMs] = useState(parseLatencyMs(initialData?.p95Latency));
+
+  const isEdit = !!initialData;
 
   const handleSave = () => {
     onSave?.({
@@ -21,14 +30,14 @@ export default function AddLoadScenarioPanel({ onClose, onSave }) {
     <div className="overlay-backdrop" onClick={onClose}>
       <div className="overlay-panel" onClick={(e) => e.stopPropagation()}>
         <div className="panel-header">
-          <h3>Add load scenario</h3>
+          <h3>{isEdit ? 'Edit load scenario' : 'Add load scenario'}</h3>
           <button type="button" className="panel-close" onClick={onClose} aria-label="Close">
             <X size={20} />
           </button>
         </div>
         <div className="panel-body">
           <p className="panel-hint">
-            Define a scenario for K6 / Locust / Artillery: concurrent users, duration, and target latency. Run to validate cost and performance at scale.
+            Define a scenario: concurrent users, duration, and target latency. Run to validate cost and performance at scale.
           </p>
           <div className="form-group">
             <label>Scenario name</label>
@@ -69,7 +78,7 @@ export default function AddLoadScenarioPanel({ onClose, onSave }) {
           </div>
           <div className="panel-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="button" className="btn-primary" onClick={handleSave}>Add scenario</button>
+            <button type="button" className="btn-primary" onClick={handleSave}>{isEdit ? 'Save changes' : 'Add scenario'}</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 # Gravity AI Studio — Testing Dashboard (PM View)
 
-A separate dashboard for **Product Managers** to monitor testing health for Gravity AI Studio. It runs on **port 2303** (main app uses 2302).
+**Primary:** open the **main studio** (`npm run dev` from the repo root), then use the top-right **user menu** → **Product Manager** or **Admin** to open the testing dashboard inside the app.
+
+This folder is an **optional standalone dev server** on **port 2303** (main app uses 2302). It imports the same UI from [`../src/testing-dashboard/`](../src/testing-dashboard/).
 
 ## What it covers
 

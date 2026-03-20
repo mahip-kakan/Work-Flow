@@ -9,7 +9,13 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:2302](http://localhost:2302).
+Open [http://localhost:2302/](http://localhost:2302/) for local dev. The production build still uses the `/Impact-Flow/` base for GitHub Pages.
+
+### Testing dashboard (PM / Admin)
+
+In the main app, click the **user icon** (top right) → **View as** → **Product Manager** or **Admin**. The testing dashboard opens inside the studio. You can also use the **Testing** (beaker) item in the left sidebar while in those roles. Switch back to **Developer** to return to your previous screen.
+
+Optional: run the same dashboard alone on port 2303 — see [testing/README.md](testing/README.md).
 
 ## Build
 

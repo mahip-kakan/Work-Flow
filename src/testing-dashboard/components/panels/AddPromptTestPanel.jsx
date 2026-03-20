@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-export default function AddPromptTestPanel({ onClose, onSave }) {
-  const [name, setName] = useState('');
-  const [input, setInput] = useState('');
-  const [expected, setExpected] = useState('');
+export default function AddPromptTestPanel({ onClose, onSave, initialData }) {
+  const [name, setName] = useState(initialData?.name || '');
+  const [input, setInput] = useState(initialData?.input || '');
+  const [expected, setExpected] = useState(initialData?.expected || '');
+
+  const isEdit = !!initialData;
 
   const handleSave = () => {
     onSave?.({ name: name || 'New prompt test', input, expected });
@@ -15,7 +17,7 @@ export default function AddPromptTestPanel({ onClose, onSave }) {
     <div className="overlay-backdrop" onClick={onClose}>
       <div className="overlay-panel" onClick={(e) => e.stopPropagation()}>
         <div className="panel-header">
-          <h3>Add prompt test</h3>
+          <h3>{isEdit ? 'Edit prompt test' : 'Add prompt test'}</h3>
           <button type="button" className="panel-close" onClick={onClose} aria-label="Close">
             <X size={20} />
           </button>
@@ -53,7 +55,7 @@ export default function AddPromptTestPanel({ onClose, onSave }) {
           </div>
           <div className="panel-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="button" className="btn-primary" onClick={handleSave}>Add test</button>
+            <button type="button" className="btn-primary" onClick={handleSave}>{isEdit ? 'Save changes' : 'Add test'}</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { ChevronDown, User, Bell } from 'lucide-react';
 
+const ROLES = [
+  { id: 'developer', label: 'User' },
+  { id: 'pm', label: 'Product Manager' },
+  { id: 'admin', label: 'Admin' },
+];
+
 const orgs = [
   { id: 'all', name: 'All Organizations' },
   { id: 'optimus', name: 'Optimus Healthcare Partners' },
@@ -11,10 +17,12 @@ const orgs = [
   { id: 'kaiser', name: 'Kaiser Permanente' },
 ];
 
-const Header = ({ selectedClient, onClientChange }) => {
+const Header = ({ selectedClient, onClientChange, userRole, onUserRoleChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const currentOrg = orgs.find(o => o.id === selectedClient) || orgs[1];
+  const currentRole = ROLES.find((r) => r.id === userRole) || ROLES[0];
 
   return (
     <header className="app-header">
@@ -70,13 +78,50 @@ const Header = ({ selectedClient, onClientChange }) => {
           )}
         </div>
 
-        <button className="header-icon-btn notification-btn">
+        <button type="button" className="header-icon-btn notification-btn" title="Notifications">
           <Bell size={20} />
           <span className="notification-badge">3</span>
         </button>
 
-        <div className="user-avatar">
-          <User size={20} />
+        <div className="user-menu-wrap">
+          <button
+            type="button"
+            className="user-avatar user-avatar-btn"
+            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+            aria-expanded={isUserMenuOpen}
+            aria-haspopup="listbox"
+            title={`View as: ${currentRole.label}`}
+          >
+            <User size={20} />
+          </button>
+
+          {isUserMenuOpen && (
+            <>
+              <div
+                className="dropdown-backdrop"
+                onClick={() => setIsUserMenuOpen(false)}
+              />
+              <div className="client-dropdown user-role-dropdown" role="listbox">
+                <div className="user-role-dropdown-label">View as</div>
+                {ROLES.map((role) => (
+                  <button
+                    key={role.id}
+                    type="button"
+                    className={`client-option ${userRole === role.id ? 'active' : ''}`}
+                    role="option"
+                    aria-selected={userRole === role.id}
+                    onClick={() => {
+                      onUserRoleChange(role.id);
+                      setIsUserMenuOpen(false);
+                    }}
+                  >
+                    <span className="radio-dot" />
+                    <span>{role.label}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </header>

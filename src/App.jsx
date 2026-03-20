@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import FlowHeader from './components/FlowHeader';
@@ -17,12 +17,15 @@ import TestDataPanel from './components/TestDataPanel';
 import HealthcareGlossary from './components/HealthcareGlossary';
 import AIChatPanel from './components/AIChatPanel';
 import ChatAssistantButton from './components/ChatAssistantButton';
+import TestingDashboardApp from './testing-dashboard/TestingDashboardApp';
 
 function App() {
   // View state
   const [activeView, setActiveView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedClient, setSelectedClient] = useState('optimus');
+  const [userRole, setUserRole] = useState('developer');
+  const viewBeforeTestingRef = useRef('home');
   
   // Chat assistant state
   const [showChatAssistant, setShowChatAssistant] = useState(false);
@@ -137,6 +140,32 @@ function App() {
   // Test panel state
   const [showTestPanel, setShowTestPanel] = useState(false);
   const [isTestRunning, setIsTestRunning] = useState(false);
+
+  useEffect(() => {
+    if (activeView === 'testing-dashboard' && userRole === 'developer') {
+      setActiveView('home');
+    }
+  }, [activeView, userRole]);
+
+  const handleUserRoleChange = (role) => {
+    if (role === 'developer') {
+      setUserRole('developer');
+      if (activeView === 'testing-dashboard') {
+        setActiveView(viewBeforeTestingRef.current);
+      }
+      setSelectedStep(null);
+      return;
+    }
+    if (userRole === 'developer') {
+      viewBeforeTestingRef.current = activeView;
+      setUserRole(role);
+      setActiveView('testing-dashboard');
+      setSelectedProduct(null);
+      setSelectedStep(null);
+      return;
+    }
+    setUserRole(role);
+  };
 
   // Create new flow
   const handleNewFlow = () => {
@@ -362,12 +391,15 @@ function App() {
       <Header
         selectedClient={selectedClient}
         onClientChange={setSelectedClient}
+        userRole={userRole}
+        onUserRoleChange={handleUserRoleChange}
       />
 
       <div className="app-body">
         <Sidebar
           onNewFlow={handleNewFlow}
           activeView={activeView}
+          userRole={userRole}
           setActiveView={(view) => {
             setActiveView(view);
             if (view !== 'product-flows') {
@@ -378,6 +410,10 @@ function App() {
         />
 
         <main className="main-content">
+          {activeView === 'testing-dashboard' && (userRole === 'pm' || userRole === 'admin') ? (
+            <TestingDashboardApp embedded userRole={userRole} />
+          ) : (
+            <>
           {activeView === 'home' && (
             <AILandingPage
               onSelectTemplate={handleSelectTemplate}
@@ -462,6 +498,8 @@ function App() {
                 {!activePanel && getConfigPanel()}
               </div>
             </div>
+          )}
+            </>
           )}
         </main>
       </div>

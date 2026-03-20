@@ -15,9 +15,11 @@ const ACTIONS = [
   'Run full pipeline',
 ];
 
-export default function AddRulePanel({ onClose, onSave }) {
-  const [condition, setCondition] = useState(CONDITIONS[0]);
-  const [action, setAction] = useState(ACTIONS[0]);
+export default function AddRulePanel({ onClose, onSave, initialData }) {
+  const [condition, setCondition] = useState(initialData?.condition || CONDITIONS[0]);
+  const [action, setAction] = useState(initialData?.action || ACTIONS[0]);
+
+  const isEdit = !!initialData;
 
   const handleSave = () => {
     onSave?.({ condition, action });
@@ -28,7 +30,7 @@ export default function AddRulePanel({ onClose, onSave }) {
     <div className="overlay-backdrop" onClick={onClose}>
       <div className="overlay-panel" onClick={(e) => e.stopPropagation()}>
         <div className="panel-header">
-          <h3>Add conditional rule</h3>
+          <h3>{isEdit ? 'Edit conditional rule' : 'Add conditional rule'}</h3>
           <button type="button" className="panel-close" onClick={onClose} aria-label="Close">
             <X size={20} />
           </button>
@@ -55,7 +57,7 @@ export default function AddRulePanel({ onClose, onSave }) {
           </div>
           <div className="panel-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="button" className="btn-primary" onClick={handleSave}>Add rule</button>
+            <button type="button" className="btn-primary" onClick={handleSave}>{isEdit ? 'Save changes' : 'Add rule'}</button>
           </div>
         </div>
       </div>

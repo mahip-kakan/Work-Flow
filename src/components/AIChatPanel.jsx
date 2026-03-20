@@ -78,7 +78,8 @@ const AIChatPanel = ({ onClose, onCreateFlow, onSelectTemplate }) => {
       { term: 'Gravity AI Studio', definition: 'A low-code studio to build, deploy, and scale healthcare-specific AI agents and workflows. Part of the Gravity platform that lets you create automation without heavy technical lift.', example: 'Use AI Studio to create agents like "Post-Discharge Follow-Up" that automatically notify care teams when patients are discharged.' },
       { term: 'Gravity Developer Studio', definition: 'A platform to design, test, and launch production-ready healthcare applications. Provides tools for developers to build custom solutions on the Gravity platform.', example: 'Developers use Developer Studio to create custom healthcare apps that integrate with EHR systems and other data sources.' },
       { term: 'Gravity Data and Analytics Studio', definition: 'A platform to manage, analyze, and govern healthcare data with ease. Coming soon - will provide self-serve analytics capabilities.', example: 'Analysts will use this to explore healthcare data, create reports, and generate insights without needing deep technical skills.' },
-      { term: 'HMCP (Multi-Agent Coordination Protocol)', definition: 'A protocol that lets AI agents share memory, tasks, and governance while maintaining clinical context. Eliminates AI silos by allowing agents to work together and share information.', example: 'When a discharge agent and a readmission risk agent both work on the same patient, HMCP lets them share context so they don\'t duplicate work or miss important information.' },
+      { term: 'HMCP (Healthcare Model Context Protocol)', definition: 'Innovaccer\'s open standard for connecting AI agents, tools, and healthcare data sources so they can exchange context securely and compliantly. It extends the Model Context Protocol (MCP) with healthcare-specific controls—policy-driven access, auditability, encryption, and safeguards around PHI—so multiple agents can coordinate clinical workflows without unsafe silos or one-off integrations.', example: 'A care-gap agent and an outreach agent working the same patient can use HMCP for governed handoffs: they share the right clinical context through interoperable agent communication instead of duplicating queries or missing important information.' },
+      { term: 'MCP (Model Context Protocol)', definition: 'An open standard for how applications expose context, data, and tools to large language models, so assistants can retrieve information and take actions in a consistent, structured way. Innovaccer\'s HMCP (Healthcare Model Context Protocol) adapts this pattern for regulated healthcare—multi-agent coordination on Gravity and AI Studio with compliance-minded guardrails.', example: 'Like a common plug pattern between an AI assistant and back-end systems; HMCP is the healthcare-specialized version for clinical and operational agents.' },
       { term: 'Data Activation Platform (DAP)', definition: 'The foundation of Innovaccer\'s Healthcare Intelligence Cloud. It unifies and activates healthcare data by integrating data from various sources, normalizing it using a Unified Data Model, and providing AI-powered insights.', example: 'DAP takes data from your EHR, billing systems, and other sources, combines it into one unified view, and makes it ready for AI and analytics.' },
       { term: 'Gravity Shield', definition: 'Enterprise-grade security and compliance built specifically for healthcare. Includes role-based access controls, end-to-end encryption, and comprehensive audit trails. Purpose-built for healthcare, secure by design.', example: 'Gravity Shield ensures patient data is protected with HIPAA compliance, encryption, and strict access controls so only authorized people can see sensitive information.' },
       { term: 'Gravity Search', definition: 'A tool that turns healthcare data into real-time insights through natural language search. Allows you to query healthcare data using plain English instead of complex SQL.', example: 'Instead of writing SQL queries, you can ask "Show me all diabetic patients who haven\'t had their annual eye exam" and get instant results.' },
@@ -138,13 +139,26 @@ const AIChatPanel = ({ onClose, onCreateFlow, onSelectTemplate }) => {
         }
       }
     } else {
-      // Search for the extracted term
-      for (const term of allGlossaryTerms) {
-        const termLower = term.term.toLowerCase();
-        if (termLower.includes(searchTerm.toLowerCase()) || searchTerm.toLowerCase().includes(termLower.split('(')[0].trim())) {
-          return term;
-        }
+      const normSearch = searchTerm.replace(/[?.!,;:]+$/g, '').trim().toLowerCase();
+      const scored = [];
+      for (const t of allGlossaryTerms) {
+        const termLower = t.term.toLowerCase();
+        const base = t.term.split('(')[0].trim().toLowerCase();
+        const parenMatch = t.term.match(/\(([^)]+)\)\s*$/);
+        const tailAbbrev =
+          parenMatch && !/\s/.test(parenMatch[1]) ? parenMatch[1].trim().toLowerCase() : null;
+
+        let score = 0;
+        if (base === normSearch) score = 100;
+        else if (tailAbbrev === normSearch) score = 95;
+        else if (termLower.startsWith(`${normSearch} `) || termLower.startsWith(`${normSearch}(`)) score = 85;
+        else if (termLower.includes(normSearch)) score = 50;
+        else if (normSearch.includes(base)) score = 40;
+
+        if (score) scored.push({ term: t, score, baseLen: base.length });
       }
+      scored.sort((a, b) => b.score - a.score || b.baseLen - a.baseLen);
+      if (scored[0]) return scored[0].term;
     }
 
     return null;
@@ -346,11 +360,12 @@ const AIChatPanel = ({ onClose, onCreateFlow, onSelectTemplate }) => {
               userMessage.toLowerCase().includes('term') ||
               userMessage.toLowerCase().includes('gravity') ||
               userMessage.toLowerCase().includes('hmcp') ||
+              userMessage.toLowerCase().includes('mcp') ||
               userMessage.toLowerCase().includes('dap')) {
             const botResponse = {
               id: Date.now() + 1,
               type: 'bot',
-              content: `I can explain US healthcare terms and Gravity platform features! Try asking me about:\n\n**Healthcare Terms:**\n• Insurance (deductible, copay, HMO, PPO)\n• Medical terms (EHR, FHIR, ADT, HEDIS)\n• Billing terms (claim, EOB, denial)\n\n**Gravity Platform:**\n• AI Studio, Developer Studio\n• HMCP, DAP, Gravity Shield\n• Unified Data Model, FHIR Resources\n\nFor example: "What is HMCP?" or "Explain Gravity AI Studio" or "What is a deductible?"`,
+              content: `I can explain US healthcare terms and Gravity platform features! Try asking me about:\n\n**Healthcare Terms:**\n• Insurance (deductible, copay, HMO, PPO)\n• Medical terms (EHR, FHIR, ADT, HEDIS)\n• Billing terms (claim, EOB, denial)\n\n**Gravity Platform:**\n• AI Studio, Developer Studio\n• HMCP, MCP, DAP, Gravity Shield\n• Unified Data Model, FHIR Resources\n\nFor example: "What is HMCP?" or "What is MCP?" or "Explain Gravity AI Studio" or "What is a deductible?"`,
               timestamp: new Date()
             };
             setMessages(prev => [...prev, botResponse]);
@@ -502,6 +517,12 @@ const AIChatPanel = ({ onClose, onCreateFlow, onSelectTemplate }) => {
               onClick={() => setInputValue('What is HMCP?')}
             >
               What is HMCP?
+            </button>
+            <button
+              className="suggestion-chip"
+              onClick={() => setInputValue('What is MCP?')}
+            >
+              What is MCP?
             </button>
             <button
               className="suggestion-chip"

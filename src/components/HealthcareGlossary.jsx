@@ -261,9 +261,14 @@ const HealthcareGlossary = () => {
         example: 'Analysts will use this to explore healthcare data, create reports, and generate insights without needing deep technical skills.'
       },
       {
-        term: 'HMCP (Multi-Agent Coordination Protocol)',
-        definition: 'A protocol that lets AI agents share memory, tasks, and governance while maintaining clinical context. Eliminates AI silos by allowing agents to work together and share information.',
-        example: 'When a discharge agent and a readmission risk agent both work on the same patient, HMCP lets them share context so they don\'t duplicate work or miss important information.'
+        term: 'HMCP (Healthcare Model Context Protocol)',
+        definition: 'Innovaccer\'s open standard for connecting AI agents, tools, and healthcare data sources so they can exchange context securely and compliantly. It extends the Model Context Protocol (MCP) with healthcare-specific controls—policy-driven access, auditability, encryption, and safeguards around PHI—so multiple agents can coordinate clinical workflows without unsafe silos or one-off integrations.',
+        example: 'A care-gap agent and an outreach agent working the same patient can use HMCP for governed handoffs: they share the right clinical context through interoperable agent communication instead of duplicating queries or missing important information.'
+      },
+      {
+        term: 'MCP (Model Context Protocol)',
+        definition: 'An open standard for how applications expose context, data, and tools to large language models, so assistants can retrieve information and take actions in a consistent, structured way. Innovaccer\'s HMCP (Healthcare Model Context Protocol) adapts this pattern for regulated healthcare—multi-agent coordination on Gravity and AI Studio with compliance-minded guardrails.',
+        example: 'Like a common plug pattern between an AI assistant and back-end systems; HMCP is the healthcare-specialized version for clinical and operational agents.'
       },
       {
         term: 'Data Activation Platform (DAP)',
