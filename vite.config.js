@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 // Production build: base for GitHub Pages subpath.
 export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: command === 'serve' ? '/' : '/Impact-Flow/',
+  base: command === 'serve' ? '/' : '/Health-Flow/', // Pages: https://mahip-kakan.github.io/Health-Flow/
   server: {
     port: 2302
   }
