@@ -1,6 +1,14 @@
-# Gravity Flow Studio
+# Gravity Flow Studio (Health Flow)
 
-A low-code studio to build, deploy, and automate healthcare workflows — part of the Gravity AI Studio experience.
+A low-code studio to build, deploy, and automate healthcare workflows — part of the **Gravity AI Studio** experience. This repo powers the public demo at **[mahip-kakan.github.io/Health-Flow](https://mahip-kakan.github.io/Health-Flow/)**.
+
+## What’s in the app
+
+- **Flow editor** — Triggers, actions, templates (e.g. post-discharge follow-up, readmission risk, appointment reminders).
+- **Discover & product flows** — Browse pre-built automation ideas across Gravity healthcare domains.
+- **AI assistant & Healthcare glossary** — In-app help for US healthcare terms and Gravity concepts, including **HMCP** (Healthcare Model Context Protocol) and **MCP** (Model Context Protocol).
+- **Action configuration** — Each step opens a contextual settings panel (care plans, Tasks, Microsoft Teams, email, models/agents, reminders, and more).
+- **Roles** — Switch between Developer, Product Manager, and Admin (affects sidebar and access to the testing dashboard).
 
 ## Run locally
 
@@ -9,55 +17,47 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:2302/](http://localhost:2302/) for local dev. The production build still uses the `/Impact-Flow/` base for GitHub Pages.
+Open **[http://localhost:2302/](http://localhost:2302/)**.  
+Local dev uses Vite with `base: '/'`. Production builds use `base: '/Health-Flow/'` for GitHub Pages (see [`vite.config.js`](vite.config.js)).
 
-### Testing dashboard (PM / Admin)
+## Testing dashboard (PM / Admin)
 
-In the main app, click the **user icon** (top right) → **View as** → **Product Manager** or **Admin**. The testing dashboard opens inside the studio. You can also use the **Testing** (beaker) item in the left sidebar while in those roles. Switch back to **Developer** to return to your previous screen.
+1. In the studio, open the **user menu** (top right) → **View as** → **Product Manager** or **Admin**.
+2. Use the **Testing** (beaker) item in the left sidebar.
 
-Optional: run the same dashboard alone on port 2303 — see [testing/README.md](testing/README.md).
+The UI lives under [`src/testing-dashboard/`](src/testing-dashboard/). For a **standalone** dev server on port **2303**, see **[testing/README.md](testing/README.md)**.
 
-## Build
+## Architecture diagram
+
+An Excalidraw diagram of the Gravity / HMCP / DAP-style stack is in:
+
+[`docs/architecture/gravity-hmcp-architecture.excalidraw`](docs/architecture/gravity-hmcp-architecture.excalidraw)
+
+Open it in [Excalidraw](https://excalidraw.com) or with the Excalidraw extension in VS Code / Cursor.
+
+## Build & preview
 
 ```bash
-npm run build
+npm run build    # output in dist/
+npm run preview  # local preview of production build
 ```
-
-Output is in `dist/`.
 
 ## Deploy to GitHub Pages
 
-1. **Push this repo** to your GitHub account. Set `origin` to your repo if needed:
-   ```bash
-   git remote set-url origin https://github.com/mahip-kakan/Health-Flow.git
-   git add .
-   git commit -m "Add GitHub Pages deploy"
-   git push -u origin main
-   ```
+This repo is **[github.com/mahip-kakan/Health-Flow](https://github.com/mahip-kakan/Health-Flow)**.
 
-2. **Enable GitHub Pages** in the repo:
-   - Go to **Settings** → **Pages**
-   - Under **Source**, choose **Deploy from a branch**
-   - Branch: **gh-pages** (or select it after the first workflow run)
-   - Folder: **/ (root)**
-   - Save
+1. **Push to `main`** — the **Deploy to GitHub Pages** workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) builds and deploys to the `gh-pages` branch.
+2. **Repo settings** — **Settings** → **Pages** → source **Deploy from a branch** → branch **`gh-pages`**, folder **`/ (root)`**.
+3. **Live site** — **[https://mahip-kakan.github.io/Health-Flow/](https://mahip-kakan.github.io/Health-Flow/)**  
+   Use this `*.github.io` URL, not the raw `github.com/.../Health-Flow` code URL.
 
-3. **Trigger the workflow**: On every push to `main`, the **Deploy to GitHub Pages** workflow runs, builds the app, and deploys to the `gh-pages` branch. The first run will create that branch.
+**404 troubleshooting**
 
-4. **Live URL**: After deployment, the app will be at:
-   **https://mahip-kakan.github.io/Health-Flow/**
-   (Use this exact URL — not the repo URL `github.com/mahip-kakan/Health-Flow`.)
-
-**If you see a 404:**
-- Use the **Pages URL** above (with `username.github.io`), not the repo address.
-- In **Settings → Pages**, set source to the **gh-pages** branch, folder **/ (root)**.
-- Check the **Actions** tab: the "Deploy to GitHub Pages" workflow must have run and succeeded (green check).
-- Try both capital and lowercase in the path if your repo name differs: `.../Health-Flow/` and `.../health-flow/`. If lowercase works, set `base: '/health-flow/'` in `vite.config.js` and redeploy.
-
-If you rename the repo, update `base` in `vite.config.js` to match (e.g. `base: '/your-repo-name/'`).
+- Confirm the Actions workflow completed successfully.
+- If your Pages URL only works with a different path casing, set `base` in `vite.config.js` to match (e.g. `'/health-flow/'`) and redeploy.
 
 ## Tech
 
-- React 18
-- Vite 5
-- Lucide React icons
+- React 18  
+- Vite 5  
+- Lucide React  
