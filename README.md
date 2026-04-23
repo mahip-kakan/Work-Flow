@@ -1,6 +1,6 @@
 # Workflow Studio
 
-A low-code studio to build, deploy, and automate workflows across **Healthcare**, **HR**, and **Marketing** workspaces. The public demo is hosted at **[mahip-kakan.github.io/Health-Flow](https://mahip-kakan.github.io/Health-Flow/)** (repository name stays `Health-Flow`; the product name in the UI is **Workflow Studio**).
+A low-code studio to build, deploy, and automate workflows across **Healthcare**, **HR**, and **Marketing** workspaces. The public demo is hosted at **[mahip-kakan.github.io/workflow-Studio](https://mahip-kakan.github.io/workflow-Studio/)** once the GitHub repository is named **`workflow-Studio`** (see below). The product name in the UI is **Workflow Studio**.
 
 ## What’s in the app
 
@@ -18,7 +18,16 @@ npm run dev
 ```
 
 Open **[http://localhost:2302/](http://localhost:2302/)**.  
-Local dev uses Vite with `base: '/'`. Production builds use `base: '/Health-Flow/'` for GitHub Pages (see [`vite.config.js`](vite.config.js)).
+Local dev uses Vite with `base: '/'`. Production builds use `base: '/workflow-Studio/'` for GitHub Pages (see [`vite.config.js`](vite.config.js)).
+
+### Repository name and Pages URL
+
+GitHub Pages project sites use **`https://<user>.github.io/<repository-name>/`**. This project’s asset `base` is set to **`/workflow-Studio/`**, so the repository on GitHub must be named **`workflow-Studio`** for the live URL to work.
+
+1. On GitHub: **Settings → General → Repository name** → rename **`Health-Flow`** → **`workflow-Studio`** (exact casing if you want this URL path).
+2. Update your local remote, for example:  
+   `git remote set-url origin https://github.com/mahip-kakan/workflow-Studio.git`
+3. Push `main` and let **Deploy to GitHub Pages** run; in **Settings → Pages**, keep source branch **`gh-pages`** / **`/(root)`**.
 
 ## Testing dashboard (PM / Admin)
 
@@ -44,13 +53,13 @@ npm run preview  # local preview of production build
 
 ## Deploy to GitHub Pages
 
-This repo is **[github.com/mahip-kakan/Health-Flow](https://github.com/mahip-kakan/Health-Flow)**.
+After renaming, the repo will be **[github.com/mahip-kakan/workflow-Studio](https://github.com/mahip-kakan/workflow-Studio)** (update the link if your username or name differs).
 
 1. **Push to `main`** — the **Deploy to GitHub Pages** workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) runs `npm run build` and pushes the contents of **`dist/`** to the **`gh-pages`** branch.
 2. **Repo settings (required)** — **Settings** → **Pages** → **Build and deployment** → **Source**: **Deploy from a branch** → choose branch **`gh-pages`**, folder **`/ (root)`**.  
    **Do not** set the source to **`main`** with **`/ (root)`**. If you do, GitHub serves the raw repo `index.html` (with `/src/main.jsx`), which only works with `vite dev` — the site will look blank or broken in production.
-3. **Live site** — **[https://mahip-kakan.github.io/Health-Flow/](https://mahip-kakan.github.io/Health-Flow/)**  
-   Use this `*.github.io` URL, not the raw `github.com/.../Health-Flow` code URL.
+3. **Live site** — **[https://mahip-kakan.github.io/workflow-Studio/](https://mahip-kakan.github.io/workflow-Studio/)**  
+   Use this `*.github.io` URL, not the raw `github.com/.../workflow-Studio` code URL.
 
 **Still seeing an old version after a deploy**
 
@@ -63,7 +72,7 @@ This repo is **[github.com/mahip-kakan/Health-Flow](https://github.com/mahip-kak
 - **Wrong Pages source** — Most common: Pages is on **`main`** instead of **`gh-pages`**. Switch to **`gh-pages`** as above, wait a minute, hard-refresh.
 - **Actions** — In the **Actions** tab, open **Deploy to GitHub Pages** and confirm the latest run on `main` is green.
 - **First deploy** — Until the workflow runs once, the `gh-pages` branch may not exist; run the workflow (push to `main` or **Run workflow**), then select `gh-pages` in Pages settings.
-- **Path casing** — If only a lowercase URL works, set `base` in `vite.config.js` to match (e.g. `'/health-flow/'`) and redeploy.
+- **Path casing** — The `base` in `vite.config.js` must match the repository name in the URL exactly (e.g. `'/workflow-Studio/'`). Rename the repo or change `base` and CI `GITHUB_PAGES_BASE` together.
 
 ## Tech
 

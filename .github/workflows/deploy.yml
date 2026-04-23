@@ -25,7 +25,7 @@ jobs:
 
       - name: Build
         env:
-          GITHUB_PAGES_BASE: /Health-Flow/
+          GITHUB_PAGES_BASE: /workflow-Studio/
         run: npm run build
 
       - name: Add 404 page for SPA routing
