@@ -1,5 +1,7 @@
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
+import { HR_FEATURED_FLOWS, hrFeaturedToDiscoverTemplate } from '../data/hrFeaturedCopilotFlows';
+import { MARKETING_FLOW_TEMPLATES } from '../data/marketingTemplates';
 
 const templates = [
   {
@@ -67,16 +69,86 @@ const domains = [
   { name: 'Patient Experience', icon: 'Smile', color: '#D97706', count: 6 },
 ];
 
-const DiscoverView = ({ onSelectTemplate, onSelectProduct }) => {
+const hrTemplates = [
+  ...HR_FEATURED_FLOWS.map(hrFeaturedToDiscoverTemplate),
+  {
+    id: 'hr-discover-onboarding',
+    category: 'People ops',
+    title: 'New hire onboarding runbook',
+    description: 'T-minus checklist: equipment, access, payroll, and manager welcome tasks',
+    icons: ['CalendarCheck', 'ClipboardCheck', 'MessageCircle'],
+    color: '#D97706',
+    module: 'People Ops & Systems'
+  },
+  {
+    id: 'hr-discover-offboarding',
+    category: 'HRBP',
+    title: 'Offboarding checklist',
+    description: 'Access removal, exit interview, final pay, and asset return coordinated across teams',
+    icons: ['LogOut', 'Key', 'Mail'],
+    color: '#7C3AED',
+    module: 'HRBP & Employee Lifecycle'
+  },
+  {
+    id: 'hr-discover-transfer',
+    category: 'HRBP',
+    title: 'Internal transfer / promotion',
+    description: 'Title, compensation, and permissions updates with manager briefing and IT sync',
+    icons: ['GitBranch', 'Users', 'Bell'],
+    color: '#7C3AED',
+    module: 'HRBP & Employee Lifecycle'
+  },
+  {
+    id: 'hr-discover-interview-nudge',
+    category: 'Talent acquisition',
+    title: 'Interview feedback SLA',
+    description: 'Remind panelists until scorecards are submitted after each interview round',
+    icons: ['ClipboardCheck', 'Bell', 'MessageCircle'],
+    color: '#059669',
+    module: 'Talent Acquisition'
+  },
+  {
+    id: 'hr-discover-access-review',
+    category: 'People ops',
+    title: 'Quarterly access review',
+    description: 'Schedule-driven campaign to validate roles and application access against HRIS',
+    icons: ['Shield', 'CheckSquare', 'Send'],
+    color: '#0284C7',
+    module: 'People Ops & Systems'
+  }
+];
+
+const hrDomains = [
+  { name: 'HRBP & Employee Lifecycle', icon: 'Users', color: '#7C3AED', count: 4 },
+  { name: 'Talent Acquisition', icon: 'Briefcase', color: '#059669', count: 7 },
+  { name: 'People Ops & Systems', icon: 'Settings', color: '#D97706', count: 4 }
+];
+
+const marketingDomains = [
+  { name: 'Campaign & lifecycle', icon: 'Megaphone', color: '#7C3AED', count: 3 },
+  { name: 'Content & distribution', icon: 'Layers', color: '#059669', count: 1 },
+  { name: 'Brand & insights', icon: 'Lightbulb', color: '#D97706', count: 2 }
+];
+
+const DiscoverView = ({ vertical = 'healthcare', onSelectTemplate, onSelectProduct }) => {
+  const isHr = vertical === 'hr';
+  const isMarketing = vertical === 'marketing';
+  const activeTemplates = isHr ? hrTemplates : isMarketing ? MARKETING_FLOW_TEMPLATES : templates;
+  const activeDomains = isHr ? hrDomains : isMarketing ? marketingDomains : domains;
+
   return (
     <div className="discover-view">
       <h1 className="discover-title">Discover Agent Templates</h1>
       <p className="discover-subtitle">
-        Pre-built automation workflows for Gravity healthcare domains — powered by HMCP and Gravity AI agents
+        {isHr
+          ? 'Pre-built HR automations across HRBP, talent acquisition, and people ops—onboarding through data quality'
+          : isMarketing
+            ? 'Pre-built marketing automations across campaigns, content, brand, and lifecycle touchpoints'
+            : 'Pre-built automation workflows across common healthcare domains—clinical, population health, access, and experience'}
       </p>
 
       <div className="template-grid">
-        {templates.map(template => (
+        {activeTemplates.map(template => (
           <button
             key={template.id}
             className="template-card"
@@ -109,9 +181,9 @@ const DiscoverView = ({ onSelectTemplate, onSelectProduct }) => {
       </div>
 
       <div className="product-sections">
-        <h2>By Domain</h2>
+        <h2>{isHr ? 'By HR pillar' : isMarketing ? 'By marketing pillar' : 'By Domain'}</h2>
         <div className="product-cards">
-          {domains.map(domain => {
+          {activeDomains.map(domain => {
             const IconComponent = LucideIcons[domain.icon];
             return (
               <button

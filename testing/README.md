@@ -1,4 +1,4 @@
-# Gravity AI Studio — Testing Dashboard (PM View)
+# Health Flow — Testing Dashboard (PM View)
 
 **Primary:** open the **main studio** (`npm run dev` from the repo root), then use the top-right **user menu** → **Product Manager** or **Admin** to open the testing dashboard inside the app.
 

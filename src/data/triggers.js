@@ -1,4 +1,7 @@
-// Trigger configurations for Gravity AI Studio — Healthcare workflows
+// Trigger configurations for Health Flow — healthcare-oriented demo workflows
+import { hrTriggerCategories } from './triggersHr.js';
+import { marketingTriggerCategories } from './triggersMarketing.js';
+
 export const triggerCategories = [
   {
     id: 'schedule',
@@ -193,4 +196,11 @@ export const triggerCategories = [
 
 export const getAllTriggers = () => {
   return triggerCategories.flatMap(category => category.triggers);
+};
+
+/** @param {'healthcare' | 'hr' | 'marketing'} vertical */
+export const getTriggerCategories = (vertical) => {
+  if (vertical === 'hr') return hrTriggerCategories;
+  if (vertical === 'marketing') return marketingTriggerCategories;
+  return triggerCategories;
 };

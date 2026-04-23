@@ -1,8 +1,9 @@
 import React from 'react';
-import { triggerCategories } from '../data/triggers';
+import { getTriggerCategories } from '../data/triggers';
 import * as LucideIcons from 'lucide-react';
 
-const TriggerPanel = ({ onSelectTrigger, onClose }) => {
+const TriggerPanel = ({ onSelectTrigger, onClose, vertical = 'healthcare' }) => {
+  const triggerCategories = getTriggerCategories(vertical);
   return (
     <div className="selection-panel">
       <div className="panel-header">

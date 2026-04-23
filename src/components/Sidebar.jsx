@@ -1,7 +1,7 @@
 import React from 'react';
 import { Plus, Home, BarChart3, Compass, Brain, Settings, HelpCircle, BookOpen, Beaker } from 'lucide-react';
 
-const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole }) => {
+const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole, vertical }) => {
   const canAccessTesting = userRole === 'pm' || userRole === 'admin';
   return (
     <div className="sidebar">
@@ -60,11 +60,15 @@ const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole }) => {
         <button
           className={`nav-item ${activeView === 'glossary' ? 'active' : ''}`}
           onClick={() => setActiveView('glossary')}
-          title="Healthcare Glossary"
+          title={
+            vertical === 'hr' ? 'HR glossary' : vertical === 'marketing' ? 'Marketing glossary' : 'Healthcare glossary'
+          }
         >
           <BookOpen size={22} />
         </button>
-        <span className="sidebar-label">Glossary</span>
+        <span className="sidebar-label">
+          {vertical === 'hr' ? 'HR glossary' : vertical === 'marketing' ? 'Marketing glossary' : 'Glossary'}
+        </span>
 
         {canAccessTesting && (
           <>

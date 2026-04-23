@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, MessageSquare, Mail, Play, RefreshCw, FileText, Bell, Upload } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 
@@ -28,86 +28,122 @@ const reportFormats = [
   { id: 'csv', label: 'CSV Export' },
 ];
 
-const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
-  const [config, setConfig] = useState({
-    // Slack configs
-    slackWorkspace: 'gravity',
-    slackChannel: 'care-team',
-    messageTemplate: '🔔 {{flow_name}} Alert\n{{kpi_name}} is {{value}}\nThreshold: {{threshold}}',
-    // Teams
-    teamsTenant: 'optimus-health',
-    teamsTeam: 'clinical-operations',
-    teamsChannel: 'discharge-alerts',
-    teamsAdaptiveCard: true,
-    teamsMessageTemplate:
-      '🏥 Discharge: {{patient_name}} (MRN {{mrn}})\nAttending: {{provider}}\nCare plan: {{care_plan_link}}\nAcknowledge in Gravity.',
-    // Care plan
-    carePlanTemplate: 'post-discharge-standard',
-    carePlanStatus: 'draft',
-    includeMedReconciliation: true,
-    includeFollowUpAppointments: true,
-    includePatientEducation: true,
-    linkCarePlanToEncounter: true,
-    carePlanAuthoringRole: 'care-manager',
-    // Care task
-    taskAssigneePool: 'care-coordination',
-    taskPriority: 'high',
-    taskDueHours: '24',
-    taskCategory: 'follow-up-call',
-    taskDescriptionTemplate:
-      'Call patient within 24h of discharge to review medications and confirm follow-up appointments.',
-    notifyAssigneeImmediately: true,
-    // Appointment / patient comms
-    reminderLeadTime: '24',
-    reminderChannels: 'patient-preference',
-    reminderTemplate: 'Reminder: appt {{appt_date}} at {{location}}. Reply C to confirm.',
-    preVisitDelivery: 'portal-and-email',
-    preVisitIncludeFormsLink: true,
-    // SMS
-    smsFromLine: 'clinical-alerts',
-    smsTemplate: 'Optimus Health: Your appointment is {{appt_when}}. Questions? Call {{clinic_phone}}.',
-    // Agent / model runs
-    modelVersion: 'readmission-v3.2',
-    riskThreshold: '0.4',
-    cohortScope: 'trigger-patient',
-    writeResultsToFhir: true,
-    auditModelRun: true,
-    // Clinical summary
-    summarySections: 'problems-meds-allergies',
-    summaryMaxLength: 'medium',
-    // Schedule appointment
-    appointmentType: 'follow-up',
-    bookingHorizonDays: '14',
-    preferredLocation: 'same-as-last',
-    // Export
-    exportFormat: 'csv',
-    exportPhiLevel: 'minimum-necessary',
-    // VBC / RCM quick fields
-    vbcReportingPeriod: 'current-quarter',
-    rcmPayerProfile: 'primary-commercial',
-    // Generic fallback
-    stepNotes: '',
-    continueOnError: false,
-    // Email configs
-    emailRecipients: ['care-team'],
-    emailSubject: 'Clinical workflow: {{flow_name}} — {{date}}',
-    includeDeviation: true,
-    includeExcel: true,
-    includeExecutive: false,
-    bodyTemplate: 'default',
-    // Simulation configs
-    simulationType: 'full-refresh',
-    scope: 'affected',
-    timeHorizon: '12',
-    waitForCompletion: true,
-    notifyOnFailure: false,
-    // Refresh configs
-    refreshType: 'full',
-    tables: 'all',
-    // Report configs
-    reportFormat: 'pdf',
-    reportType: 'deviation',
-  });
+const emailRecipientsHr = [
+  { id: 'hr-ops', label: 'hr-ops@your-org.com' },
+  { id: 'hrbp-team', label: 'hrbp@your-org.com' },
+  { id: 'talent-team', label: 'talent@your-org.com' },
+];
+
+const HEALTHCARE_ACTION_DEFAULTS = {
+  slackWorkspace: 'main-workspace',
+  slackChannel: 'care-team',
+  messageTemplate: '🔔 {{flow_name}} Alert\n{{kpi_name}} is {{value}}\nThreshold: {{threshold}}',
+  teamsTenant: 'sample-health',
+  teamsTeam: 'clinical-operations',
+  teamsChannel: 'discharge-alerts',
+  teamsAdaptiveCard: true,
+  teamsMessageTemplate:
+    '🏥 Discharge: {{patient_name}} (MRN {{mrn}})\nAttending: {{provider}}\nCare plan: {{care_plan_link}}\nAcknowledge in the care coordination app.',
+  carePlanTemplate: 'post-discharge-standard',
+  carePlanStatus: 'draft',
+  includeMedReconciliation: true,
+  includeFollowUpAppointments: true,
+  includePatientEducation: true,
+  linkCarePlanToEncounter: true,
+  carePlanAuthoringRole: 'care-manager',
+  taskAssigneePool: 'care-coordination',
+  taskPriority: 'high',
+  taskDueHours: '24',
+  taskCategory: 'follow-up-call',
+  taskDescriptionTemplate:
+    'Call patient within 24h of discharge to review medications and confirm follow-up appointments.',
+  notifyAssigneeImmediately: true,
+  reminderLeadTime: '24',
+  reminderChannels: 'patient-preference',
+  reminderTemplate: 'Reminder: appt {{appt_date}} at {{location}}. Reply C to confirm.',
+  preVisitDelivery: 'portal-and-email',
+  preVisitIncludeFormsLink: true,
+  smsFromLine: 'clinical-alerts',
+  smsTemplate: 'Sample Health: Your appointment is {{appt_when}}. Questions? Call {{clinic_phone}}.',
+  modelVersion: 'readmission-v3.2',
+  riskThreshold: '0.4',
+  cohortScope: 'trigger-patient',
+  writeResultsToFhir: true,
+  auditModelRun: true,
+  summarySections: 'problems-meds-allergies',
+  summaryMaxLength: 'medium',
+  appointmentType: 'follow-up',
+  bookingHorizonDays: '14',
+  preferredLocation: 'same-as-last',
+  exportFormat: 'csv',
+  exportPhiLevel: 'minimum-necessary',
+  vbcReportingPeriod: 'current-quarter',
+  rcmPayerProfile: 'primary-commercial',
+  stepNotes: '',
+  continueOnError: false,
+  emailRecipients: ['care-team'],
+  emailSubject: 'Clinical workflow: {{flow_name}} — {{date}}',
+  includeDeviation: true,
+  includeExcel: true,
+  includeExecutive: false,
+  bodyTemplate: 'default',
+  simulationType: 'full-refresh',
+  scope: 'affected',
+  timeHorizon: '12',
+  waitForCompletion: true,
+  notifyOnFailure: false,
+  refreshType: 'full',
+  tables: 'all',
+  reportFormat: 'pdf',
+  reportType: 'deviation',
+};
+
+const HR_ACTION_DEFAULTS = {
+  modelVersion: 'dq-6000',
+  cohortScope: 'trigger-patient',
+  teamsTeam: 'people-operations',
+  teamsChannel: 'hrbp-intake',
+  teamsAdaptiveCard: true,
+  teamsMessageTemplate:
+    '📋 {{flow_name}}\nEmployee: {{employee_name}} ({{employee_id}})\nManager: {{manager_name}}\nSummary: {{request_summary}}\nOpen task: {{task_link}}',
+  taskAssigneePool: 'hrbp-queue',
+  taskPriority: 'high',
+  taskDueHours: '48',
+  taskCategory: 'manager-intake',
+  taskDescriptionTemplate:
+    'Review the manager request, document policy guidance, and assign follow-ups within 2 business days. Link any relevant HRIS records.',
+  emailRecipients: ['hr-ops'],
+  emailSubject: 'HR workflow: {{flow_name}} — {{date}}',
+};
+
+function buildDefaultActionConfig(vertical) {
+  if (vertical === 'hr') {
+    return { ...HEALTHCARE_ACTION_DEFAULTS, ...HR_ACTION_DEFAULTS };
+  }
+  return { ...HEALTHCARE_ACTION_DEFAULTS };
+}
+
+const ActionConfigPanel = ({ action, stepNumber, vertical = 'healthcare', onClose, onSave }) => {
+  const [config, setConfig] = useState(() => buildDefaultActionConfig(vertical));
+
+  useEffect(() => {
+    setConfig(buildDefaultActionConfig(vertical));
+  }, [vertical, action?.id]);
+
+  useEffect(() => {
+    const id = action?.id || '';
+    if (vertical !== 'hr' || !id.includes('invoke-hr-')) return;
+    const modelDefaults = {
+      'invoke-hr-jd-generator': 'claude-sonnet-jd-v1',
+      'invoke-hr-interview-debrief': 'claude-sonnet-debrief-v1',
+      'invoke-hr-onboarding-plan': 'claude-sonnet-onb-v1',
+      'invoke-hr-policy-qa': 'claude-sonnet-policy-v1'
+    };
+    const next = modelDefaults[id];
+    if (next) {
+      setConfig((c) => ({ ...c, modelVersion: next }));
+    }
+  }, [action?.id, vertical]);
 
   const IconComponent = LucideIcons[action?.icon] || Bell;
 
@@ -131,6 +167,18 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
     { id: 'clinic_phone', label: 'clinic_phone' },
   ];
 
+  const hrFlowVariables = [
+    { id: 'employee_name', label: 'employee_name' },
+    { id: 'employee_id', label: 'employee_id' },
+    { id: 'manager_name', label: 'manager_name' },
+    { id: 'request_summary', label: 'request_summary' },
+    { id: 'task_link', label: 'task_link' },
+    { id: 'department', label: 'department' },
+    { id: 'start_date', label: 'start_date' },
+  ];
+
+  const teamsTemplateVariables = vertical === 'hr' ? hrFlowVariables : patientFlowVariables;
+
   const insertIntoTeamsTemplate = (token) => {
     setConfig((c) => ({
       ...c,
@@ -141,8 +189,9 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
   const renderTeamsConfig = () => (
     <>
       <div className="config-description">
-        Post to a Microsoft Teams channel or chat when this step runs. Uses Graph API with Gravity
-        Shield–scoped credentials.
+        {vertical === 'hr'
+          ? 'Post to a Microsoft Teams channel when this HR workflow runs. Uses Microsoft Graph with tenant-scoped app credentials (least privilege).'
+          : 'Post to a Microsoft Teams channel or chat when this step runs. Uses Microsoft Graph with tenant-scoped app credentials (least privilege).'}
       </div>
 
       <div className="config-section">
@@ -151,7 +200,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.teamsTenant}
           onChange={(e) => setConfig({ ...config, teamsTenant: e.target.value })}
         >
-          <option value="optimus-health">Optimus Healthcare Partners</option>
+          <option value="sample-health">Sample Health Network</option>
           <option value="sandbox">Sandbox tenant</option>
         </select>
       </div>
@@ -162,9 +211,19 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.teamsTeam}
           onChange={(e) => setConfig({ ...config, teamsTeam: e.target.value })}
         >
-          <option value="clinical-operations">Clinical Operations</option>
-          <option value="care-management">Care Management</option>
-          <option value="hospital-medicine">Hospital Medicine</option>
+          {vertical === 'hr' ? (
+            <>
+              <option value="people-operations">People Operations</option>
+              <option value="talent-acquisition">Talent Acquisition</option>
+              <option value="hr-systems">HR Systems &amp; Integrations</option>
+            </>
+          ) : (
+            <>
+              <option value="clinical-operations">Clinical Operations</option>
+              <option value="care-management">Care Management</option>
+              <option value="hospital-medicine">Hospital Medicine</option>
+            </>
+          )}
         </select>
       </div>
 
@@ -174,9 +233,20 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.teamsChannel}
           onChange={(e) => setConfig({ ...config, teamsChannel: e.target.value })}
         >
-          <option value="discharge-alerts"># discharge-alerts</option>
-          <option value="care-team"># care-team</option>
-          <option value="readmission-rounds"># readmission-rounds</option>
+          {vertical === 'hr' ? (
+            <>
+              <option value="hrbp-intake"># hrbp-intake</option>
+              <option value="onboarding"># onboarding</option>
+              <option value="talent-alerts"># talent-alerts</option>
+              <option value="people-ops"># people-ops</option>
+            </>
+          ) : (
+            <>
+              <option value="discharge-alerts"># discharge-alerts</option>
+              <option value="care-team"># care-team</option>
+              <option value="readmission-rounds"># readmission-rounds</option>
+            </>
+          )}
         </select>
       </div>
 
@@ -187,7 +257,11 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
             checked={config.teamsAdaptiveCard}
             onChange={(e) => setConfig({ ...config, teamsAdaptiveCard: e.target.checked })}
           />
-          <span>Use adaptive card (acknowledge + deep link to Gravity)</span>
+          <span>
+            {vertical === 'hr'
+              ? 'Use adaptive card (acknowledge + deep link to HR task)'
+              : 'Use adaptive card (acknowledge + deep link to care plan)'}
+          </span>
         </label>
       </div>
 
@@ -202,9 +276,11 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
       </div>
 
       <div className="config-section">
-        <label className="config-label">Insert patient / flow fields</label>
+        <label className="config-label">
+          {vertical === 'hr' ? 'Insert employee / HR fields' : 'Insert patient / flow fields'}
+        </label>
         <div className="variable-chips">
-          {patientFlowVariables.map((v) => (
+          {teamsTemplateVariables.map((v) => (
             <button
               key={v.id}
               type="button"
@@ -231,7 +307,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.slackWorkspace}
           onChange={(e) => setConfig({ ...config, slackWorkspace: e.target.value })}
         >
-          <option value="gravity">Gravity</option>
+          <option value="main-workspace">Primary workspace</option>
         </select>
       </div>
 
@@ -280,8 +356,9 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
   const renderEmailConfig = () => (
     <>
       <div className="config-description">
-        Send a clinical or operational email when this flow runs. Attachments respect minimum-necessary
-        PHI policies.
+        {vertical === 'hr'
+          ? 'Send an HR or operational email when this flow runs. Attachments follow workforce data handling and least-privilege distribution lists.'
+          : 'Send a clinical or operational email when this flow runs. Attachments respect minimum-necessary PHI policies.'}
       </div>
 
       <div className="config-section">
@@ -290,7 +367,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.emailRecipients[0]}
           onChange={(e) => setConfig({ ...config, emailRecipients: [e.target.value] })}
         >
-          {emailRecipients.map(r => (
+          {(vertical === 'hr' ? emailRecipientsHr : emailRecipients).map((r) => (
             <option key={r.id} value={r.id}>{r.label}</option>
           ))}
         </select>
@@ -315,7 +392,11 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
               checked={config.includeDeviation}
               onChange={(e) => setConfig({ ...config, includeDeviation: e.target.checked })}
             />
-            <span>Discharge / care plan summary (PDF)</span>
+            <span>
+              {vertical === 'hr'
+                ? 'Onboarding / case summary (PDF)'
+                : 'Discharge / care plan summary (PDF)'}
+            </span>
           </label>
           <label className="checkbox-option">
             <input
@@ -323,7 +404,11 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
               checked={config.includeExcel}
               onChange={(e) => setConfig({ ...config, includeExcel: e.target.checked })}
             />
-            <span>Tabular extract — cohort or line items (Excel)</span>
+            <span>
+              {vertical === 'hr'
+                ? 'Tabular extract — roster or exception list (Excel)'
+                : 'Tabular extract — cohort or line items (Excel)'}
+            </span>
           </label>
           <label className="checkbox-option">
             <input
@@ -331,7 +416,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
               checked={config.includeExecutive}
               onChange={(e) => setConfig({ ...config, includeExecutive: e.target.checked })}
             />
-            <span>Operational summary (no PHI)</span>
+            <span>{vertical === 'hr' ? 'Executive summary (aggregated metrics)' : 'Operational summary (no PHI)'}</span>
           </label>
         </div>
       </div>
@@ -677,9 +762,19 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
   const renderCareTaskConfig = () => (
     <>
       <div className="config-description">
-        Creates a prioritized <strong>FHIR Task</strong> for the care team (e.g. post-discharge call,
-        med reconciliation follow-up). Appears in Gravity work queues and can sync to EHR in-baskets
-        where integrated.
+        {vertical === 'hr' ? (
+          <>
+            Creates a prioritized <strong>work item</strong> in your HR task system (e.g. HRBP triage,
+            onboarding checklist, HRIS remediation). Appears in HR queues and optional email digest to
+            owners.
+          </>
+        ) : (
+          <>
+            Creates a prioritized <strong>FHIR Task</strong> for the care team (e.g. post-discharge call,
+            med reconciliation follow-up). Appears in care team work queues and can sync to EHR in-baskets
+            where integrated.
+          </>
+        )}
       </div>
 
       {action?.description && (
@@ -695,10 +790,21 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.taskAssigneePool}
           onChange={(e) => setConfig({ ...config, taskAssigneePool: e.target.value })}
         >
-          <option value="care-coordination">Care coordination queue</option>
-          <option value="nurse-navigators">Nurse navigators</option>
-          <option value="pharmacy">Clinical pharmacy</option>
-          <option value="social-work">Social work</option>
+          {vertical === 'hr' ? (
+            <>
+              <option value="hrbp-queue">HRBP intake queue</option>
+              <option value="people-ops">People operations</option>
+              <option value="talent-coordinators">Talent coordinators</option>
+              <option value="hr-systems">HR systems / integrations</option>
+            </>
+          ) : (
+            <>
+              <option value="care-coordination">Care coordination queue</option>
+              <option value="nurse-navigators">Nurse navigators</option>
+              <option value="pharmacy">Clinical pharmacy</option>
+              <option value="social-work">Social work</option>
+            </>
+          )}
         </select>
       </div>
 
@@ -733,10 +839,22 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           value={config.taskCategory}
           onChange={(e) => setConfig({ ...config, taskCategory: e.target.value })}
         >
-          <option value="follow-up-call">Post-discharge phone call</option>
-          <option value="med-rec">Medication reconciliation</option>
-          <option value="appointment-booking">Schedule follow-up visit</option>
-          <option value="sdoh-screen">SDOH screening</option>
+          {vertical === 'hr' ? (
+            <>
+              <option value="manager-intake">Manager request triage</option>
+              <option value="onboarding-checklist">Onboarding checklist</option>
+              <option value="access-review">Access / provisioning review</option>
+              <option value="hris-exception">HRIS data exception</option>
+              <option value="offer-packet">Offer / comp packet assembly</option>
+            </>
+          ) : (
+            <>
+              <option value="follow-up-call">Post-discharge phone call</option>
+              <option value="med-rec">Medication reconciliation</option>
+              <option value="appointment-booking">Schedule follow-up visit</option>
+              <option value="sdoh-screen">SDOH screening</option>
+            </>
+          )}
         </select>
       </div>
 
@@ -881,16 +999,28 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
   );
 
   const renderAgentPipelineConfig = () => {
-    const isReadmission = action?.id?.includes('readmission');
-    const isHedis = action?.id?.includes('hedis');
-    const isDataQuality = action?.id?.includes('data-quality');
-    const isPriorAuth = action?.id?.includes('prior-auth');
+    const actionId = action?.id || '';
+    const isReadmission = actionId.includes('readmission');
+    const isHedis = actionId.includes('hedis');
+    const isDataQuality = actionId.includes('data-quality');
+    const isPriorAuth = actionId.includes('prior-auth');
+    const isHrCopilot = vertical === 'hr' && actionId.includes('invoke-hr-');
     return (
       <>
         <div className="config-description">
-          Runs a Gravity / HMCP-backed model or batch job on the cohort implied by the trigger. Outputs
-          are written to the Unified Data Model and optionally exposed as FHIR Observations or RiskAssessment
-          resources.
+          {isHrCopilot && actionId.includes('jd')
+            ? 'Runs the JD generator: Claude reads hiring intake from Jira/HCM and drafts a structured job description for TA review and posting.'
+            : isHrCopilot && actionId.includes('interview-debrief')
+              ? 'Runs interview debrief automation: Claude merges calendar metadata, rubric, and panel notes into a structured scorecard draft.'
+              : isHrCopilot && actionId.includes('onboarding-plan')
+                ? 'Runs onboarding plan generation: Claude produces a 30-60-90 outline and resource kit links aligned to role and location.'
+                : isHrCopilot && actionId.includes('policy-qa')
+                  ? 'Runs policy Q&A: Claude answers from your HR policy knowledge base with citations; escalates when confidence is low.'
+                  : vertical === 'hr'
+                    ? isDataQuality
+                      ? 'Runs HRIS / workforce data quality rules on the population implied by the trigger. Exceptions are logged with suggested remediation owners.'
+                      : 'Runs a governed model or batch job on the cohort implied by the trigger. Outputs are written to your people data platform with an auditable trail.'
+                    : 'Runs a governed AI model or batch job on the cohort implied by the trigger. Outputs are written to the Unified Data Model and optionally exposed as FHIR Observations or RiskAssessment resources.'}
         </div>
         {action?.description && (
           <div className="config-section config-summary-box">
@@ -918,8 +1048,10 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
             )}
             {isDataQuality && (
               <>
-                <option value="dq-6000">6000+ rule DQ sweep</option>
-                <option value="dq-fhir-profile">FHIR profile validation only</option>
+                <option value="dq-6000">{vertical === 'hr' ? 'HRIS + ATS composite DQ sweep' : '6000+ rule DQ sweep'}</option>
+                <option value="dq-fhir-profile">
+                  {vertical === 'hr' ? 'Canonical employee profile validation' : 'FHIR profile validation only'}
+                </option>
               </>
             )}
             {isPriorAuth && (
@@ -928,11 +1060,35 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
                 <option value="prior-auth-batch">Batch re-validation (scheduled)</option>
               </>
             )}
-            {!isReadmission && !isHedis && !isDataQuality && !isPriorAuth && (
+            {isHrCopilot && actionId.includes('invoke-hr-jd-generator') && (
+              <>
+                <option value="claude-sonnet-jd-v1">Claude Sonnet — JD from Jira/HCM intake</option>
+                <option value="claude-haiku-jd-v1">Claude Haiku — fast first draft</option>
+              </>
+            )}
+            {isHrCopilot && actionId.includes('invoke-hr-interview-debrief') && (
+              <>
+                <option value="claude-sonnet-debrief-v1">Claude Sonnet — scorecard + rubric alignment</option>
+                <option value="claude-haiku-debrief-v1">Claude Haiku — notes-only summary</option>
+              </>
+            )}
+            {isHrCopilot && actionId.includes('invoke-hr-onboarding-plan') && (
+              <>
+                <option value="claude-sonnet-onb-v1">Claude Sonnet — 30-60-90 + resource kit</option>
+                <option value="claude-haiku-onb-v1">Claude Haiku — lightweight checklist</option>
+              </>
+            )}
+            {isHrCopilot && actionId.includes('invoke-hr-policy-qa') && (
+              <>
+                <option value="claude-sonnet-policy-v1">Claude Sonnet — HR docs RAG (citations on)</option>
+                <option value="claude-haiku-policy-v1">Claude Haiku — short FAQ-style answers</option>
+              </>
+            )}
+            {!isReadmission && !isHedis && !isDataQuality && !isPriorAuth && !isHrCopilot && (
               <>
                 <option value="risk-strat-v2">Risk stratification — v2</option>
-                <option value="care-gap-agent">Care Gap Agent (HMCP)</option>
-                <option value="outreach-agent">Outreach Agent (HMCP)</option>
+                <option value="care-gap-agent">Care Gap Agent (AI)</option>
+                <option value="outreach-agent">Outreach Agent (AI)</option>
               </>
             )}
           </select>
@@ -952,8 +1108,10 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
             value={config.cohortScope}
             onChange={(e) => setConfig({ ...config, cohortScope: e.target.value })}
           >
-            <option value="trigger-patient">Trigger patient only</option>
-            <option value="panel">Attributed panel</option>
+            <option value="trigger-patient">
+              {vertical === 'hr' ? 'Trigger record only (employee / case)' : 'Trigger patient only'}
+            </option>
+            <option value="panel">{vertical === 'hr' ? 'Department / cost center scope' : 'Attributed panel'}</option>
             <option value="custom-list">Custom list from prior step</option>
           </select>
         </div>
@@ -964,7 +1122,11 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
               checked={config.writeResultsToFhir}
               onChange={(e) => setConfig({ ...config, writeResultsToFhir: e.target.checked })}
             />
-            <span>Persist results to FHIR (Observation / RiskAssessment)</span>
+            <span>
+              {vertical === 'hr'
+                ? 'Persist results to HRIS staging (exceptions + audit record)'
+                : 'Persist results to FHIR (Observation / RiskAssessment)'}
+            </span>
           </label>
           <label className="checkbox-option">
             <input
@@ -983,7 +1145,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
     <>
       <div className="config-description">
         Generates a concise clinical summary for handoffs or outreach using approved templates and
-        Gravity NLP — not a substitute for clinician review.
+        Clinical NLP — not a substitute for clinician review.
       </div>
       {action?.description && (
         <div className="config-section config-summary-box">
@@ -1082,13 +1244,22 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
         </select>
       </div>
       <div className="config-section">
-        <label className="config-label">PHI level*</label>
+        <label className="config-label">{vertical === 'hr' ? 'Data sensitivity*' : 'PHI level*'}</label>
         <select
           value={config.exportPhiLevel}
           onChange={(e) => setConfig({ ...config, exportPhiLevel: e.target.value })}
         >
-          <option value="minimum-necessary">Minimum necessary</option>
-          <option value="de-identified">Limited data set / de-identified</option>
+          {vertical === 'hr' ? (
+            <>
+              <option value="minimum-necessary">Workforce — minimum necessary</option>
+              <option value="de-identified">Aggregated / de-identified extract</option>
+            </>
+          ) : (
+            <>
+              <option value="minimum-necessary">Minimum necessary</option>
+              <option value="de-identified">Limited data set / de-identified</option>
+            </>
+          )}
         </select>
       </div>
     </>
@@ -1201,11 +1372,12 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
     </>
   );
 
-  const renderGenericHealthcareConfig = (act) => (
+  const renderGenericStepConfig = (act) => (
     <>
       <div className="config-description">
-        Configure how this step behaves when the flow runs. Defaults below are typical for Gravity
-        healthcare automation; adjust to match your org standards.
+        {vertical === 'hr'
+          ? 'Configure how this step behaves when the HR workflow runs. Defaults are typical for people operations and talent teams; adjust to match your org standards.'
+          : 'Configure how this step behaves when the flow runs. Defaults below are typical for many healthcare automation setups; adjust to match your org standards.'}
       </div>
       {act?.description && (
         <div className="config-section config-summary-box">
@@ -1245,7 +1417,11 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
           rows={4}
           value={config.stepNotes}
           onChange={(e) => setConfig({ ...config, stepNotes: e.target.value })}
-          placeholder="e.g. interface ID, Epic routing queue, payer-specific rule…"
+          placeholder={
+            vertical === 'hr'
+              ? 'e.g. HRIS interface ID, Workday routing queue, policy version…'
+              : 'e.g. interface ID, Epic routing queue, payer-specific rule…'
+          }
         />
       </div>
     </>
@@ -1368,7 +1544,7 @@ const ActionConfigPanel = ({ action, stepNumber, onClose, onSave }) => {
       return renderReportConfig();
     }
 
-    return renderGenericHealthcareConfig(action);
+    return renderGenericStepConfig(action);
   };
 
   return (

@@ -1,0 +1,175 @@
+/**
+ * Marketing workspace: home quick templates, discover cards, and recipe-style metadata.
+ * Flows use the same action ids as healthcare so config panels behave consistently.
+ */
+
+const T = {
+  campaignEnds: {
+    id: 'campaign-ends',
+    name: 'When campaign ends',
+    description: 'Paid, lifecycle, or nurture campaign reaches its end date',
+    icon: 'Flag',
+    color: '#7C3AED',
+  },
+  weekly: {
+    id: 'on-schedule',
+    name: 'On a schedule',
+    description: 'Weekly digest for intel or reporting',
+    icon: 'Clock',
+    color: '#0284C7',
+  },
+  contentPublished: {
+    id: 'content-published',
+    name: 'When long-form content is published',
+    description: 'Blog, guide, or pillar page goes live in the CMS',
+    icon: 'FileText',
+    color: '#059669',
+  },
+  briefUploaded: {
+    id: 'brief-uploaded',
+    name: 'When marketing brief is uploaded',
+    description: 'Brief doc or form lands in shared workspace',
+    icon: 'Upload',
+    color: '#D97706',
+  },
+  experimentDone: {
+    id: 'experiment-concludes',
+    name: 'When A/B experiment concludes',
+    description: 'Test window closed or significance threshold met',
+    icon: 'FlaskConical',
+    color: '#7C3AED',
+  },
+  eventEnds: {
+    id: 'webinar-ends',
+    name: 'When webinar or field event ends',
+    description: 'Session completed in webinar or events platform',
+    icon: 'Video',
+    color: '#0284C7',
+  },
+};
+
+export const MARKETING_FLOW_TEMPLATES = [
+  {
+    id: 'mkt-post-campaign-debrief',
+    category: 'Campaign performance',
+    title: 'Post-campaign debrief',
+    description: 'Pull results, summarize learnings, and package a stakeholder deck',
+    icons: ['BarChart3', 'Mail', 'MessageCircle'],
+    color: '#7C3AED',
+    module: 'Campaign & lifecycle',
+    stack: 'Analytics + Claude + Slides',
+    outputSummary: 'Debrief deck with learnings',
+    trigger: T.campaignEnds,
+    actions: [
+      { id: 'export-csv', name: 'Export campaign metrics CSV', description: 'Pull channel and conversion metrics', icon: 'Download', color: '#64748b', module: 'Analytics' },
+      { id: 'send-email', name: 'Email debrief outline', description: 'Send recap request to channel owners', icon: 'Mail', color: '#7C3AED', module: null },
+      { id: 'send-teams', name: 'Post recap to Marketing Teams', description: 'Share highlights and next tests', icon: 'MessageCircle', color: '#5558af', module: null },
+    ],
+  },
+  {
+    id: 'mkt-competitor-monitoring',
+    category: 'Market intelligence',
+    title: 'Competitor monitoring',
+    description: 'Scheduled scan of positioning, pricing, and launches into one brief',
+    icons: ['Search', 'Mail', 'FileText'],
+    color: '#0284C7',
+    module: 'Brand & insights',
+    stack: 'Web search + Claude + Notion',
+    outputSummary: 'Structured intel brief',
+    trigger: T.weekly,
+    actions: [
+      { id: 'send-slack', name: 'Post intel summary to Slack', description: 'Alert #competitive-intel with digest', icon: 'MessageSquare', color: '#4a154b', module: null },
+      { id: 'send-email', name: 'Email weekly brief', description: 'Send structured brief to GTM list', icon: 'Mail', color: '#0284C7', module: null },
+      { id: 'export-csv', name: 'Export tracked signals CSV', description: 'Append pricing and feature notes', icon: 'Download', color: '#64748b', module: null },
+    ],
+  },
+  {
+    id: 'mkt-content-repurposing',
+    category: 'Content engine',
+    title: 'Content repurposing',
+    description: 'From one long-form asset, draft multi-channel snippets and schedules',
+    icons: ['Layers', 'MessageSquare', 'Send'],
+    color: '#059669',
+    module: 'Content & distribution',
+    stack: 'Claude + Buffer/LinkedIn',
+    outputSummary: '5 formats from 1 source',
+    trigger: T.contentPublished,
+    actions: [
+      { id: 'send-email', name: 'Notify content pod', description: 'Kick off repurposing checklist', icon: 'Mail', color: '#059669', module: null },
+      { id: 'in-app-notification', name: 'Notify editors in CMS', description: 'In-app task for social and newsletter owners', icon: 'Bell', color: '#1B2B5E', module: null },
+      { id: 'send-slack', name: 'Drop snippet pack in Slack', description: 'Share draft hooks and CTAs', icon: 'MessageSquare', color: '#4a154b', module: null },
+    ],
+  },
+  {
+    id: 'mkt-brief-to-copy',
+    category: 'Brand & creative',
+    title: 'Brief → copy',
+    description: 'Turn an approved brief into on-brand copy blocks for key channels',
+    icons: ['FileText', 'Sparkles', 'Mail'],
+    color: '#D97706',
+    module: 'Brand & insights',
+    stack: 'Claude + brand skill',
+    outputSummary: 'On-brand copy across formats',
+    trigger: T.briefUploaded,
+    actions: [
+      { id: 'create-care-task', name: 'Create copy review task', description: 'Assign brand reviewer before publish', icon: 'ClipboardCheck', color: '#D97706', module: 'Brand' },
+      { id: 'send-email', name: 'Email draft to stakeholders', description: 'Share copy doc for async feedback', icon: 'Mail', color: '#D97706', module: null },
+      { id: 'in-app-notification', name: 'Notify requestor', description: 'Brief owner notified when draft is ready', icon: 'Bell', color: '#1B2B5E', module: null },
+    ],
+  },
+  {
+    id: 'mkt-ab-readout',
+    category: 'Experimentation',
+    title: 'A/B test readout',
+    description: 'Consolidate experiment metrics and a clear ship / iterate recommendation',
+    icons: ['BarChart3', 'CheckCircle', 'FileText'],
+    color: '#7C3AED',
+    module: 'Campaign & lifecycle',
+    stack: 'Analytics + Claude + Docs',
+    outputSummary: 'Stat summary + recommendation',
+    trigger: T.experimentDone,
+    actions: [
+      { id: 'run-data-quality-check', name: 'Validate experiment data', description: 'Check assignment and exposure integrity', icon: 'CheckSquare', color: '#64748b', module: 'Analytics' },
+      { id: 'export-csv', name: 'Export results CSV', description: 'Variants, lifts, and guardrail metrics', icon: 'Download', color: '#64748b', module: null },
+      { id: 'send-teams', name: 'Post readout to experiment channel', description: 'Share decision and next steps', icon: 'MessageCircle', color: '#5558af', module: null },
+    ],
+  },
+  {
+    id: 'mkt-event-follow-up',
+    category: 'Lifecycle',
+    title: 'Event follow-up',
+    description: 'After a webinar or field event, trigger segmented nurture and recap',
+    icons: ['Video', 'Users', 'Mail'],
+    color: '#0284C7',
+    module: 'Campaign & lifecycle',
+    stack: 'CRM + Claude + Email',
+    outputSummary: 'Segmented nurture + recap email',
+    trigger: T.eventEnds,
+    actions: [
+      { id: 'send-email', name: 'Send recap email series', description: 'Attendee vs no-show branches', icon: 'Mail', color: '#0284C7', module: null },
+      { id: 'create-care-task', name: 'Create SDR follow-up tasks', description: 'High-intent accounts to call list', icon: 'ClipboardCheck', color: '#0284C7', module: 'Sales' },
+      { id: 'send-sms', name: 'Optional SMS nudge', description: 'Reminder for booked follow-up meetings', icon: 'Smartphone', color: '#059669', module: null },
+    ],
+  },
+];
+
+export const MARKETING_MODULES = [
+  { name: 'Campaign & lifecycle', icon: 'Megaphone', color: '#7C3AED' },
+  { name: 'Content & distribution', icon: 'Layers', color: '#059669' },
+  { name: 'Brand & insights', icon: 'Lightbulb', color: '#D97706' },
+];
+
+export const MARKETING_AI_SUGGESTIONS = [
+  { query: 'debrief', suggestion: 'Post-campaign debrief', template: 'mkt-post-campaign-debrief' },
+  { query: 'campaign', suggestion: 'Post-campaign debrief', template: 'mkt-post-campaign-debrief' },
+  { query: 'competitor', suggestion: 'Competitor monitoring', template: 'mkt-competitor-monitoring' },
+  { query: 'intel', suggestion: 'Competitor monitoring', template: 'mkt-competitor-monitoring' },
+  { query: 'repurpose', suggestion: 'Content repurposing', template: 'mkt-content-repurposing' },
+  { query: 'linkedin', suggestion: 'Content repurposing', template: 'mkt-content-repurposing' },
+  { query: 'brief', suggestion: 'Brief → copy', template: 'mkt-brief-to-copy' },
+  { query: 'copy', suggestion: 'Brief → copy', template: 'mkt-brief-to-copy' },
+  { query: 'ab test', suggestion: 'A/B test readout', template: 'mkt-ab-readout' },
+  { query: 'experiment', suggestion: 'A/B test readout', template: 'mkt-ab-readout' },
+  { query: 'webinar', suggestion: 'Event follow-up', template: 'mkt-event-follow-up' },
+  { query: 'event', suggestion: 'Event follow-up', template: 'mkt-event-follow-up' },
+];

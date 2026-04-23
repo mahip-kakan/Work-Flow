@@ -1,6 +1,8 @@
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
 import { ArrowLeft, HelpCircle } from 'lucide-react';
+import { hrModuleConfigs, HR_PILLAR_DEFAULT } from '../data/hrProductFlows.js';
+import { marketingModuleConfigs, MARKETING_PILLAR_DEFAULT } from '../data/marketingProductFlows.js';
 
 // Population Health pre-built agent templates
 const populationHealthAgents = [
@@ -66,7 +68,7 @@ const populationHealthAgents = [
       {
         id: 'invoke-care-gap-agent',
         name: 'Invoke Care Gap Agent',
-        description: 'Run HMCP Care Gap Agent across patient cohort',
+        description: 'Run care gap agent across patient cohort (AI)',
         icon: 'ClipboardList',
         color: '#7C3AED',
         module: 'AI Studio'
@@ -113,7 +115,7 @@ const populationHealthAgents = [
       {
         id: 'invoke-patient-outreach-agent',
         name: 'Invoke Patient Outreach Agent',
-        description: 'Run HMCP Outreach Agent to personalize retry message',
+        description: 'Run patient outreach agent to personalize retry message (AI)',
         icon: 'PhoneCall',
         color: '#7C3AED',
         module: 'AI Studio'
@@ -129,7 +131,7 @@ const populationHealthAgents = [
       {
         id: 'in-app-notification',
         name: 'Push in-app notification',
-        description: 'Alert care coordinator inside Gravity',
+        description: 'Alert care coordinator in the care coordination app',
         icon: 'Bell',
         color: '#1B2B5E',
         module: null
@@ -344,7 +346,7 @@ const clinicalCareAgents = [
       {
         id: 'in-app-notification',
         name: 'Push in-app notification',
-        description: 'Alert care coordinator inside Gravity',
+        description: 'Alert care coordinator in the care coordination app',
         icon: 'Bell',
         color: '#1B2B5E',
         module: null
@@ -1355,8 +1357,20 @@ const moduleConfigs = {
   }
 };
 
-const ProductFlowsView = ({ productName, onBack, onSelectFlow, onCreateFromTemplate, onShowHelp }) => {
-  const config = moduleConfigs[productName] || moduleConfigs['Population Health'];
+const ProductFlowsView = ({
+  vertical = 'healthcare',
+  productName,
+  onBack,
+  onSelectFlow,
+  onCreateFromTemplate,
+  onShowHelp
+}) => {
+  const config =
+    vertical === 'hr'
+      ? hrModuleConfigs[productName] || hrModuleConfigs[HR_PILLAR_DEFAULT]
+      : vertical === 'marketing'
+        ? marketingModuleConfigs[productName] || marketingModuleConfigs[MARKETING_PILLAR_DEFAULT]
+        : moduleConfigs[productName] || moduleConfigs['Population Health'];
   const IconComponent = LucideIcons[config.icon];
 
   return (

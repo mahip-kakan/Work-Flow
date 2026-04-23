@@ -2,8 +2,8 @@
 :root {
   --primary-blue: #1B2B5E;
   --primary-dark: #111C3D;
-  --gravity-purple: #7C3AED;
-  --gravity-purple-light: #8B5CF6;
+  --accent-purple: #7C3AED;
+  --accent-purple-light: #8B5CF6;
   --health-green: #059669;
   --data-blue: #0284C7;
   --alert-red: #DC2626;
@@ -111,6 +111,38 @@ input, select, textarea {
   color: var(--text-primary);
 }
 
+.header-vertical-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-light);
+}
+
+.header-vertical-toggle button {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.header-vertical-toggle button:hover {
+  background: var(--border-light);
+  color: var(--text-primary);
+}
+
+.header-vertical-toggle button.active {
+  background: var(--primary-blue);
+  color: #fff;
+}
+
 .header-right {
   display: flex;
   align-items: center;
@@ -185,7 +217,7 @@ input, select, textarea {
 
 .client-option.active {
   background: #ede9fe;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .radio-dot {
@@ -197,14 +229,14 @@ input, select, textarea {
 }
 
 .client-option.active .radio-dot {
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 
 .client-option.active .radio-dot::after {
   content: '';
   position: absolute;
   inset: 3px;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   border-radius: 50%;
 }
 
@@ -291,7 +323,7 @@ input, select, textarea {
 .logo-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--gravity-purple) 100%);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-purple) 100%);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -351,7 +383,7 @@ input, select, textarea {
 
 .nav-item.active {
   background: #ede9fe;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .sidebar-bottom {
@@ -407,7 +439,7 @@ input, select, textarea {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--gravity-purple) 100%);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -485,8 +517,8 @@ input, select, textarea {
 }
 
 .knowledge-base-select:hover {
-  border-color: var(--gravity-purple);
-  color: var(--gravity-purple);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
 }
 
 .knowledge-base-chevron {
@@ -555,7 +587,7 @@ input, select, textarea {
 .knowledge-base-option:hover,
 .knowledge-base-option[aria-selected="true"] {
   background: rgba(124, 58, 237, 0.08);
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .knowledge-base-option svg {
@@ -565,7 +597,7 @@ input, select, textarea {
 
 .knowledge-base-option:hover svg,
 .knowledge-base-option[aria-selected="true"] svg {
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .ai-chat-btn {
@@ -582,7 +614,7 @@ input, select, textarea {
 }
 
 .ai-chat-btn:hover {
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   transform: scale(1.05);
 }
@@ -705,7 +737,7 @@ input, select, textarea {
 
 .turn-on-btn {
   padding: 8px 16px;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   border-radius: 18px;
   font-size: 13px;
@@ -748,7 +780,7 @@ input, select, textarea {
 }
 
 .product-pill:hover {
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
   box-shadow: var(--shadow-md);
 }
 
@@ -970,7 +1002,7 @@ input, select, textarea {
 
 .view-all-btn {
   font-size: 13px;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   font-weight: 500;
 }
 
@@ -1173,8 +1205,8 @@ input, select, textarea {
 
 .preset-btn.active {
   background: #ede9fe;
-  border-color: var(--gravity-purple);
-  color: var(--gravity-purple);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
 }
 
 .datetime-row {
@@ -1241,8 +1273,8 @@ input, select, textarea {
 
 .timezone-select {
   background: #ede9fe;
-  border-color: var(--gravity-purple) !important;
-  color: var(--gravity-purple);
+  border-color: var(--accent-purple) !important;
+  color: var(--accent-purple);
 }
 
 .threshold-input {
@@ -1345,13 +1377,13 @@ input, select, textarea {
 
 .variable-chip:hover {
   background: #ede9fe;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .add-recipient-btn {
   margin-top: 8px;
   font-size: 13px;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   font-weight: 500;
 }
 
@@ -1368,7 +1400,7 @@ input, select, textarea {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   font-size: 14px;
   font-weight: 500;
 }
@@ -1379,7 +1411,7 @@ input, select, textarea {
 
 /* ===== Flow Node Selected State ===== */
 .flow-node.selected {
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
   box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
 }
 
@@ -1388,7 +1420,7 @@ input, select, textarea {
 }
 
 .flow-node.clickable:hover {
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 
 /* ===== Flow Header ===== */
@@ -1538,7 +1570,7 @@ input, select, textarea {
   background: #f5f3ff;
   border: 2px dashed #c4b5fd;
   border-radius: var(--radius-md);
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   font-size: 15px;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -1546,7 +1578,7 @@ input, select, textarea {
 
 .choose-step-btn:hover {
   background: #ede9fe;
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 
 /* ===== Connection Line ===== */
@@ -1813,7 +1845,7 @@ input, select, textarea {
 
 .category-pill.active {
   background: #ede9fe;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .panel-content {
@@ -1903,7 +1935,7 @@ input, select, textarea {
 
 .action-item:hover {
   background: var(--border-light);
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 
 .action-icon {
@@ -2013,7 +2045,7 @@ input, select, textarea {
 
 .product-card:hover {
   box-shadow: var(--shadow-md);
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
   transform: translateY(-2px);
 }
 
@@ -2212,7 +2244,7 @@ input, select, textarea {
 }
 
 .back-link:hover {
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .product-header {
@@ -2376,7 +2408,7 @@ input, select, textarea {
 .use-template-btn {
   flex: 1;
   padding: 10px 16px;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   border-radius: var(--radius-sm);
   font-size: 13px;
@@ -2404,7 +2436,7 @@ input, select, textarea {
   color: var(--text-primary);
 }
 
-/* ===== Gravity Compliance Badge ===== */
+/* ===== Compliance badge strip ===== */
 .compliance-strip {
   display: flex;
   align-items: center;
@@ -2609,8 +2641,8 @@ input, select, textarea {
 }
 
 .help-tab.active {
-  color: var(--gravity-purple);
-  border-bottom-color: var(--gravity-purple);
+  color: var(--accent-purple);
+  border-bottom-color: var(--accent-purple);
 }
 
 .help-content {
@@ -2658,7 +2690,7 @@ input, select, textarea {
   content: '•';
   position: absolute;
   left: 8px;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   font-weight: bold;
 }
 
@@ -2680,7 +2712,7 @@ input, select, textarea {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   display: flex;
   align-items: center;
@@ -2739,7 +2771,7 @@ input, select, textarea {
   content: '→';
   position: absolute;
   left: 0;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .help-template-btn {
@@ -2757,9 +2789,9 @@ input, select, textarea {
 }
 
 .help-template-btn:hover {
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 
 .flow-card-actions {
@@ -3040,7 +3072,7 @@ input, select, textarea {
 .test-run-btn {
   width: 100%;
   padding: 12px 24px;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   border-radius: var(--radius-md);
   font-weight: 600;
@@ -3052,7 +3084,7 @@ input, select, textarea {
 }
 
 .test-run-btn:hover:not(:disabled) {
-  background: var(--gravity-purple-light);
+  background: var(--accent-purple-light);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -3191,7 +3223,7 @@ input, select, textarea {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gravity-purple), var(--gravity-purple-light));
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-light));
   color: white;
   display: flex;
   align-items: center;
@@ -3260,7 +3292,7 @@ input, select, textarea {
 }
 
 .chat-message.bot .message-avatar {
-  background: linear-gradient(135deg, var(--gravity-purple), var(--gravity-purple-light));
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-light));
   color: white;
 }
 
@@ -3304,7 +3336,7 @@ input, select, textarea {
 
 .message-text strong {
   font-weight: 600;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   font-size: 15px;
 }
 
@@ -3324,7 +3356,7 @@ input, select, textarea {
 .create-agent-btn {
   margin-top: 12px;
   padding: 10px 16px;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   border-radius: var(--radius-md);
   font-size: 13px;
@@ -3338,7 +3370,7 @@ input, select, textarea {
 }
 
 .create-agent-btn:hover {
-  background: var(--gravity-purple-light);
+  background: var(--accent-purple-light);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -3394,7 +3426,7 @@ input, select, textarea {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   display: flex;
   align-items: center;
@@ -3406,7 +3438,7 @@ input, select, textarea {
 }
 
 .chat-send-btn:hover:not(:disabled) {
-  background: var(--gravity-purple-light);
+  background: var(--accent-purple-light);
   transform: scale(1.05);
 }
 
@@ -3441,9 +3473,9 @@ input, select, textarea {
 }
 
 .suggestion-chip:hover {
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 
 /* ===== Chat Assistant Button ===== */
@@ -3454,7 +3486,7 @@ input, select, textarea {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gravity-purple), var(--gravity-purple-light));
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-light));
   color: white;
   border: none;
   box-shadow: var(--shadow-lg);
@@ -3558,7 +3590,7 @@ input, select, textarea {
 }
 
 .glossary-icon {
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
 }
 
 .glossary-title-section h1 {
@@ -3721,8 +3753,8 @@ input, select, textarea {
 .term-badge {
   font-size: 11px;
   padding: 2px 8px;
-  background: var(--gravity-purple) + '15';
-  color: var(--gravity-purple);
+  background: var(--accent-purple) + '15';
+  color: var(--accent-purple);
   border-radius: 10px;
   font-weight: 500;
 }
@@ -3776,7 +3808,7 @@ input, select, textarea {
   background: var(--bg-light);
   padding: 16px;
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--gravity-purple);
+  border-left: 3px solid var(--accent-purple);
 }
 
 .term-example p {
@@ -3790,7 +3822,7 @@ input, select, textarea {
   padding: 20px;
   background: var(--bg-light);
   border-radius: var(--radius-md);
-  border-left: 4px solid var(--gravity-purple);
+  border-left: 4px solid var(--accent-purple);
 }
 
 .footer-info {
@@ -3800,7 +3832,7 @@ input, select, textarea {
 }
 
 .footer-info svg {
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -3839,5 +3871,137 @@ input, select, textarea {
 
   .term-details {
     padding: 0 16px 12px 16px;
+  }
+}
+
+/* ===== Marketing recipes (home / embedded) ===== */
+.marketing-recipes-view {
+  padding: 40px 48px 56px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.marketing-recipes-view--embedded {
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+.marketing-recipe-card__category {
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.marketing-recipe-card__actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.marketing-recipe-card__actions .turn-on-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.marketing-recipes-view__header {
+  margin-bottom: 32px;
+}
+
+.marketing-recipes-view__header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+}
+
+.marketing-recipes-view__subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 640px;
+}
+
+.marketing-recipes-view__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.marketing-recipe-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  padding: 22px 24px;
+  background: var(--bg-white);
+  border: 1px solid #e8e8ec;
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.marketing-recipe-card:hover {
+  border-color: #d4d4dc;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.marketing-recipe-card__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 16px;
+  line-height: 1.3;
+}
+
+.marketing-recipe-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.marketing-recipe-card__body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.marketing-recipe-card__label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.marketing-recipe-card__pill {
+  align-self: flex-start;
+  margin-top: 20px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #57534e;
+  background: #f5f0e8;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 1024px) {
+  .marketing-recipes-view__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .marketing-recipes-view {
+    padding: 24px 20px 40px;
+  }
+
+  .marketing-recipes-view__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .marketing-recipes-view__header h1 {
+    font-size: 22px;
   }
 }

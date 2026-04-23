@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { X, Plus, Play } from 'lucide-react';
 
-const SUITES = ['Glossary accuracy', 'Template routing', 'Prompt regression', 'Custom'];
+function suitesForVertical(vertical) {
+  if (vertical === 'hr') {
+    return ['HR glossary accuracy', 'HR template routing', 'TA handoff prompts', 'Custom'];
+  }
+  if (vertical === 'marketing') {
+    return ['Brand & campaign glossary', 'Recipe template routing', 'Copy / CTA prompts', 'Custom'];
+  }
+  return ['Glossary accuracy', 'Template routing', 'Prompt regression', 'Custom'];
+}
 
-export default function NewEvalPanel({ onClose, onSave }) {
+export default function NewEvalPanel({ vertical = 'healthcare', onClose, onSave }) {
+  const suites = useMemo(() => suitesForVertical(vertical), [vertical]);
   const [name, setName] = useState('');
-  const [suite, setSuite] = useState(SUITES[0]);
+  const [suite, setSuite] = useState(() => suitesForVertical(vertical)[0]);
+
+  useEffect(() => {
+    setSuite(suites[0]);
+  }, [suites]);
   const [testCases, setTestCases] = useState([
     { input: '', expected: '' },
   ]);
@@ -40,13 +53,19 @@ export default function NewEvalPanel({ onClose, onSave }) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Glossary — insurance terms"
+              placeholder={
+                vertical === 'marketing'
+                  ? 'e.g. Recipe routing — campaign debriefs'
+                  : vertical === 'hr'
+                    ? 'e.g. HR glossary — requisitions & onboarding'
+                    : 'e.g. Glossary — insurance terms'
+              }
             />
           </div>
           <div className="form-group">
             <label>Suite</label>
             <select value={suite} onChange={(e) => setSuite(e.target.value)}>
-              {SUITES.map((s) => (
+              {suites.map((s) => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
@@ -64,7 +83,13 @@ export default function NewEvalPanel({ onClose, onSave }) {
                   type="text"
                   value={tc.input}
                   onChange={(e) => updateCase(i, 'input', e.target.value)}
-                  placeholder="User input (e.g. What is a deductible?)"
+                  placeholder={
+                    vertical === 'marketing'
+                      ? 'User input (e.g. post-campaign debrief when the campaign ends)'
+                      : vertical === 'hr'
+                        ? 'User input (e.g. What is a requisition?)'
+                        : 'User input (e.g. What is a deductible?)'
+                  }
                 />
                 <input
                   type="text"

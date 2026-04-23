@@ -31,11 +31,11 @@
       "locked": false,
       "fontSize": 28,
       "fontFamily": 2,
-      "text": "Gravity healthcare AI — HMCP & platform architecture",
+      "text": "Healthcare automation — architecture overview",
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Gravity healthcare AI — HMCP & platform architecture",
+      "originalText": "Healthcare automation — architecture overview",
       "lineHeight": 1.25
     },
     {
@@ -66,11 +66,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "HMCP = Healthcare Model Context Protocol (Innovaccer) · extends MCP for regulated multi-agent coordination",
+      "text": "MCP in healthcare: extends Model Context Protocol for governed multi-agent coordination and PHI safeguards",
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "HMCP = Healthcare Model Context Protocol (Innovaccer) · extends MCP for regulated multi-agent coordination",
+      "originalText": "MCP in healthcare: extends Model Context Protocol for governed multi-agent coordination and PHI safeguards",
       "lineHeight": 1.25
     },
     {
@@ -190,11 +190,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "Gravity Flow Studio\n• Canvas: triggers, actions, templates\n• Discover / product flows\n• Role views (Dev / PM / Admin)\n• Testing dashboard hooks",
+      "text": "Health Flow\n• Canvas: triggers, actions, templates\n• Discover / product flows\n• Role views (Dev / PM / Admin)\n• Testing dashboard hooks",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Gravity Flow Studio\n• Canvas: triggers, actions, templates\n• Discover / product flows\n• Role views (Dev / PM / Admin)\n• Testing dashboard hooks",
+      "originalText": "Health Flow\n• Canvas: triggers, actions, templates\n• Discover / product flows\n• Role views (Dev / PM / Admin)\n• Testing dashboard hooks",
       "lineHeight": 1.25
     },
     {
@@ -252,11 +252,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "AI Assistant + Healthcare Glossary (demo)\n• Local glossary: HMCP, MCP, DAP, FHIR…\n• Template matching → create agent draft\n• Production: swap for LLM + tools\n\nGravity Search bar (landing): NL queries over data",
+      "text": "AI Assistant + Healthcare Glossary (demo)\n• Local glossary: MCP, FHIR, interoperability…\n• Template matching → create agent draft\n• Production: swap for LLM + tools\n\nSearch bar (landing): NL queries over governed data",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "AI Assistant + Healthcare Glossary (demo)\n• Local glossary: HMCP, MCP, DAP, FHIR…\n• Template matching → create agent draft\n• Production: swap for LLM + tools\n\nGravity Search bar (landing): NL queries over data",
+      "originalText": "AI Assistant + Healthcare Glossary (demo)\n• Local glossary: MCP, FHIR, interoperability…\n• Template matching → create agent draft\n• Production: swap for LLM + tools\n\nSearch bar (landing): NL queries over governed data",
       "lineHeight": 1.25
     },
     {
@@ -314,11 +314,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "Gravity AI Studio (product)\n• Build / deploy healthcare AI agents\n• Low-code agent + workflow authoring\n• Connects to platform services below\n• HMCP-aware agent coordination",
+      "text": "Health Flow (product)\n• Build / deploy healthcare AI agents\n• Low-code agent + workflow authoring\n• Connects to platform services below\n• MCP-aware governed agent coordination",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Gravity AI Studio (product)\n• Build / deploy healthcare AI agents\n• Low-code agent + workflow authoring\n• Connects to platform services below\n• HMCP-aware agent coordination",
+      "originalText": "Health Flow (product)\n• Build / deploy healthcare AI agents\n• Low-code agent + workflow authoring\n• Connects to platform services below\n• MCP-aware governed agent coordination",
       "lineHeight": 1.25
     },
     {
@@ -376,11 +376,11 @@
       "locked": false,
       "fontSize": 16,
       "fontFamily": 2,
-      "text": "2 · Agents & automation (HMCP-orchestrated examples)",
+      "text": "2 · Agents & automation (governed MCP-style examples)",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "2 · Agents & automation (HMCP-orchestrated examples)",
+      "originalText": "2 · Agents & automation (governed MCP-style examples)",
       "lineHeight": 1.25
     },
     {
@@ -438,11 +438,11 @@
       "locked": false,
       "fontSize": 13,
       "fontFamily": 2,
-      "text": "Care Gap Agent\n• Cohort / quality gaps\n• HEDIS-aligned signals\n• Hands off context via HMCP",
+      "text": "Care Gap Agent\n• Cohort / quality gaps\n• HEDIS-aligned signals\n• Hands off context via governed MCP layer",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Care Gap Agent\n• Cohort / quality gaps\n• HEDIS-aligned signals\n• Hands off context via HMCP",
+      "originalText": "Care Gap Agent\n• Cohort / quality gaps\n• HEDIS-aligned signals\n• Hands off context via governed MCP layer",
       "lineHeight": 1.25
     },
     {
@@ -562,11 +562,11 @@
       "locked": false,
       "fontSize": 13,
       "fontFamily": 2,
-      "text": "Clinical / ops agents\n• Readmission risk, discharge\n• ADT-triggered workflows\n• Same HMCP context bus",
+      "text": "Clinical / ops agents\n• Readmission risk, discharge\n• ADT-triggered workflows\n• Shared governed context bus (MCP-style)",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Clinical / ops agents\n• Readmission risk, discharge\n• ADT-triggered workflows\n• Same HMCP context bus",
+      "originalText": "Clinical / ops agents\n• Readmission risk, discharge\n• ADT-triggered workflows\n• Shared governed context bus (MCP-style)",
       "lineHeight": 1.25
     },
     {
@@ -686,11 +686,11 @@
       "locked": false,
       "fontSize": 16,
       "fontFamily": 2,
-      "text": "3 · HMCP — Healthcare Model Context Protocol (Innovaccer open standard)",
+      "text": "3 · Governed agent context (MCP in healthcare)",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "3 · HMCP — Healthcare Model Context Protocol (Innovaccer open standard)",
+      "originalText": "3 · Governed agent context (MCP in healthcare)",
       "lineHeight": 1.25
     },
     {
@@ -748,11 +748,11 @@
       "locked": false,
       "fontSize": 13,
       "fontFamily": 2,
-      "text": "HMCP Cloud Gateway\n• Agent ↔ agent messaging\n• Tool & data source registration\n• Session / tenant routing\n• Third-party agent onboarding",
+      "text": "Agent context gateway\n• Agent ↔ agent messaging\n• Tool & data source registration\n• Session / tenant routing\n• Third-party agent onboarding",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "HMCP Cloud Gateway\n• Agent ↔ agent messaging\n• Tool & data source registration\n• Session / tenant routing\n• Third-party agent onboarding",
+      "originalText": "Agent context gateway\n• Agent ↔ agent messaging\n• Tool & data source registration\n• Session / tenant routing\n• Third-party agent onboarding",
       "lineHeight": 1.25
     },
     {
@@ -872,11 +872,11 @@
       "locked": false,
       "fontSize": 13,
       "fontFamily": 2,
-      "text": "HMCP SDK + identity\n• EMPI / patient resolution hooks\n• Standard message envelopes\n• Tool schema contracts\n• Local dev + cloud attach",
+      "text": "Agent SDK + identity\n• EMPI / patient resolution hooks\n• Standard message envelopes\n• Tool schema contracts\n• Local dev + cloud attach",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "HMCP SDK + identity\n• EMPI / patient resolution hooks\n• Standard message envelopes\n• Tool schema contracts\n• Local dev + cloud attach",
+      "originalText": "Agent SDK + identity\n• EMPI / patient resolution hooks\n• Standard message envelopes\n• Tool schema contracts\n• Local dev + cloud attach",
       "lineHeight": 1.25
     },
     {
@@ -934,11 +934,11 @@
       "locked": false,
       "fontSize": 12,
       "fontFamily": 2,
-      "text": "Why HMCP vs plain MCP?\n• Same “tools + context” idea as MCP\n• Adds healthcare-grade controls\n• Multi-agent handoffs without ad-hoc glue\n• Interop across vendors / agents",
+      "text": "Why a healthcare layer on MCP?\n• Same “tools + context” idea as MCP\n• Adds healthcare-grade controls\n• Multi-agent handoffs without ad-hoc glue\n• Interop across vendors / agents",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Why HMCP vs plain MCP?\n• Same “tools + context” idea as MCP\n• Adds healthcare-grade controls\n• Multi-agent handoffs without ad-hoc glue\n• Interop across vendors / agents",
+      "originalText": "Why a healthcare layer on MCP?\n• Same “tools + context” idea as MCP\n• Adds healthcare-grade controls\n• Multi-agent handoffs without ad-hoc glue\n• Interop across vendors / agents",
       "lineHeight": 1.25
     },
     {
@@ -1182,11 +1182,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "Model runtime\n• Hosted or BYO LLM\n• HMCP wraps calls with policy\n• Tracing: prompts, tools, outcomes",
+      "text": "Model runtime\n• Hosted or BYO LLM\n• Policy wraps calls at the gateway\n• Tracing: prompts, tools, outcomes",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Model runtime\n• Hosted or BYO LLM\n• HMCP wraps calls with policy\n• Tracing: prompts, tools, outcomes",
+      "originalText": "Model runtime\n• Hosted or BYO LLM\n• Policy wraps calls at the gateway\n• Tracing: prompts, tools, outcomes",
       "lineHeight": 1.25
     },
     {
@@ -1244,11 +1244,11 @@
       "locked": false,
       "fontSize": 16,
       "fontFamily": 2,
-      "text": "5 · Data Activation Platform (DAP) + Unified Data Model",
+      "text": "5 · Healthcare data platform + Unified Data Model",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "5 · Data Activation Platform (DAP) + Unified Data Model",
+      "originalText": "5 · Healthcare data platform + Unified Data Model",
       "lineHeight": 1.25
     },
     {
@@ -1306,11 +1306,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "DAP services\n• Ingestion pipelines (batch + streaming)\n• Normalization → Unified Data Model\n• 100+ FHIR resources (APIs)\n• Gravity Search index / NL interface\n• Lineage, quality, master data (EMPI)",
+      "text": "Data platform services\n• Ingestion pipelines (batch + streaming)\n• Normalization → Unified Data Model\n• 100+ FHIR resources (APIs)\n• Search index / NL interface\n• Lineage, quality, master data (EMPI)",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "DAP services\n• Ingestion pipelines (batch + streaming)\n• Normalization → Unified Data Model\n• 100+ FHIR resources (APIs)\n• Gravity Search index / NL interface\n• Lineage, quality, master data (EMPI)",
+      "originalText": "Data platform services\n• Ingestion pipelines (batch + streaming)\n• Normalization → Unified Data Model\n• 100+ FHIR resources (APIs)\n• Search index / NL interface\n• Lineage, quality, master data (EMPI)",
       "lineHeight": 1.25
     },
     {
@@ -1368,11 +1368,11 @@
       "locked": false,
       "fontSize": 14,
       "fontFamily": 2,
-      "text": "Gravity Shield (cross-cutting)\n• HIPAA-oriented controls, encryption, RBAC/ABAC\n• Audit trails for data + agent actions\n• Tenant isolation, secrets, key mgmt\n• Applies to HMCP traffic, DAP APIs, and UIs",
+      "text": "Security & compliance (cross-cutting)\n• HIPAA-oriented controls, encryption, RBAC/ABAC\n• Audit trails for data + agent actions\n• Tenant isolation, secrets, key mgmt\n• Applies to agent traffic, data APIs, and UIs",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Gravity Shield (cross-cutting)\n• HIPAA-oriented controls, encryption, RBAC/ABAC\n• Audit trails for data + agent actions\n• Tenant isolation, secrets, key mgmt\n• Applies to HMCP traffic, DAP APIs, and UIs",
+      "originalText": "Security & compliance (cross-cutting)\n• HIPAA-oriented controls, encryption, RBAC/ABAC\n• Audit trails for data + agent actions\n• Tenant isolation, secrets, key mgmt\n• Applies to agent traffic, data APIs, and UIs",
       "lineHeight": 1.25
     },
     {
@@ -1430,11 +1430,11 @@
       "locked": false,
       "fontSize": 16,
       "fontFamily": 2,
-      "text": "6 · Source systems (ingested into DAP)",
+      "text": "6 · Source systems (ingested into data platform)",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "6 · Source systems (ingested into DAP)",
+      "originalText": "6 · Source systems (ingested into data platform)",
       "lineHeight": 1.25
     },
     {
@@ -1878,11 +1878,11 @@
       "locked": false,
       "fontSize": 12,
       "fontFamily": 2,
-      "text": "Data flow (simplified): Sources → DAP / UDM / FHIR → exposed as MCP tools & resources → HMCP governs multi-agent access → Agents & workflows in AI Studio / Flow Studio → end users.\n\nThis diagram is illustrative for the Gravity Flow Studio repo; adjust names to match your internal architecture & contracts.",
+      "text": "Data flow (simplified): Sources → data platform / UDM / FHIR → exposed as MCP tools & resources → gateway governs multi-agent access → Agents & workflows in Health Flow → end users.\n\nThis diagram is illustrative for the Health Flow repo; adjust names to match your internal architecture & contracts.",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Data flow (simplified): Sources → DAP / UDM / FHIR → exposed as MCP tools & resources → HMCP governs multi-agent access → Agents & workflows in AI Studio / Flow Studio → end users.\n\nThis diagram is illustrative for the Gravity Flow Studio repo; adjust names to match your internal architecture & contracts.",
+      "originalText": "Data flow (simplified): Sources → data platform / UDM / FHIR → exposed as MCP tools & resources → gateway governs multi-agent access → Agents & workflows in Health Flow → end users.\n\nThis diagram is illustrative for the Health Flow repo; adjust names to match your internal architecture & contracts.",
       "lineHeight": 1.25
     }
   ],

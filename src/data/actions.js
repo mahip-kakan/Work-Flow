@@ -1,4 +1,6 @@
-// Action configurations for Gravity AI Studio — Healthcare workflows
+// Action configurations for Health Flow — healthcare-oriented demo workflows
+import { hrActionCategories } from './actionsHr.js';
+
 export const actionCategories = [
   {
     id: 'notifications',
@@ -32,7 +34,7 @@ export const actionCategories = [
       {
         id: 'in-app-notification',
         name: 'Push in-app notification',
-        description: 'Bell notification inside Gravity platform',
+        description: 'Bell notification inside your care coordination platform',
         icon: 'Bell',
         color: '#1B2B5E',
         module: null
@@ -242,7 +244,7 @@ export const actionCategories = [
       {
         id: 'invoke-provider-copilot',
         name: 'Invoke Provider Copilot',
-        description: 'Run Gravity Provider Copilot for clinical note assistance',
+        description: 'Run clinical note assistance (AI copilot) for providers',
         icon: 'Stethoscope',
         color: '#7C3AED',
         module: 'AI Studio'
@@ -250,7 +252,7 @@ export const actionCategories = [
       {
         id: 'invoke-care-gap-agent',
         name: 'Invoke Care Gap Agent',
-        description: 'Run HMCP Care Gap Agent across patient cohort',
+        description: 'Run care gap agent across patient cohort (AI, governed context)',
         icon: 'ClipboardList',
         color: '#7C3AED',
         module: 'AI Studio'
@@ -266,7 +268,7 @@ export const actionCategories = [
       {
         id: 'invoke-patient-outreach-agent',
         name: 'Invoke Patient Outreach Agent',
-        description: 'Run HMCP Outreach Agent to personalize patient communications',
+        description: 'Run patient outreach agent to personalize communications (AI)',
         icon: 'PhoneCall',
         color: '#7C3AED',
         module: 'AI Studio'
@@ -274,7 +276,7 @@ export const actionCategories = [
       {
         id: 'invoke-scheduling-agent',
         name: 'Invoke Scheduling Agent',
-        description: 'Run Gravity Scheduling Agent to optimize appointment booking',
+        description: 'Run scheduling optimization agent for appointment booking (AI)',
         icon: 'CalendarCheck',
         color: '#7C3AED',
         module: 'AI Studio'
@@ -286,3 +288,7 @@ export const actionCategories = [
 export const getAllActions = () => {
   return actionCategories.flatMap(category => category.actions);
 };
+
+/** @param {'healthcare' | 'hr' | 'marketing'} vertical — marketing uses healthcare action library */
+export const getActionCategories = (vertical) =>
+  vertical === 'hr' ? hrActionCategories : actionCategories;

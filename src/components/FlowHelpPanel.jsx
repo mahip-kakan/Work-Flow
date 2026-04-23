@@ -52,9 +52,9 @@ const FlowHelpPanel = ({ flow, onClose }) => {
             {
               step: 4,
               title: 'Action 3: Send Teams Notification',
-              description: 'The care team receives an immediate notification via Microsoft Teams with a summary of the discharge, patient information, and a direct link to the care plan in Gravity.',
+              description: 'The care team receives an immediate notification via Microsoft Teams with a summary of the discharge, patient information, and a direct link to the care plan in your care coordination app.',
               technicalDetails: 'Notifications are sent via Microsoft Teams Graph API. The message includes an adaptive card with actionable buttons to view patient details, access care plan, and acknowledge receipt.',
-              dataPoints: ['Notification Recipients (care team members)', 'Message Content', 'Deep Links to Gravity', 'Patient Summary']
+              dataPoints: ['Notification Recipients (care team members)', 'Message Content', 'Deep links to care plan', 'Patient Summary']
             }
           ],
           executionFlow: 'The workflow executes sequentially: Trigger → Action 1 → Action 2 → Action 3. Each action must complete successfully before the next begins. If any action fails, the system retries up to 3 times with exponential backoff, and sends an alert to system administrators.',
@@ -85,6 +85,95 @@ const FlowHelpPanel = ({ flow, onClose }) => {
             'Workflow execution failures',
             'Delayed task assignments',
             'Unacknowledged notifications'
+          ]
+        }
+      },
+      'hr-1': {
+        overview: {
+          title: 'New Hire Onboarding Runbook',
+          description:
+            'When a start date is confirmed in HRIS, this workflow kicks off a standardized onboarding checklist, notifies the right channels in Teams, and sends a welcome email with first-day logistics.',
+          useCases: [
+            'Reduce missed provisioning steps before day one',
+            'Align IT, facilities, and the hiring manager on the same timeline',
+            'Give new hires a consistent welcome experience',
+            'Create an auditable trail of onboarding actions'
+          ],
+          benefits: [
+            'Faster time-to-productivity for new employees',
+            'Fewer “who owns this?” handoffs between HR and IT',
+            'Repeatable template you can clone per region or business unit',
+            'Clear notifications instead of ad-hoc email threads'
+          ]
+        },
+        howItWorks: {
+          steps: [
+            {
+              step: 1,
+              title: 'Trigger: Start date set',
+              description:
+                'The flow starts when HRIS marks a confirmed start date for a new hire (often after offer acceptance and background checks complete).',
+              technicalDetails:
+                'In a production setup this would subscribe to HRIS hire events or a daily reconciliation job; here it is modeled as a discrete trigger you can test manually.',
+              dataPoints: ['Employee ID', 'Legal name', 'Start date', 'Department', 'Manager', 'Work location']
+            },
+            {
+              step: 2,
+              title: 'Action 1: Create onboarding checklist',
+              description:
+                'Creates structured tasks for IT account creation, badge and building access, equipment shipment, and manager prep (e.g., 30-60-90 plan).',
+              technicalDetails:
+                'Tasks can map to your work management tool or stay in-app; assignment rules typically route by cost center or location.',
+              dataPoints: ['Task bundle ID', 'Owners', 'Due dates (T-14, T-7, T-1)', 'Priority', 'Linked requisition']
+            },
+            {
+              step: 3,
+              title: 'Action 2: Send Teams message',
+              description:
+                'Posts to an onboarding or hiring channel with employee name, start date, and deep links to the checklist.',
+              technicalDetails:
+                'Uses the same Teams integration pattern as clinical alerts; recipients are channel-based or @mentions for owners.',
+              dataPoints: ['Channel', 'Message body', 'Adaptive card (optional)', 'Acknowledgment tracking']
+            },
+            {
+              step: 4,
+              title: 'Action 3: Send welcome email',
+              description:
+                'Sends first-day logistics, parking, dress code, and links to required paperwork (tax forms, handbook acknowledgment, etc.).',
+              technicalDetails:
+                'Email templates usually pull merge fields from HRIS; avoid including sensitive IDs in the subject line.',
+              dataPoints: ['To address', 'Template ID', 'Merge fields', 'BCC for HR archive']
+            }
+          ],
+          executionFlow:
+            'Sequential: Trigger → checklist → Teams → email. Failures on messaging steps can retry while the checklist remains the system of record.',
+          timing: 'Typically completes in seconds; real-world provisioning may take hours or days outside this flow.',
+          errorHandling:
+            'If Teams or email fails, log the error, retry with backoff, and optionally open a People ops task for manual follow-up.'
+        },
+        configuration: {
+          triggerSettings: [
+            { setting: 'HRIS event source', value: 'Choose vendor feed or file-based import' },
+            { setting: 'Eligible hire types', value: 'FTE, contractor, intern filters' },
+            { setting: 'Location rules', value: 'Different checklists for remote vs on-site' }
+          ],
+          actionSettings: [
+            { setting: 'Checklist template', value: 'Pick default vs department-specific bundles' },
+            { setting: 'Teams routing', value: 'Map department or region to channels' },
+            { setting: 'Email template', value: 'Brand and locale variants' }
+          ]
+        },
+        monitoring: {
+          metrics: [
+            'Runs per week by region',
+            'Time from trigger to checklist completion',
+            'Teams and email delivery success rate',
+            'Manager satisfaction or onboarding survey scores'
+          ],
+          alerts: [
+            'Repeated failures on the same integration',
+            'Checklist tasks past due without owner',
+            'Spike in partial hires (start date changes)'
           ]
         }
       },
@@ -131,7 +220,7 @@ const FlowHelpPanel = ({ flow, onClose }) => {
             {
               step: 4,
               title: 'Action 3: Push In-App Notification',
-              description: 'Care coordinators receive an immediate in-app notification in Gravity with patient details, risk score, and recommended actions.',
+              description: 'Care coordinators receive an immediate in-app notification in the care coordination app with patient details, risk score, and recommended actions.',
               technicalDetails: 'Notifications use Firebase Cloud Messaging for real-time delivery. The notification includes deep links to patient record, care plan, and risk assessment details.',
               dataPoints: ['Notification Priority', 'Patient Summary', 'Risk Score', 'Recommended Actions', 'Deep Links']
             }

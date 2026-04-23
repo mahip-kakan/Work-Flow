@@ -244,71 +244,51 @@ const HealthcareGlossary = () => {
         example: 'A popular patient portal app where you can see your test results, appointments, and medical history.'
       }
     ],
-    'Gravity Platform & Tools': [
+    'Automation, interoperability, and AI': [
       {
-        term: 'Gravity AI Studio',
-        definition: 'A low-code studio to build, deploy, and scale healthcare-specific AI agents and workflows. Part of the Gravity platform that lets you create automation without heavy technical lift.',
-        example: 'Use AI Studio to create agents like "Post-Discharge Follow-Up" that automatically notify care teams when patients are discharged.'
-      },
-      {
-        term: 'Gravity Developer Studio',
-        definition: 'A platform to design, test, and launch production-ready healthcare applications. Provides tools for developers to build custom solutions on the Gravity platform.',
-        example: 'Developers use Developer Studio to create custom healthcare apps that integrate with EHR systems and other data sources.'
-      },
-      {
-        term: 'Gravity Data and Analytics Studio',
-        definition: 'A platform to manage, analyze, and govern healthcare data with ease. Coming soon - will provide self-serve analytics capabilities.',
-        example: 'Analysts will use this to explore healthcare data, create reports, and generate insights without needing deep technical skills.'
-      },
-      {
-        term: 'HMCP (Healthcare Model Context Protocol)',
-        definition: 'Innovaccer\'s open standard for connecting AI agents, tools, and healthcare data sources so they can exchange context securely and compliantly. It extends the Model Context Protocol (MCP) with healthcare-specific controls—policy-driven access, auditability, encryption, and safeguards around PHI—so multiple agents can coordinate clinical workflows without unsafe silos or one-off integrations.',
-        example: 'A care-gap agent and an outreach agent working the same patient can use HMCP for governed handoffs: they share the right clinical context through interoperable agent communication instead of duplicating queries or missing important information.'
+        term: 'Low-code workflow studio',
+        definition: 'A visual environment to compose healthcare automation from triggers (events) and actions (tasks, notifications, AI steps) with minimal custom code—suited for care pathways, population health, and operations.',
+        example: 'Build a "post-discharge follow-up" flow: when an ADT discharge fires, create tasks, notify the team in Teams, and attach the care plan link.'
       },
       {
         term: 'MCP (Model Context Protocol)',
-        definition: 'An open standard for how applications expose context, data, and tools to large language models, so assistants can retrieve information and take actions in a consistent, structured way. Innovaccer\'s HMCP (Healthcare Model Context Protocol) adapts this pattern for regulated healthcare—multi-agent coordination on Gravity and AI Studio with compliance-minded guardrails.',
-        example: 'Like a common plug pattern between an AI assistant and back-end systems; HMCP is the healthcare-specialized version for clinical and operational agents.'
+        definition: 'An open standard for how applications expose context, data, and tools to large language models so assistants can retrieve information and take actions in a consistent, structured way.',
+        example: 'Like a common plug pattern between an AI assistant and back-end systems: the model calls registered tools instead of ad-hoc APIs for each integration.'
       },
       {
-        term: 'Data Activation Platform (DAP)',
-        definition: 'The foundation of Innovaccer\'s Healthcare Intelligence Cloud. It unifies and activates healthcare data by integrating data from various sources, normalizing it using a Unified Data Model, and providing AI-powered insights.',
-        example: 'DAP takes data from your EHR, billing systems, and other sources, combines it into one unified view, and makes it ready for AI and analytics.'
+        term: 'MCP in regulated healthcare',
+        definition: 'Applying MCP-style patterns where PHI is involved: policy-driven access, encryption in transit and at rest, audit logs, consent and purpose-of-use checks, and clear boundaries between agents so clinical workflows stay traceable and compliant.',
+        example: 'A care-gap agent and an outreach agent working the same patient share only the context each is allowed to see, with handoffs logged for compliance review.'
       },
       {
-        term: 'Gravity Shield',
-        definition: 'Enterprise-grade security and compliance built specifically for healthcare. Includes role-based access controls, end-to-end encryption, and comprehensive audit trails. Purpose-built for healthcare, secure by design.',
-        example: 'Gravity Shield ensures patient data is protected with HIPAA compliance, encryption, and strict access controls so only authorized people can see sensitive information.'
-      },
-      {
-        term: 'Gravity Search',
-        definition: 'A tool that turns healthcare data into real-time insights through natural language search. Allows you to query healthcare data using plain English instead of complex SQL.',
-        example: 'Instead of writing SQL queries, you can ask "Show me all diabetic patients who haven\'t had their annual eye exam" and get instant results.'
+        term: 'Healthcare data integration',
+        definition: 'Pipelines and services that ingest, normalize, and link data from EHRs, claims, scheduling, and devices so analytics and automation run on a consistent view of patients and populations.',
+        example: 'Combine admission data from the hospital EHR with payer eligibility files to prioritize outreach for high-risk cohorts.'
       },
       {
         term: 'Unified Data Model',
-        definition: 'A standardized data schema that normalizes healthcare data from different sources (EHRs, billing systems, etc.) into a common format. This eliminates data silos and creates a single source of truth.',
-        example: 'Whether data comes from Epic, Cerner, or another system, the Unified Data Model converts it all to the same format so you can analyze it together.'
-      },
-      {
-        term: 'KLAS',
-        definition: 'An independent research firm that evaluates and ranks healthcare technology vendors. "Best in KLAS" is a prestigious award recognizing top-performing healthcare technology solutions.',
-        example: 'Gravity received "Best in KLAS 2026 Data and Analytics for Provider" - meaning healthcare providers rated it as the best data and analytics platform.'
-      },
-      {
-        term: 'Innovaccer',
-        definition: 'The company behind the Gravity platform. Innovaccer provides the Healthcare Intelligence Cloud that powers Gravity AI Studio, Developer Studio, and other healthcare technology solutions.',
-        example: 'Innovaccer is the technology company that built Gravity - the platform you\'re using to create healthcare automation agents.'
+        definition: 'A standardized data schema that normalizes healthcare data from different sources (EHRs, billing systems, etc.) into a common format. This reduces silos and supports one source of truth for reporting and automation.',
+        example: 'Whether data comes from Epic, Cerner, or another system, a unified model maps it to comparable fields so teams can analyze it together.'
       },
       {
         term: 'FHIR Resources',
-        definition: 'Standardized data formats defined by FHIR (Fast Healthcare Interoperability Resources) for exchanging healthcare information. Gravity provides 100+ FHIR resources for seamless data access.',
-        example: 'FHIR resources are like standardized containers for healthcare data - a "Patient" resource, "Encounter" resource, "Medication" resource, etc. Gravity supports 100+ of these.'
+        definition: 'Standardized data formats defined by FHIR (Fast Healthcare Interoperability Resources) for exchanging healthcare information. Many health systems expose dozens to hundreds of resource types via FHIR APIs.',
+        example: 'FHIR resources are like standardized containers for healthcare data—a Patient resource, Encounter resource, Medication resource, and so on.'
       },
       {
-        term: 'Gravity Studios',
-        definition: 'A collection of low-code platforms including AI Studio, Developer Studio, and Data and Analytics Studio. These studios provide point-and-click experiences for building healthcare solutions.',
-        example: 'Gravity Studios are the tools you use to build healthcare automation - like the AI Studio where you create agents and workflows.'
+        term: 'Security and compliance (healthcare IT)',
+        definition: 'Controls expected in regulated environments: role-based access, encryption, audit trails, tenant isolation, and alignment with frameworks such as HIPAA. Applies to workflows, APIs, and AI features that touch PHI.',
+        example: 'Only authorized roles see full clinical notes; every export and model call is logged with who, when, and why.'
+      },
+      {
+        term: 'Clinical and operational search',
+        definition: 'Natural-language or guided search over curated clinical and operational datasets so staff can answer questions without writing SQL—often backed by a governed semantic layer and access rules.',
+        example: 'Ask in plain language which diabetic patients are due for an eye exam this quarter, subject to the same access rules as the EHR.'
+      },
+      {
+        term: 'KLAS',
+        definition: 'An independent research firm that evaluates and ranks healthcare technology vendors. "Best in KLAS" is a widely cited recognition for solutions that score highly in provider satisfaction and outcomes.',
+        example: 'IT leaders often shortlist vendors using KLAS reports alongside security reviews and integration fit.'
       }
     ]
   };

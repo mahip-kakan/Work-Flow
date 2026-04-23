@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, User, Bell } from 'lucide-react';
+import { User, Bell } from 'lucide-react';
 
 const ROLES = [
   { id: 'developer', label: 'User' },
@@ -7,21 +7,9 @@ const ROLES = [
   { id: 'admin', label: 'Admin' },
 ];
 
-const orgs = [
-  { id: 'all', name: 'All Organizations' },
-  { id: 'optimus', name: 'Optimus Healthcare Partners' },
-  { id: 'geisinger', name: 'Geisinger Health' },
-  { id: 'banner', name: 'Banner Health' },
-  { id: 'trinity', name: 'Trinity Health' },
-  { id: 'cleveland', name: 'Cleveland Clinic' },
-  { id: 'kaiser', name: 'Kaiser Permanente' },
-];
-
-const Header = ({ selectedClient, onClientChange, userRole, onUserRoleChange }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+const Header = ({ userRole, onUserRoleChange, vertical, onVerticalChange }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const currentOrg = orgs.find(o => o.id === selectedClient) || orgs[1];
   const currentRole = ROLES.find((r) => r.id === userRole) || ROLES[0];
 
   return (
@@ -38,46 +26,39 @@ const Header = ({ selectedClient, onClientChange, userRole, onUserRoleChange }) 
               <circle cx="16" cy="16" r="3" fill="#7C3AED"/>
             </svg>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
-            <span className="logo-text" style={{ fontSize: 16, fontWeight: 700, color: '#1B2B5E', letterSpacing: '-0.3px' }}>Gravity</span>
-            <span style={{ fontSize: 10, color: '#7C3AED', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase' }}>AI Studio</span>
-          </div>
+          <span className="logo-text" style={{ fontSize: 17, fontWeight: 700, color: '#1B2B5E', letterSpacing: '-0.3px' }}>
+            Workflow Studio
+          </span>
         </div>
       </div>
 
-      <div className="header-right">
-        <div className="client-selector">
-          <span className="client-label">Org:</span>
+      {typeof onVerticalChange === 'function' && (
+        <div className="header-vertical-toggle" role="group" aria-label="Workspace">
           <button
-            className="client-dropdown-btn"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            type="button"
+            className={vertical === 'healthcare' ? 'active' : ''}
+            onClick={() => onVerticalChange('healthcare')}
           >
-            <span>{currentOrg.name}</span>
-            <ChevronDown size={16} className={isDropdownOpen ? 'rotated' : ''} />
+            Healthcare
           </button>
-
-          {isDropdownOpen && (
-            <>
-              <div className="dropdown-backdrop" onClick={() => setIsDropdownOpen(false)} />
-              <div className="client-dropdown">
-                {orgs.map(org => (
-                  <button
-                    key={org.id}
-                    className={`client-option ${org.id === selectedClient ? 'active' : ''}`}
-                    onClick={() => {
-                      onClientChange(org.id);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    <span className="radio-dot" />
-                    <span>{org.name}</span>
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
+          <button
+            type="button"
+            className={vertical === 'hr' ? 'active' : ''}
+            onClick={() => onVerticalChange('hr')}
+          >
+            HR
+          </button>
+          <button
+            type="button"
+            className={vertical === 'marketing' ? 'active' : ''}
+            onClick={() => onVerticalChange('marketing')}
+          >
+            Marketing
+          </button>
         </div>
+      )}
 
+      <div className="header-right">
         <button type="button" className="header-icon-btn notification-btn" title="Notifications">
           <Bell size={20} />
           <span className="notification-badge">3</span>

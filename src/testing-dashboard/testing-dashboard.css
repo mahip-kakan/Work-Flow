@@ -169,14 +169,14 @@
   background: var(--bg-light);
   border-radius: var(--radius-sm);
   margin-bottom: 8px;
-  border-left: 3px solid var(--gravity-purple);
+  border-left: 3px solid var(--accent-purple);
 }
 
 .workflow-step .order {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   display: flex;
   align-items: center;
@@ -244,7 +244,7 @@ table.data-table tr:hover { background: var(--bg-light); }
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .category-card:hover {
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
   box-shadow: var(--shadow-md);
 }
 .category-card-icon {
@@ -271,7 +271,7 @@ table.data-table tr:hover { background: var(--bg-light); }
 .category-card-cta {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--gravity-purple);
+  color: var(--accent-purple);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -359,12 +359,12 @@ table.data-table tr:hover { background: var(--bg-light); }
   font-size: 0.875rem;
   font-weight: 600;
   color: white;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
 }
-.btn-primary:hover { background: var(--gravity-purple-light); }
+.btn-primary:hover { background: var(--accent-purple-light); }
 .btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -475,7 +475,7 @@ tr:hover .btn-ghost.icon-btn { opacity: 1; }
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--gravity-purple);
+  border-color: var(--accent-purple);
 }
 .form-group-header {
   display: flex;
@@ -510,7 +510,7 @@ tr:hover .btn-ghost.icon-btn { opacity: 1; }
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--gravity-purple);
+  background: var(--accent-purple);
   color: white;
   display: flex;
   align-items: center;

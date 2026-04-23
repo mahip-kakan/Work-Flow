@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { actionCategories } from '../data/actions';
+import { getActionCategories } from '../data/actions';
 import * as LucideIcons from 'lucide-react';
 import { Search } from 'lucide-react';
 
-const ActionPanel = ({ onSelectAction, onClose }) => {
+const ActionPanel = ({ onSelectAction, onClose, vertical = 'healthcare' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const actionCategories = getActionCategories(vertical);
 
   const filteredCategories = actionCategories.map(category => ({
     ...category,

@@ -24,7 +24,7 @@ export default function AIModelTesting() {
       <div className="section-header">
         <div>
           <h2>
-            <Brain size={20} color="var(--gravity-purple)" />
+            <Brain size={20} color="var(--accent-purple)" />
             Category 2 — AI Model Testing
           </h2>
           <p className="subtitle">Regression, evals, and prompt testing for AI assistant outputs</p>

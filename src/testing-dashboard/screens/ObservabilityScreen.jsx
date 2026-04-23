@@ -1,22 +1,66 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { BarChart3, DollarSign, GitCompare, Plus, Trash2 } from 'lucide-react';
 import ScreenHeader from '../components/ScreenHeader';
 import InfoTooltip from '../components/InfoTooltip';
 
-const realtimeMetrics = [
+const realtimeMetricsHealthcare = [
   { name: 'Chat panel open rate', value: '34%', change: '+2% WoW' },
   { name: 'Messages per session', value: '3.2', change: '0%' },
   { name: 'Flow created from chat', value: '28%', change: '+5% WoW' },
   { name: 'Error rate (send message)', value: '0.1%', change: '-0.05%' },
 ];
 
-const costByFeature = [
+const realtimeMetricsHr = [
+  { name: 'HR chat panel open rate', value: '31%', change: '+1% WoW' },
+  { name: 'Messages per session', value: '2.9', change: '0%' },
+  { name: 'Flow created from chat (HR)', value: '24%', change: '+3% WoW' },
+  { name: 'Error rate (send message)', value: '0.12%', change: '-0.02%' },
+];
+
+const realtimeMetricsMarketing = [
+  { name: 'Marketing chat open rate', value: '29%', change: '+2% WoW' },
+  { name: 'Messages per session', value: '3.0', change: '0%' },
+  { name: 'Recipe deployed from chat', value: '31%', change: '+4% WoW' },
+  { name: 'Error rate (send message)', value: '0.09%', change: '-0.03%' },
+];
+
+const costHealthcare = [
   { feature: 'AI Chat (glossary + routing)', cost: '$1,200', share: '50%' },
   { feature: 'Landing suggestions', cost: '$600', share: '25%' },
   { feature: 'Evals / regression runs', cost: '$600', share: '25%' },
 ];
 
-export default function ObservabilityScreen({ onBack, onAddDriftCheck, onDriftDetail, driftChecks, onDeleteDriftCheck }) {
+const costHr = [
+  { feature: 'AI Chat (HR glossary + routing)', cost: '$980', share: '48%' },
+  { feature: 'HR landing & template hints', cost: '$620', share: '30%' },
+  { feature: 'Evals / regression runs', cost: '$450', share: '22%' },
+];
+
+const costMarketing = [
+  { feature: 'AI Chat (recipe + template routing)', cost: '$1,050', share: '47%' },
+  { feature: 'Home recipe cards & Deploy', cost: '$680', share: '30%' },
+  { feature: 'Evals / regression runs', cost: '$520', share: '23%' },
+];
+
+export default function ObservabilityScreen({
+  vertical = 'healthcare',
+  onBack,
+  onAddDriftCheck,
+  onDriftDetail,
+  driftChecks,
+  onDeleteDriftCheck,
+}) {
+  const realtimeMetrics = useMemo(() => {
+    if (vertical === 'hr') return realtimeMetricsHr;
+    if (vertical === 'marketing') return realtimeMetricsMarketing;
+    return realtimeMetricsHealthcare;
+  }, [vertical]);
+
+  const costByFeature = useMemo(() => {
+    if (vertical === 'hr') return costHr;
+    if (vertical === 'marketing') return costMarketing;
+    return costHealthcare;
+  }, [vertical]);
   const alertCount = driftChecks.filter(d => d.status === 'review').length;
 
   return (

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, ArrowRight, Zap, Users, TrendingUp, Heart, UserCheck, Smile, DollarSign, MessageCircle, Search, Briefcase, Globe } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
-import AIChatPanel from './AIChatPanel';
+import { HR_FEATURED_FLOWS, hrFeaturedToQuickTemplate } from '../data/hrFeaturedCopilotFlows';
+import { MARKETING_FLOW_TEMPLATES, MARKETING_MODULES, MARKETING_AI_SUGGESTIONS } from '../data/marketingTemplates';
 
 const quickTemplates = [
   {
@@ -85,17 +86,115 @@ const aiSuggestions = [
   { query: 'alert', suggestion: 'Readmission risk alert', template: 'readmission-risk-alert' },
 ];
 
+const hrQuickTemplates = [
+  ...HR_FEATURED_FLOWS.map(hrFeaturedToQuickTemplate),
+  {
+    id: 'hr-onboarding-runbook',
+    category: 'People ops',
+    title: 'New hire onboarding runbook',
+    description: 'T-minus tasks for IT, facilities, and manager when start date is confirmed',
+    icons: ['CalendarCheck', 'ClipboardCheck', 'MessageCircle'],
+    color: '#D97706',
+    trigger: {
+      id: 'start-date-set',
+      name: 'When start date is set',
+      description: 'Confirmed start date in HRIS; kick off provisioning checklist',
+      icon: 'CalendarCheck',
+      color: '#D97706'
+    },
+    actions: [
+      { id: 'create-care-task-hr-onboarding', name: 'Create onboarding checklist', icon: 'ClipboardCheck', color: '#D97706' },
+      { id: 'send-teams', name: 'Send Teams message', icon: 'MessageCircle', color: '#5558af' },
+      { id: 'send-email', name: 'Send welcome email', icon: 'Mail', color: '#D97706' }
+    ]
+  },
+  {
+    id: 'hr-offer-handoff',
+    category: 'Talent acquisition',
+    title: 'Offer accepted — onboarding handoff',
+    description: 'Notify People ops and IT when a candidate accepts an offer',
+    icons: ['UserCheck', 'ClipboardCheck', 'MessageCircle'],
+    color: '#059669',
+    trigger: {
+      id: 'offer-accepted',
+      name: 'When offer is accepted',
+      description: 'Candidate signed offer; handoff to People ops for onboarding',
+      icon: 'UserCheck',
+      color: '#059669'
+    },
+    actions: [
+      { id: 'send-hr-offer-email', name: 'Send welcome email', icon: 'Mail', color: '#059669' },
+      { id: 'create-care-task-hr-onboarding', name: 'Create People ops task', icon: 'ClipboardCheck', color: '#D97706' },
+      { id: 'send-teams', name: 'Notify IT provisioning', icon: 'MessageCircle', color: '#5558af' }
+    ]
+  },
+  {
+    id: 'hr-manager-triage',
+    category: 'HRBP',
+    title: 'Manager request triage',
+    description: 'Route manager requests to HRBP with Teams summary and follow-up task',
+    icons: ['UserPlus', 'ClipboardCheck', 'Bell'],
+    color: '#7C3AED',
+    trigger: {
+      id: 'manager-request-submitted',
+      name: 'When manager request is submitted',
+      description: 'Headcount change, backfill, or org change request from manager',
+      icon: 'UserPlus',
+      color: '#7C3AED'
+    },
+    actions: [
+      { id: 'create-care-task-hr-onboarding', name: 'Create HRBP task', icon: 'ClipboardCheck', color: '#7C3AED' },
+      { id: 'send-teams', name: 'Send Teams message', icon: 'MessageCircle', color: '#5558af' },
+      { id: 'in-app-notification', name: 'Push in-app notification', icon: 'Bell', color: '#1B2B5E' }
+    ]
+  }
+];
+
+const hrModules = [
+  { name: 'HRBP & Employee Lifecycle', icon: 'Users', color: '#7C3AED' },
+  { name: 'Talent Acquisition', icon: 'Briefcase', color: '#059669' },
+  { name: 'People Ops & Systems', icon: 'Settings', color: '#D97706' }
+];
+
+const hrAiSuggestions = [
+  { query: 'jd', suggestion: 'JD generator', template: 'hr-flow-jd-generator' },
+  { query: 'job description', suggestion: 'JD generator', template: 'hr-flow-jd-generator' },
+  { query: 'requisition', suggestion: 'JD generator', template: 'hr-flow-jd-generator' },
+  { query: 'interview', suggestion: 'Interview debrief', template: 'hr-flow-interview-debrief' },
+  { query: 'debrief', suggestion: 'Interview debrief', template: 'hr-flow-interview-debrief' },
+  { query: 'scorecard', suggestion: 'Interview debrief', template: 'hr-flow-interview-debrief' },
+  { query: '30-60-90', suggestion: 'Onboarding plan', template: 'hr-flow-onboarding-plan' },
+  { query: 'onboarding plan', suggestion: 'Onboarding plan', template: 'hr-flow-onboarding-plan' },
+  { query: 'resource kit', suggestion: 'Onboarding plan', template: 'hr-flow-onboarding-plan' },
+  { query: 'policy', suggestion: 'Policy QA bot', template: 'hr-flow-policy-qa' },
+  { query: 'employee question', suggestion: 'Policy QA bot', template: 'hr-flow-policy-qa' },
+  { query: 'pto', suggestion: 'Policy QA bot', template: 'hr-flow-policy-qa' },
+  { query: 'onboard', suggestion: 'New hire onboarding runbook', template: 'hr-onboarding-runbook' },
+  { query: 'onboarding', suggestion: 'New hire onboarding runbook', template: 'hr-onboarding-runbook' },
+  { query: 'offer', suggestion: 'Offer accepted — onboarding handoff', template: 'hr-offer-handoff' },
+  { query: 'handoff', suggestion: 'Offer accepted — onboarding handoff', template: 'hr-offer-handoff' },
+  { query: 'manager', suggestion: 'Manager request triage', template: 'hr-manager-triage' },
+  { query: 'triage', suggestion: 'Manager request triage', template: 'hr-manager-triage' },
+  { query: 'hrbp', suggestion: 'Manager request triage', template: 'hr-manager-triage' }
+];
+
 const knowledgeBases = [
   { id: 'local', label: 'Local', icon: Briefcase },
-  { id: 'gravity', label: 'Gravity', icon: ArrowRight },
+  { id: 'organization', label: 'Organization', icon: ArrowRight },
   { id: 'global', label: 'Global', icon: Globe },
 ];
 
-const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
+const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProduct, onCreateFlow }) => {
+  const isHr = vertical === 'hr';
+  const isMarketing = vertical === 'marketing';
+  const activeQuickTemplates = isHr ? hrQuickTemplates : isMarketing ? MARKETING_FLOW_TEMPLATES : quickTemplates;
+  const activeModules = isHr ? hrModules : isMarketing ? MARKETING_MODULES : modules;
+  const activeAiSuggestions = isHr ? hrAiSuggestions : isMarketing ? MARKETING_AI_SUGGESTIONS : aiSuggestions;
+
   const [inputValue, setInputValue] = useState('');
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [matchedSuggestion, setMatchedSuggestion] = useState(null);
-  const [knowledgeBase, setKnowledgeBase] = useState('gravity');
+  const [knowledgeBase, setKnowledgeBase] = useState('organization');
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const selectTriggerRef = useRef(null);
@@ -115,7 +214,7 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
     setInputValue(value);
 
     if (value.length > 2) {
-      const match = aiSuggestions.find(s =>
+      const match = activeAiSuggestions.find(s =>
         value.toLowerCase().includes(s.query.toLowerCase())
       );
       if (match) {
@@ -132,7 +231,7 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
 
   const handleCreate = () => {
     if (matchedSuggestion) {
-      const template = quickTemplates.find(t => t.id === matchedSuggestion.template);
+      const template = activeQuickTemplates.find(t => t.id === matchedSuggestion.template);
       if (template) {
         onCreateFlow({
           name: inputValue || template.title,
@@ -163,11 +262,26 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
       <div className="ai-hero">
         <div className="hero-decoration"></div>
         <h1>
-          Build healthcare AI with{' '}
-          <span className="gradient-text">Gravity AI Studio</span>
+          {isHr ? (
+            <>
+              HR onboarding, talent, and people ops—in <span className="gradient-text">Workflow Studio</span>
+            </>
+          ) : isMarketing ? (
+            <>
+              Campaigns, content, and GTM automation—in <span className="gradient-text">Workflow Studio</span>
+            </>
+          ) : (
+            <>
+              Clinical and operational automation—in <span className="gradient-text">Workflow Studio</span>
+            </>
+          )}
         </h1>
         <p className="hero-subtitle">
-          Design, deploy, and automate clinical and operational workflows across your health system
+          {isHr
+            ? 'Onboarding, talent, and people ops—tasks, approvals, and notifications across HRBP, TA, and systems teams'
+            : isMarketing
+              ? 'Debriefs, repurposing, intel briefs, and experiment readouts—aligned with how modern marketing teams ship'
+              : 'Design, deploy, and automate clinical and operational workflows across your health system'}
         </p>
 
         {/* AI Input - search bar with knowledge base */}
@@ -178,7 +292,13 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
             </div>
             <input
               type="text"
-              placeholder="Powered by Gravity Search"
+              placeholder={
+                isHr
+                  ? 'Search onboarding, requisitions, HRIS, or policies…'
+                  : isMarketing
+                    ? 'Search campaigns, content, briefs, or experiments…'
+                    : 'Search workflows, patients, or policies…'
+              }
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
@@ -193,7 +313,7 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
             </button>
           </div>
 
-          {/* Knowledge base selector — three values: Local, Gravity, Global */}
+          {/* Knowledge base selector: Local, Organization, Global */}
           <div className="knowledge-base-select-wrap">
             <button
               ref={selectTriggerRef}
@@ -258,58 +378,102 @@ const AILandingPage = ({ onSelectTemplate, onSelectProduct, onCreateFlow }) => {
 
         {/* Compliance Strip */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 20, fontSize: 11, color: '#94a3b8', fontWeight: 600 }}>
-          <span>HIPAA</span>
-          <span>·</span>
-          <span>HITRUST</span>
-          <span>·</span>
-          <span>SOC 2 Type II</span>
-          <span>·</span>
-          <span>FHIR R4</span>
+          {isMarketing ? (
+            <>
+              <span>Brand guidelines</span>
+              <span>·</span>
+              <span>Marketing consent</span>
+              <span>·</span>
+              <span>SOC 2 Type II</span>
+              <span>·</span>
+              <span>CRM &amp; MAP connectors</span>
+            </>
+          ) : (
+            <>
+              <span>HIPAA</span>
+              <span>·</span>
+              <span>HITRUST</span>
+              <span>·</span>
+              <span>SOC 2 Type II</span>
+              <span>·</span>
+              <span>FHIR R4</span>
+            </>
+          )}
         </div>
       </div>
 
       {/* Quick Templates */}
       <div className="quick-templates-section">
-        <div className="quick-templates-grid">
-          {quickTemplates.map(template => (
-            <div key={template.id} className="quick-template-card">
-              <span className="template-category" style={{ color: template.color }}>
-                {template.category}
-              </span>
-              <h3>{template.title}</h3>
-              <p>{template.description}</p>
-              <div className="template-footer">
-                <div className="template-icons">
-                  {template.icons.map((iconName, idx) => {
-                    const IconComponent = LucideIcons[iconName] || LucideIcons.Circle;
-                    return (
-                      <div
-                        key={idx}
-                        className="template-icon"
-                        style={{ backgroundColor: template.color + '15', color: template.color }}
-                      >
-                        <IconComponent size={16} />
-                      </div>
-                    );
-                  })}
-                </div>
-                <button
-                  className="turn-on-btn"
-                  onClick={() => handleQuickTurnOn(template)}
-                >
-                  Deploy
-                </button>
-              </div>
+        {isMarketing ? (
+          <div className="marketing-recipes-view marketing-recipes-view--embedded">
+            <div className="marketing-recipes-view__grid" role="list">
+              {MARKETING_FLOW_TEMPLATES.map((template) => (
+                <article key={template.id} className="marketing-recipe-card" role="listitem">
+                  <span className="marketing-recipe-card__category" style={{ color: template.color }}>
+                    {template.category}
+                  </span>
+                  <h2 className="marketing-recipe-card__title">{template.title}</h2>
+                  <div className="marketing-recipe-card__body">
+                    <p>
+                      <span className="marketing-recipe-card__label">Trigger:</span>{' '}
+                      {template.trigger.name}
+                    </p>
+                    <p>
+                      <span className="marketing-recipe-card__label">Output:</span>{' '}
+                      {template.outputSummary}
+                    </p>
+                  </div>
+                  <div className="marketing-recipe-card__pill" aria-label="Tools">
+                    {template.stack}
+                  </div>
+                  <div className="marketing-recipe-card__actions">
+                    <button type="button" className="turn-on-btn" onClick={() => handleQuickTurnOn(template)}>
+                      Deploy
+                    </button>
+                  </div>
+                </article>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="quick-templates-grid">
+            {activeQuickTemplates.map((template) => (
+              <div key={template.id} className="quick-template-card">
+                <span className="template-category" style={{ color: template.color }}>
+                  {template.category}
+                </span>
+                <h3>{template.title}</h3>
+                <p>{template.description}</p>
+                <div className="template-footer">
+                  <div className="template-icons">
+                    {template.icons.map((iconName, idx) => {
+                      const IconComponent = LucideIcons[iconName] || LucideIcons.Circle;
+                      return (
+                        <div
+                          key={idx}
+                          className="template-icon"
+                          style={{ backgroundColor: template.color + '15', color: template.color }}
+                        >
+                          <IconComponent size={16} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <button type="button" className="turn-on-btn" onClick={() => handleQuickTurnOn(template)}>
+                    Deploy
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Browse by Module */}
       <div className="browse-products-section">
-        <h2>Browse by Domain</h2>
+        <h2>{isHr ? 'Browse by HR pillar' : isMarketing ? 'Browse by marketing pillar' : 'Browse by Domain'}</h2>
         <div className="product-pills">
-          {modules.map(module => {
+          {activeModules.map(module => {
             const IconComponent = LucideIcons[module.icon];
             return (
               <button

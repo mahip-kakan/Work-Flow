@@ -7,14 +7,14 @@ const categories = [
     title: 'Test Orchestration',
     description: 'Workflow definition, parallel execution, conditional logic. Define what runs when.',
     icon: GitBranch,
-    color: 'var(--gravity-purple)',
+    color: 'var(--accent-purple)',
   },
   {
     id: 'ai-model',
     title: 'AI Model Testing',
     description: 'Evals, prompt tests, regression. Create and run evaluation suites for the AI assistant.',
     icon: Brain,
-    color: 'var(--gravity-purple)',
+    color: 'var(--accent-purple)',
   },
   {
     id: 'load',

@@ -23,7 +23,7 @@ const TestDataPanel = ({ flow, onClose, onRunTest }) => {
             primaryCareProvider: 'Dr. Michael Chen'
           },
           facility: {
-            name: 'Optimus Health Medical Center',
+            name: 'Sample Health Medical Center',
             location: 'Main Campus',
             department: 'Cardiology'
           }
@@ -66,6 +66,62 @@ const TestDataPanel = ({ flow, onClose, onRunTest }) => {
               recipients: ['Care Team - Cardiology', 'Dr. Sarah Johnson'],
               channel: 'Cardiology Care Team',
               message: 'New discharge: John Smith (MRN-987654) discharged on 2024-01-18. Care plan created and task assigned.'
+            }
+          }
+        ]
+      },
+      'hr-1': {
+        trigger: {
+          event: 'Start date confirmed',
+          employee: {
+            id: 'EMP-88421',
+            name: 'Alex Rivera',
+            startDate: '2026-05-12',
+            department: 'Product Engineering',
+            manager: 'Jordan Lee',
+            location: 'Remote — US Central',
+            requisitionId: 'REQ-2026-0142'
+          },
+          hris: {
+            system: 'Sample HRIS',
+            effectiveDate: '2026-04-23',
+            status: 'Active — preboarding'
+          }
+        },
+        actions: [
+          {
+            step: 1,
+            name: 'Create onboarding checklist',
+            status: 'pending',
+            data: {
+              bundleId: 'ONB-2026-0423',
+              tasks: [
+                { id: 't1', title: 'IT: provision laptop + SSO', owner: 'IT Service Desk', due: '2026-05-05' },
+                { id: 't2', title: 'Facilities: badge and building access', owner: 'Facilities', due: '2026-05-08' },
+                { id: 't3', title: 'Manager: 30-60-90 plan draft', owner: 'Jordan Lee', due: '2026-05-10' }
+              ]
+            }
+          },
+          {
+            step: 2,
+            name: 'Send Teams message',
+            status: 'pending',
+            data: {
+              messageId: 'MSG-HR-2026-0098',
+              channel: 'People Ops — Onboarding',
+              message:
+                'New hire Alex Rivera starts 2026-05-12 (REQ-2026-0142). Checklist ONB-2026-0423 created — IT/Facilities/Manager tasks assigned.'
+            }
+          },
+          {
+            step: 3,
+            name: 'Send welcome email',
+            status: 'pending',
+            data: {
+              templateId: 'WELCOME-STD-V3',
+              to: 'alex.rivera@example.com',
+              subject: 'Welcome to the team — your first day on May 12',
+              linksIncluded: ['Handbook', 'Payroll portal', 'Benefits overview', 'IT getting-started']
             }
           }
         ]
@@ -152,6 +208,23 @@ const TestDataPanel = ({ flow, onClose, onRunTest }) => {
                   </div>
                 </div>
               )}
+              {testData.trigger.employee && (
+                <div className="test-data-card">
+                  <div className="test-data-header">
+                    <User size={18} />
+                    <strong>New hire</strong>
+                  </div>
+                  <div className="test-data-grid">
+                    <div><strong>Name:</strong> {testData.trigger.employee.name}</div>
+                    <div><strong>Employee ID:</strong> {testData.trigger.employee.id}</div>
+                    <div><strong>Start date:</strong> {testData.trigger.employee.startDate}</div>
+                    <div><strong>Department:</strong> {testData.trigger.employee.department}</div>
+                    <div><strong>Manager:</strong> {testData.trigger.employee.manager}</div>
+                    <div><strong>Location:</strong> {testData.trigger.employee.location}</div>
+                    <div><strong>Requisition:</strong> {testData.trigger.employee.requisitionId}</div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -196,6 +269,24 @@ const TestDataPanel = ({ flow, onClose, onRunTest }) => {
                         <div className="detail-item">
                           <User size={14} />
                           <span>Assigned to: {action.data.assignedTo}</span>
+                        </div>
+                      )}
+                      {action.data.bundleId && (
+                        <div className="detail-item">
+                          <ClipboardCheck size={14} />
+                          <span>Checklist bundle: {action.data.bundleId}</span>
+                        </div>
+                      )}
+                      {action.data.channel && (
+                        <div className="detail-item">
+                          <MessageCircle size={14} />
+                          <span>Channel: {action.data.channel}</span>
+                        </div>
+                      )}
+                      {action.data.subject && (
+                        <div className="detail-item">
+                          <FileText size={14} />
+                          <span>Subject: {action.data.subject}</span>
                         </div>
                       )}
                     </div>

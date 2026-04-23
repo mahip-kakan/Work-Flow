@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-export default function AddPromptTestPanel({ onClose, onSave, initialData }) {
+export default function AddPromptTestPanel({ vertical = 'healthcare', onClose, onSave, initialData }) {
   const [name, setName] = useState(initialData?.name || '');
   const [input, setInput] = useState(initialData?.input || '');
   const [expected, setExpected] = useState(initialData?.expected || '');
@@ -32,7 +32,13 @@ export default function AddPromptTestPanel({ onClose, onSave, initialData }) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Healthcare term — deductible"
+              placeholder={
+                vertical === 'marketing'
+                  ? 'e.g. Marketing term — nurture sequence'
+                  : vertical === 'hr'
+                    ? 'e.g. HR term — requisition'
+                    : 'e.g. Healthcare term — deductible'
+              }
             />
           </div>
           <div className="form-group">
@@ -41,7 +47,13 @@ export default function AddPromptTestPanel({ onClose, onSave, initialData }) {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="e.g. What is a deductible?"
+              placeholder={
+                vertical === 'marketing'
+                  ? 'e.g. Create repurposing workflow when a blog goes live'
+                  : vertical === 'hr'
+                    ? 'e.g. What is a requisition?'
+                    : 'e.g. What is a deductible?'
+              }
             />
           </div>
           <div className="form-group">
@@ -50,7 +62,13 @@ export default function AddPromptTestPanel({ onClose, onSave, initialData }) {
               type="text"
               value={expected}
               onChange={(e) => setExpected(e.target.value)}
-              placeholder="e.g. Definition with example"
+              placeholder={
+                vertical === 'marketing'
+                  ? 'e.g. Content repurposing recipe template'
+                  : vertical === 'hr'
+                    ? 'e.g. HR glossary definition'
+                    : 'e.g. Definition with example'
+              }
             />
           </div>
           <div className="panel-actions">

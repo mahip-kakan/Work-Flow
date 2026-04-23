@@ -1,12 +1,12 @@
-# Gravity Flow Studio (Health Flow)
+# Workflow Studio
 
-A low-code studio to build, deploy, and automate healthcare workflows — part of the **Gravity AI Studio** experience. This repo powers the public demo at **[mahip-kakan.github.io/Health-Flow](https://mahip-kakan.github.io/Health-Flow/)**.
+A low-code studio to build, deploy, and automate workflows across **Healthcare**, **HR**, and **Marketing** workspaces. The public demo is hosted at **[mahip-kakan.github.io/Health-Flow](https://mahip-kakan.github.io/Health-Flow/)** (repository name stays `Health-Flow`; the product name in the UI is **Workflow Studio**).
 
 ## What’s in the app
 
-- **Flow editor** — Triggers, actions, templates (e.g. post-discharge follow-up, readmission risk, appointment reminders).
-- **Discover & product flows** — Browse pre-built automation ideas across Gravity healthcare domains.
-- **AI assistant & Healthcare glossary** — In-app help for US healthcare terms and Gravity concepts, including **HMCP** (Healthcare Model Context Protocol) and **MCP** (Model Context Protocol).
+- **Flow editor** — Triggers, actions, templates (healthcare clinical flows, HR onboarding/TA, marketing recipes).
+- **Discover & product flows** — Browse pre-built agents by domain or pillar for each workspace.
+- **AI assistant & glossaries** — Healthcare US terms, HR concepts, or marketing help; plus notes on **MCP** (Model Context Protocol), interoperability, and automation patterns where relevant.
 - **Action configuration** — Each step opens a contextual settings panel (care plans, Tasks, Microsoft Teams, email, models/agents, reminders, and more).
 - **Roles** — Switch between Developer, Product Manager, and Admin (affects sidebar and access to the testing dashboard).
 
@@ -29,9 +29,9 @@ The UI lives under [`src/testing-dashboard/`](src/testing-dashboard/). For a **s
 
 ## Architecture diagram
 
-An Excalidraw diagram of the Gravity / HMCP / DAP-style stack is in:
+An Excalidraw diagram of the healthcare automation / data / MCP-style stack is in:
 
-[`docs/architecture/gravity-hmcp-architecture.excalidraw`](docs/architecture/gravity-hmcp-architecture.excalidraw)
+[`docs/architecture/healthcare-automation-architecture.excalidraw`](docs/architecture/healthcare-automation-architecture.excalidraw)
 
 Open it in [Excalidraw](https://excalidraw.com) or with the Excalidraw extension in VS Code / Cursor.
 

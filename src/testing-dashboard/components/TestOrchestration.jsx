@@ -28,7 +28,7 @@ export default function TestOrchestration() {
       <div className="section-header">
         <div>
           <h2>
-            <GitBranch size={20} color="var(--gravity-purple)" />
+            <GitBranch size={20} color="var(--accent-purple)" />
             Category 1 — Test Orchestration
           </h2>
           <p className="subtitle">Central coordination for all tests: workflows, parallel execution, conditional logic</p>
