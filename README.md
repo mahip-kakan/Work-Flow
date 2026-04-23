@@ -52,6 +52,12 @@ This repo is **[github.com/mahip-kakan/Health-Flow](https://github.com/mahip-kak
 3. **Live site** — **[https://mahip-kakan.github.io/Health-Flow/](https://mahip-kakan.github.io/Health-Flow/)**  
    Use this `*.github.io` URL, not the raw `github.com/.../Health-Flow` code URL.
 
+**Still seeing an old version after a deploy**
+
+- **Hard refresh** the tab: macOS **Cmd+Shift+R**, Windows **Ctrl+Shift+R**, or open the site in a **private/incognito** window.
+- **Clear site data** for `github.io`: DevTools → Application → Storage → “Clear site data” (or remove only `mahip-kakan.github.io`).
+- GitHub’s CDN may cache the HTML shell for a few minutes; the workflow now **stamps each deploy** into `index.html` / `404.html` so new builds get a new fingerprint.
+
 **Site not loading / blank page**
 
 - **Wrong Pages source** — Most common: Pages is on **`main`** instead of **`gh-pages`**. Switch to **`gh-pages`** as above, wait a minute, hard-refresh.

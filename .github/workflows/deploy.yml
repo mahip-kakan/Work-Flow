@@ -31,6 +31,12 @@ jobs:
       - name: Add 404 page for SPA routing
         run: cp ./dist/index.html ./dist/404.html
 
+      - name: Stamp HTML (unique bytes each deploy → new ETag, fewer stale shells)
+        run: |
+          STAMP="<!-- gh-pages ${{ github.run_id }} ${{ github.sha }} -->"
+          printf '\n%s\n' "$STAMP" >> ./dist/index.html
+          printf '\n%s\n' "$STAMP" >> ./dist/404.html
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
