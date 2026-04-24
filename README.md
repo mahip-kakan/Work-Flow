@@ -2,10 +2,10 @@
 
 A low-code studio to build, deploy, and automate workflows across **Healthcare**, **HR**, and **Marketing** workspaces. Production builds use a **relative asset base** (`./`) so the same build works whether the GitHub repo is **`Health-Flow`** or **`workflow-Studio`**. The product name in the app is **Workflow Studio**.
 
-**Live URLs** (use the one that matches your repository name):
+**Live URL** — use **`https://mahip-kakan.github.io/<repository-name>/`**. The path must match the repo name exactly (including **capital letters**), for example:
 
-- **[mahip-kakan.github.io/Health-Flow](https://mahip-kakan.github.io/Health-Flow/)** if the repo is **`Health-Flow`**
-- **[mahip-kakan.github.io/workflow-Studio](https://mahip-kakan.github.io/workflow-Studio/)** if you renamed the repo to **`workflow-Studio`**
+- **[mahip-kakan.github.io/Work-Flow](https://mahip-kakan.github.io/Work-Flow/)** for repo **`Work-Flow`**
+- **`…/Health-Flow/`** if the repo is still **`Health-Flow`**
 
 ## What’s in the app
 
@@ -53,7 +53,7 @@ npm run preview  # local preview of production build
 
 ## Deploy to GitHub Pages
 
-Repo: **[github.com/mahip-kakan/Health-Flow](https://github.com/mahip-kakan/Health-Flow)** (or **`workflow-Studio`** if you renamed it).
+Repo: **[github.com/mahip-kakan/Work-Flow](https://github.com/mahip-kakan/Work-Flow)** (update if your fork or rename differs).
 
 1. **Push to `main`** — the **Deploy to GitHub Pages** workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) runs `npm run build` and pushes **`dist/`** to the **`gh-pages`** branch.
 2. **Repo settings (required)** — **Settings** → **Pages** → **Build and deployment** → **Source**: **Deploy from a branch** → branch **`gh-pages`**, folder **`/ (root)`**.  
