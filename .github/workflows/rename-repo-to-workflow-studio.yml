@@ -1,0 +1,40 @@
+# One-time: renames this repository to "workflow-Studio" so GitHub Pages is served at
+# https://<user>.github.io/workflow-Studio/ (must match Vite base in vite.config.js).
+#
+# After it succeeds: update your local remote, e.g.
+#   git remote set-url origin https://github.com/mahip-kakan/workflow-Studio.git
+#
+# Requires a maintainer to run: Actions → this workflow → Run workflow.
+
+name: Rename repository to workflow-Studio
+
+on:
+  workflow_dispatch:
+
+permissions:
+  administration: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rename repository via GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          owner="${{ github.repository_owner }}"
+          echo "Renaming ${{ github.repository }} → ${owner}/workflow-Studio"
+          code="$(curl -sS -o /tmp/body -w "%{http_code}" -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/${{ github.repository }}" \
+            -d '{"name":"workflow-Studio"}')"
+          cat /tmp/body
+          echo ""
+          if [ "$code" != "200" ]; then
+            echo "HTTP $code — rename failed (try Settings → General → Repository name on GitHub)."
+            exit 1
+          fi
+          echo "OK. Pages URL: https://${owner}.github.io/workflow-Studio/"
+          echo "If the site 404s until the next deploy, re-run **Deploy to GitHub Pages** on branch main."
