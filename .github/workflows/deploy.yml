@@ -24,8 +24,6 @@ jobs:
         run: npm ci
 
       - name: Build
-        env:
-          GITHUB_PAGES_BASE: /workflow-Studio/
         run: npm run build
 
       - name: Add 404 page for SPA routing
