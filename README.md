@@ -1,19 +1,48 @@
 # Workflow Studio
 
-A low-code studio to build, deploy, and automate workflows across **Healthcare**, **HR**, and **Marketing** workspaces. Production builds use a **relative asset base** (`./`) so the same build works whether the GitHub repo is **`Health-Flow`** or **`workflow-Studio`**. The product name in the app is **Workflow Studio**.
+**Workflow Studio** is a public, browser-based demo of a low-code environment for designing and “deploying” multi-step automations. It is meant for **product, design, and engineering** audiences who want a tangible surface to discuss triggers, actions, guardrails, and role-based experiences—without standing up a backend.
 
-**Live URL** — use **`https://mahip-kakan.github.io/<repository-name>/`**. The path must match the repo name exactly (including **capital letters**), for example:
+---
 
-- **[mahip-kakan.github.io/Work-Flow](https://mahip-kakan.github.io/Work-Flow/)** for repo **`Work-Flow`**
-- **`…/Health-Flow/`** if the repo is still **`Health-Flow`**
+## At a glance
 
-## What’s in the app
+| | |
+|---|---|
+| **What it is** | A React + Vite single-page app: home and discovery flows, a visual flow editor, workspace modes (Healthcare, HR, Marketing), AI assistant panel, glossaries, and a **Testing** experience for PM/Admin personas. |
+| **Who it’s for** | Product managers, solution designers, and engineers reviewing UX patterns, copy, and information architecture—not production PHI or real integrations. |
+| **Live demo** | **[https://mahip-kakan.github.io/Work-Flow/](https://mahip-kakan.github.io/Work-Flow/)** *(path matches the GitHub repository name [`Work-Flow`](https://github.com/mahip-kakan/Work-Flow))* |
 
-- **Flow editor** — Triggers, actions, templates (healthcare clinical flows, HR onboarding/TA, marketing recipes).
-- **Discover & product flows** — Browse pre-built agents by domain or pillar for each workspace.
-- **AI assistant & glossaries** — Healthcare US terms, HR concepts, or marketing help; plus notes on **MCP** (Model Context Protocol), interoperability, and automation patterns where relevant.
-- **Action configuration** — Each step opens a contextual settings panel (care plans, Tasks, Microsoft Teams, email, models/agents, reminders, and more).
-- **Roles** — Switch between Developer, Product Manager, and Admin (affects sidebar and access to the testing dashboard).
+---
+
+## Try the live app
+
+1. Open **[the hosted demo](https://mahip-kakan.github.io/Work-Flow/)** (no install required).
+2. Use the **header** to switch **Healthcare**, **HR**, or **Marketing**—each mode changes templates, discover content, analytics copy, and glossary focus.
+3. Open the **user menu** (top right) → **View as** → **Product Manager** or **Admin** to unlock the **Testing** (beaker) area in the sidebar—evals, prompt tests, load and observability screens are there for narrative and layout review.
+
+If the page looks empty after an update, do a **hard refresh** (e.g. **Cmd+Shift+R** on Mac, **Ctrl+Shift+R** on Windows) or try a private window—GitHub Pages can cache the HTML shell briefly.
+
+---
+
+## What you can explore
+
+- **Flow editor** — Pick a trigger, chain actions, open per-step configuration panels (notifications, tasks, integrations, AI-style steps, etc.). Data is illustrative.
+- **Discover & product flows** — Pre-built “agent” ideas grouped by domain or pillar for the active workspace.
+- **AI assistant** — In-panel prompts and suggestions; content shifts with Healthcare vs HR vs Marketing.
+- **Glossaries** — Workspace-specific reference copy (e.g. US healthcare terms, HR concepts, marketing glossary).
+- **Testing dashboard** — PM/Admin-only area: evaluation summaries, prompt test tables, load scenarios, and observability-style layouts under [`src/testing-dashboard/`](src/testing-dashboard/).
+
+For a **standalone** run of only the testing UI on port **2303**, see [`testing/README.md`](testing/README.md).
+
+---
+
+## For product and engineering
+
+- **Repository:** [github.com/mahip-kakan/Work-Flow](https://github.com/mahip-kakan/Work-Flow)  
+- **Architecture sketch:** [`docs/architecture/healthcare-automation-architecture.excalidraw`](docs/architecture/healthcare-automation-architecture.excalidraw) — open in [Excalidraw](https://excalidraw.com) or a compatible editor.
+- **Stack:** React 18, Vite 5, Lucide React. Production builds use a **relative asset base** so the same artifact can be served under any GitHub Pages project path if the repository name changes.
+
+---
 
 ## Run locally
 
@@ -22,60 +51,42 @@ npm install
 npm run dev
 ```
 
-Open **[http://localhost:2302/](http://localhost:2302/)**.  
-Local dev uses `base: '/'`. Production builds use **`base: './'`** (see [`vite.config.js`](vite.config.js)) so JS/CSS load correctly under any project Pages path.
+Then open **[http://localhost:2302/](http://localhost:2302/)**.  
+`npm run build` writes to `dist/`; `npm run preview` serves the production build locally.
 
-### Optional: rename the repository to `workflow-Studio`
+---
 
-Use **Actions → “Rename repository to workflow-Studio”** (or **Settings → General → Repository name**). Then update your remote, e.g. `git remote set-url origin https://github.com/mahip-kakan/workflow-Studio.git`. You do **not** need to change Vite `base` after a rename.
+## Deploying to GitHub Pages
 
-## Testing dashboard (PM / Admin)
+Deployments are automated from **`main`** via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml): build with Vite, copy `index.html` to `404.html` for SPA-friendly refreshes, then publish **`dist/`** to the **`gh-pages`** branch.
 
-1. In the studio, open the **user menu** (top right) → **View as** → **Product Manager** or **Admin**.
-2. Use the **Testing** (beaker) item in the left sidebar.
+**One-time repository configuration**
 
-The UI lives under [`src/testing-dashboard/`](src/testing-dashboard/). For a **standalone** dev server on port **2303**, see **[testing/README.md](testing/README.md)**.
+1. In GitHub: **Settings → Pages → Build and deployment**
+2. Set **Source** to **Deploy from a branch**
+3. Choose branch **`gh-pages`**, folder **`/ (root)`**
 
-## Architecture diagram
+Do **not** point Pages at **`main`** with **`/(root)`** for the site root—that serves the raw repo entry file, not the Vite build, and typically yields a **blank** or broken experience.
 
-An Excalidraw diagram of the healthcare automation / data / MCP-style stack is in:
+**If you see “Site not found”**
 
-[`docs/architecture/healthcare-automation-architecture.excalidraw`](docs/architecture/healthcare-automation-architecture.excalidraw)
+- Confirm Pages is enabled and the source is **`gh-pages`** / root (above).
+- Confirm the URL path matches the **exact** repository name (including casing), e.g. `…/Work-Flow/`.
 
-Open it in [Excalidraw](https://excalidraw.com) or with the Excalidraw extension in VS Code / Cursor.
+**Optional repository rename**
 
-## Build & preview
+If you use the [Rename repository to workflow-Studio](.github/workflows/rename-repo-to-workflow-studio.yml) workflow (or rename under **Settings → General**), update your git remote and redeploy; you do **not** need to change Vite’s production `base` for asset paths.
 
-```bash
-npm run build    # output in dist/
-npm run preview  # local preview of production build
-```
+---
 
-## Deploy to GitHub Pages
+## Troubleshooting (quick)
 
-Repo: **[github.com/mahip-kakan/Work-Flow](https://github.com/mahip-kakan/Work-Flow)** (update if your fork or rename differs).
+| Symptom | What to check |
+|--------|----------------|
+| Blank page | Pages source should be **`gh-pages`**, not **`main`**. Confirm **Actions → Deploy to GitHub Pages** succeeded on the latest push. |
+| Old UI after deploy | Hard refresh or clear site data for `github.io`. |
+| Wrong URL | Use `https://<user>.github.io/<repo-name>/` where `<repo-name>` matches this repository exactly. |
 
-1. **Push to `main`** — the **Deploy to GitHub Pages** workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) runs `npm run build` and pushes **`dist/`** to the **`gh-pages`** branch.
-2. **Repo settings (required)** — **Settings** → **Pages** → **Build and deployment** → **Source**: **Deploy from a branch** → branch **`gh-pages`**, folder **`/ (root)`**.  
-   **Do not** use **`main`** / **`/(root)`** for the site root — you will get a **blank page** or broken app (raw `index.html` without the Vite-built assets).
-3. **“Site not found” on `*.github.io/...`** — Pages is not enabled or the wrong source is selected. Fix step 2, wait one minute, try again.
-4. Open your live URL: **`https://mahip-kakan.github.io/<repository-name>/`** (trailing slash is fine).
+---
 
-**Still seeing an old version after a deploy**
-
-- **Hard refresh** the tab: macOS **Cmd+Shift+R**, Windows **Ctrl+Shift+R**, or open the site in a **private/incognito** window.
-- **Clear site data** for `github.io`: DevTools → Application → Storage → “Clear site data” (or remove only `mahip-kakan.github.io`).
-- GitHub’s CDN may cache the HTML shell for a few minutes; the workflow now **stamps each deploy** into `index.html` / `404.html` so new builds get a new fingerprint.
-
-**Site not loading / blank page**
-
-- **Wrong Pages source** — Most common: Pages is on **`main`** instead of **`gh-pages`**. Switch to **`gh-pages`** as above, wait a minute, hard-refresh.
-- **Actions** — In the **Actions** tab, open **Deploy to GitHub Pages** and confirm the latest run on `main` is green.
-- **First deploy** — Until the workflow runs once, the `gh-pages` branch may not exist; run the workflow (push to `main` or **Run workflow**), then select `gh-pages` in Pages settings.
-- **Wrong `*.github.io` path** — The path after `github.io` must be your **exact** repository name (`Health-Flow` vs `workflow-Studio`).
-
-## Tech
-
-- React 18  
-- Vite 5  
-- Lucide React  
+*This README is the public front door to the repo: it orients PMs and collaborators before they clone or open issues. For deeper implementation detail, start from [`src/App.jsx`](src/App.jsx) and the workspace-specific data under [`src/data/`](src/data/).*
