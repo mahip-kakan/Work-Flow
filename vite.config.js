@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react'
 const pagesBase =
   process.env.GITHUB_PAGES_BASE ||
   process.env.VITE_PAGES_BASE ||
-  '/workflow-Studio/'
+  '/Health-Flow/'
 
 export default defineConfig(({ command }) => ({
   plugins: [react()],
