@@ -722,6 +722,45 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
                   A/B test readout
                 </button>
               </>
+            ) : vertical === 'it-saas' ? (
+              <>
+                <button
+                  className="suggestion-chip"
+                  onClick={() => setInputValue('Build a Calendly connector from its API docs')}
+                >
+                  Build a Calendly connector
+                </button>
+                <button
+                  className="suggestion-chip"
+                  onClick={() => setInputValue('What is OAuth 2.0?')}
+                >
+                  What is OAuth 2.0?
+                </button>
+                <button
+                  className="suggestion-chip"
+                  onClick={() => setInputValue('Create a cross-app offboarding workflow for Slack, Notion and GitHub')}
+                >
+                  Cross-app offboarding
+                </button>
+                <button
+                  className="suggestion-chip"
+                  onClick={() => setInputValue('What is rate limiting and how do I handle it?')}
+                >
+                  What is rate limiting?
+                </button>
+                <button
+                  className="suggestion-chip"
+                  onClick={() => setInputValue('Flag unused licenses inactive for 30 days and reclaim them')}
+                >
+                  Unused license reclaim
+                </button>
+                <button
+                  className="suggestion-chip"
+                  onClick={() => setInputValue('What is SCIM?')}
+                >
+                  What is SCIM?
+                </button>
+              </>
             ) : (
               <>
                 <button
@@ -735,12 +774,6 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
                   onClick={() => setInputValue('What is MCP in regulated healthcare?')}
                 >
                   MCP in healthcare
-                </button>
-                <button
-                  className="suggestion-chip"
-                  onClick={() => setInputValue('What is MCP?')}
-                >
-                  What is MCP?
                 </button>
                 <button
                   className="suggestion-chip"
