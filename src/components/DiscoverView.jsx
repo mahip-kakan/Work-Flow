@@ -130,11 +130,76 @@ const marketingDomains = [
   { name: 'Brand & insights', icon: 'Lightbulb', color: '#D97706', count: 2 }
 ];
 
+const itSaasTemplates = [
+  {
+    id: 'it-discover-calendly-connector',
+    category: 'Integration Builder',
+    title: 'AI-generate Calendly connector',
+    description: 'Point AI at the Calendly API docs — generate API client, OAuth auth, user sync, pagination, error handling, and logging',
+    icons: ['Link', 'Code', 'Rocket'],
+    color: '#7C3AED',
+    module: 'Integration Builder'
+  },
+  {
+    id: 'it-discover-offboarding',
+    category: 'Access & Compliance',
+    title: 'Cross-app offboarding — Slack, Notion, GitHub',
+    description: 'One workflow to revoke access across all connected SaaS apps when HR signals employee termination',
+    icons: ['LogOut', 'UserX', 'Shield'],
+    color: '#DC2626',
+    module: 'Access & Compliance'
+  },
+  {
+    id: 'it-discover-access-review',
+    category: 'Access & Compliance',
+    title: 'Quarterly SaaS access review',
+    description: 'Schedule-driven audit of all active users across connected apps — export to Sheets, create Jira tasks per app owner',
+    icons: ['CalendarCheck', 'Table', 'Ticket'],
+    color: '#0284C7',
+    module: 'Access & Compliance'
+  },
+  {
+    id: 'it-discover-p1-alert',
+    category: 'ITSM Automation',
+    title: 'P1 alert → Jira ticket + Slack page',
+    description: 'When a critical alert fires, auto-create a Jira incident, page the on-call team on Slack, and start MTTR tracking',
+    icons: ['AlertTriangle', 'Ticket', 'MessageSquare'],
+    color: '#D97706',
+    module: 'ITSM Automation'
+  },
+  {
+    id: 'it-discover-license-reclaim',
+    category: 'Cost Governance',
+    title: 'Unused license reclamation',
+    description: 'Flag users inactive for 30+ days, send 7-day warning, reclaim license automatically, and log savings to Google Sheets',
+    icons: ['UserX', 'MinusCircle', 'Table'],
+    color: '#059669',
+    module: 'Cost Governance'
+  },
+  {
+    id: 'it-discover-renewal',
+    category: 'Cost Governance',
+    title: 'SaaS renewal calendar trigger',
+    description: 'At T-90, T-30, and T-7 days before contract renewal, notify procurement with usage and cost-per-seat data',
+    icons: ['Calendar', 'DollarSign', 'Mail'],
+    color: '#059669',
+    module: 'Cost Governance'
+  }
+];
+
+const itSaasDomains = [
+  { name: 'Integration Builder', icon: 'Zap', color: '#7C3AED', count: 5 },
+  { name: 'Access & Compliance', icon: 'Shield', color: '#0284C7', count: 4 },
+  { name: 'ITSM Automation', icon: 'Wrench', color: '#D97706', count: 4 },
+  { name: 'Cost Governance', icon: 'DollarSign', color: '#059669', count: 4 }
+];
+
 const DiscoverView = ({ vertical = 'healthcare', onSelectTemplate, onSelectProduct }) => {
   const isHr = vertical === 'hr';
   const isMarketing = vertical === 'marketing';
-  const activeTemplates = isHr ? hrTemplates : isMarketing ? MARKETING_FLOW_TEMPLATES : templates;
-  const activeDomains = isHr ? hrDomains : isMarketing ? marketingDomains : domains;
+  const isItSaas = vertical === 'it-saas';
+  const activeTemplates = isHr ? hrTemplates : isMarketing ? MARKETING_FLOW_TEMPLATES : isItSaas ? itSaasTemplates : templates;
+  const activeDomains = isHr ? hrDomains : isMarketing ? marketingDomains : isItSaas ? itSaasDomains : domains;
 
   return (
     <div className="discover-view">
@@ -144,7 +209,9 @@ const DiscoverView = ({ vertical = 'healthcare', onSelectTemplate, onSelectProdu
           ? 'Pre-built HR automations across HRBP, talent acquisition, and people ops—onboarding through data quality'
           : isMarketing
             ? 'Pre-built marketing automations across campaigns, content, brand, and lifecycle touchpoints'
-            : 'Pre-built automation workflows across common healthcare domains—clinical, population health, access, and experience'}
+            : isItSaas
+              ? 'Pre-built IT/SaaS automations for integration building, access governance, ITSM, and cost optimisation'
+              : 'Pre-built automation workflows across common healthcare domains—clinical, population health, access, and experience'}
       </p>
 
       <div className="template-grid">
@@ -181,7 +248,7 @@ const DiscoverView = ({ vertical = 'healthcare', onSelectTemplate, onSelectProdu
       </div>
 
       <div className="product-sections">
-        <h2>{isHr ? 'By HR pillar' : isMarketing ? 'By marketing pillar' : 'By Domain'}</h2>
+        <h2>{isHr ? 'By HR pillar' : isMarketing ? 'By marketing pillar' : isItSaas ? 'By IT pillar' : 'By Domain'}</h2>
         <div className="product-cards">
           {activeDomains.map(domain => {
             const IconComponent = LucideIcons[domain.icon];
