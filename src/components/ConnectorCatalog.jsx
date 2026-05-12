@@ -39,7 +39,7 @@ const simulateAnalysis = (url) => {
     components: [
       { id: 'client',     label: 'API Client Class',         desc: 'HTTP session, base URL, default headers',                        checked: true },
       { id: 'auth',       label: 'Authentication Setup',     desc: 'OAuth 2.0 flow, token refresh, credential store',               checked: true },
-      { id: 'users',      label: 'User Sync (get_users)',    desc: 'Paginated fetch, field mapping to CloudEagle',                   checked: true },
+      { id: 'users',      label: 'User Sync (get_users)',    desc: 'Paginated fetch, field mapping to platform schema',              checked: true },
       { id: 'usage',      label: 'Usage Data (get_usage)',   desc: 'Activity mapped as app usage score',                             checked: true },
       { id: 'errors',     label: 'Error Handling',           desc: '4xx/5xx classification, retry logic, alerting',                  checked: true },
       { id: 'pagination', label: 'Pagination Handler',       desc: 'Cursor loop, max-page guard, progress logging',                  checked: true },
@@ -246,7 +246,7 @@ const IntegrationBuilder = ({ onClose, onConnectorAdded }) => {
           `GET /users  page=3…`,
           '200 OK  latency=310ms  count=12  next_token=null',
           'Pagination complete  total=52  pages=3',
-          'Mapping to CloudEagle schema…',
+          'Mapping to platform schema…',
           'Schema mapping OK',
           '━━  SANDBOX PASSED  ━━',
         ];
@@ -308,8 +308,8 @@ const IntegrationBuilder = ({ onClose, onConnectorAdded }) => {
   const explanations = {
     auth:   { title: 'Auth Setup',    body: `Securely stores your ${appName} OAuth credentials and auto-renews the access token before it expires. Credentials are read from environment variables — never hard-coded.` },
     client: { title: 'API Client',    body: 'Creates a reusable HTTPS session that automatically attaches your auth header and enforces a 10-second timeout so the integration never hangs indefinitely.' },
-    users:  { title: 'get_users()',   body: `Fetches every user in your ${appName} organisation one page at a time until all users are retrieved. Each user is mapped to the CloudEagle user schema.` },
-    usage:  { title: 'get_usage()',   body: 'Pulls event_type activity as a proxy for usage. Maps activity counts per user to CloudEagle usage_score. ⚠ Low-confidence mapping — verify after testing.' },
+    users:  { title: 'get_users()',   body: `Fetches every user in your ${appName} organisation one page at a time until all users are retrieved. Each user is mapped to the platform user schema.` },
+    usage:  { title: 'get_usage()',   body: 'Pulls event_type activity as a proxy for usage. Maps activity counts per user to a usage_score. ⚠ Low-confidence mapping — verify after testing.' },
   };
 
   const secretStatus = code ? secretsCheck(code) : 'clean';
@@ -826,7 +826,7 @@ const ConnectorCatalog = () => {
         <div className="connector-catalog-header">
           <div className="connector-catalog-title">
             <h1>Connect Apps</h1>
-            <p>Connect your SaaS apps to CloudEagle — AI will generate connectors from their API documentation</p>
+            <p>Connect your SaaS apps — AI will generate connectors from their API documentation</p>
           </div>
           <div className="connector-catalog-actions">
             <button type="button" className="connector-action-btn">

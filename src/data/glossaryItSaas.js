@@ -11,7 +11,7 @@ export const itSaasGlossaryData = {
     },
     {
       term: 'Connector',
-      definition: 'A piece of code that allows CloudEagle to communicate with an external SaaS app — handling auth, data retrieval, pagination, error handling, and logging in a standardised way.'
+      definition: 'A piece of code that allows the platform to communicate with an external SaaS app — handling auth, data retrieval, pagination, error handling, and logging in a standardised way.'
     },
     {
       term: 'OpenAPI / Swagger',
@@ -19,7 +19,7 @@ export const itSaasGlossaryData = {
     },
     {
       term: 'OAuth 2.0',
-      definition: 'The most common authorisation framework for SaaS APIs. The app (CloudEagle) obtains an access token on behalf of the user without ever seeing their password. Tokens expire and must be refreshed automatically.'
+      definition: 'The most common authorisation framework for SaaS APIs. The platform obtains an access token on behalf of the user without ever seeing their password. Tokens expire and must be refreshed automatically.'
     },
     {
       term: 'Bearer Token',

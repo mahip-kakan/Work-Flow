@@ -183,7 +183,7 @@ const itSaasQuickTemplates = [
     id: 'it-calendly-sync',
     category: 'Integration Builder',
     title: 'Calendly → user sync',
-    description: 'AI reads the Calendly API docs and generates a connector to pull users, events, and usage data into CloudEagle',
+    description: 'AI reads the Calendly API docs and generates a connector to pull users, events, and usage data into the platform',
     icons: ['Link', 'Code', 'Rocket'],
     color: '#7C3AED',
     trigger: {
@@ -261,7 +261,7 @@ const itSaasQuickTemplates = [
     id: 'it-hubspot-sync',
     category: 'Integration Builder',
     title: 'HubSpot contact import',
-    description: 'AI generates a HubSpot API connector — maps contacts to CloudEagle SaaS users and syncs weekly',
+    description: 'AI generates a HubSpot API connector — maps contacts to SaaS users and syncs weekly',
     icons: ['Link', 'GitMerge', 'MessageSquare'],
     color: '#FF7A59',
     trigger: {

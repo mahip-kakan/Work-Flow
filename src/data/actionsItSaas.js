@@ -32,7 +32,7 @@ export const itSaasActionCategories = [
       {
         id: 'map-api-fields',
         name: 'Map API fields to schema',
-        description: 'AI suggests field mappings between source API response and CloudEagle user/usage schema',
+        description: 'AI suggests field mappings between source API response and the platform user/usage schema',
         icon: 'GitMerge',
         color: '#7C3AED',
         module: 'Integration Builder'

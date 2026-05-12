@@ -1,4 +1,4 @@
-// SaaS connector catalog — mirrors the CloudEagle "Connect Apps" screenshot
+// SaaS connector catalog
 export const saasConnectors = [
   // Productivity
   {

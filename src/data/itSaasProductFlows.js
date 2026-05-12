@@ -43,7 +43,7 @@ const integrationBuilderAgents = [
   {
     id: 'it-int-2',
     name: 'Auto-map Jira API fields',
-    description: 'AI reads Jira REST API docs and suggests field mappings to the CloudEagle user/license schema — with confidence scores for each mapping',
+    description: 'AI reads Jira REST API docs and suggests field mappings to the platform user/license schema — with confidence scores for each mapping',
     trigger: {
       id: 'it-api-doc-submitted',
       name: 'When API doc URL is submitted',
@@ -82,7 +82,7 @@ const integrationBuilderAgents = [
   {
     id: 'it-int-3',
     name: 'Webhook listener from Slack',
-    description: 'Generate a Slack Events API listener — auto-create connector for user_change and team_join events to keep CloudEagle user list in sync',
+    description: 'Generate a Slack Events API listener — auto-create connector for user_change and team_join events to keep the platform user list in sync',
     trigger: {
       id: 'it-new-user-saas',
       name: 'When new user is added to SaaS app',
@@ -113,7 +113,7 @@ const integrationBuilderAgents = [
   {
     id: 'it-int-4',
     name: 'GitHub org member sync',
-    description: 'Connect to GitHub API and sync all org members, their repos, and last-active dates to CloudEagle for license and access management',
+    description: 'Connect to GitHub API and sync all org members, their repos, and last-active dates to the platform for license and access management',
     trigger: {
       id: 'it-on-schedule',
       name: 'On a schedule',
@@ -144,7 +144,7 @@ const integrationBuilderAgents = [
   {
     id: 'it-int-5',
     name: 'HubSpot contact import',
-    description: 'Pull HubSpot contacts and companies via API — map them to CloudEagle as SaaS users and enrich with deal stage and owner data',
+    description: 'Pull HubSpot contacts and companies via API — map them as SaaS users and enrich with deal stage and owner data',
     trigger: {
       id: 'it-on-schedule',
       name: 'On a schedule',
@@ -164,7 +164,7 @@ const integrationBuilderAgents = [
       {
         id: 'map-api-fields',
         name: 'Map API fields to schema',
-        description: 'AI maps HubSpot contact fields to CloudEagle user schema',
+        description: 'AI maps HubSpot contact fields to the platform user schema',
         icon: 'GitMerge',
         color: '#7C3AED',
         module: 'Integration Builder'
