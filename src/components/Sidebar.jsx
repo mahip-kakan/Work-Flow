@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Home, BarChart3, Compass, Brain, Settings, HelpCircle, BookOpen, Beaker } from 'lucide-react';
+import { Plus, Home, BarChart3, Compass, Brain, Settings, HelpCircle, BookOpen, Beaker, Grid } from 'lucide-react';
 
 const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole, vertical }) => {
   const canAccessTesting = userRole === 'pm' || userRole === 'admin';
@@ -57,17 +57,30 @@ const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole, vertical }) =
         </button>
         <span className="sidebar-label">My agents</span>
 
+        {vertical === 'it-saas' && (
+          <>
+            <button
+              className={`nav-item ${activeView === 'connectors' ? 'active' : ''}`}
+              onClick={() => setActiveView('connectors')}
+              title="Connect Apps"
+            >
+              <Grid size={22} />
+            </button>
+            <span className="sidebar-label">Connect Apps</span>
+          </>
+        )}
+
         <button
           className={`nav-item ${activeView === 'glossary' ? 'active' : ''}`}
           onClick={() => setActiveView('glossary')}
           title={
-            vertical === 'hr' ? 'HR glossary' : vertical === 'marketing' ? 'Marketing glossary' : 'Healthcare glossary'
+            vertical === 'hr' ? 'HR glossary' : vertical === 'marketing' ? 'Marketing glossary' : vertical === 'it-saas' ? 'IT/SaaS glossary' : 'Healthcare glossary'
           }
         >
           <BookOpen size={22} />
         </button>
         <span className="sidebar-label">
-          {vertical === 'hr' ? 'HR glossary' : vertical === 'marketing' ? 'Marketing glossary' : 'Glossary'}
+          {vertical === 'hr' ? 'HR glossary' : vertical === 'marketing' ? 'Marketing glossary' : vertical === 'it-saas' ? 'IT glossary' : 'Glossary'}
         </span>
 
         {canAccessTesting && (

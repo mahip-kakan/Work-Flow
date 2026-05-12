@@ -1,6 +1,7 @@
 // Trigger configurations for Health Flow — healthcare-oriented demo workflows
 import { hrTriggerCategories } from './triggersHr.js';
 import { marketingTriggerCategories } from './triggersMarketing.js';
+import { itSaasTriggerCategories } from './triggersItSaas.js';
 
 export const triggerCategories = [
   {
@@ -198,9 +199,10 @@ export const getAllTriggers = () => {
   return triggerCategories.flatMap(category => category.triggers);
 };
 
-/** @param {'healthcare' | 'hr' | 'marketing'} vertical */
+/** @param {'healthcare' | 'hr' | 'marketing' | 'it-saas'} vertical */
 export const getTriggerCategories = (vertical) => {
   if (vertical === 'hr') return hrTriggerCategories;
   if (vertical === 'marketing') return marketingTriggerCategories;
+  if (vertical === 'it-saas') return itSaasTriggerCategories;
   return triggerCategories;
 };

@@ -132,9 +132,34 @@ const TESTING_SEED_MARKETING = {
   ],
 };
 
+const TESTING_SEED_IT_SAAS = {
+  evalResults: [
+    { id: 'e-it1', suite: 'IT/SaaS glossary accuracy', score: 94, threshold: 92, status: 'pass', count: 42 },
+    { id: 'e-it2', suite: 'Integration template routing', score: 91, threshold: 88, status: 'pass', count: 28 },
+    { id: 'e-it3', suite: 'Alert escalation prompts (v1)', score: 87, threshold: 90, status: 'fail', count: 38 },
+  ],
+  promptTests: [
+    { id: 'pt-it1', name: 'IT term — MTTR', input: 'What is MTTR?', expected: 'IT glossary definition with context', status: 'pass' },
+    { id: 'pt-it2', name: 'Intent — connector generation', input: 'Build a Calendly connector from the API docs', expected: 'Integration Builder template', status: 'pass' },
+    { id: 'pt-it3', name: 'IT term — rate limit', input: 'What is a rate limit?', expected: 'Definition with backoff guidance', status: 'pass' },
+    { id: 'pt-it4', name: 'Out of scope', input: 'Diagnose my chest pain', expected: 'Safe fallback; IT-safe redirect', status: 'pass' },
+  ],
+  loadScenarios: [
+    { id: 'l-it1', scenario: 'API doc parse (20 concurrent)', p95Latency: '2.1s', rps: 18, status: 'pass' },
+    { id: 'l-it2', scenario: 'Connector catalog search (100/s)', p95Latency: '0.06s', rps: 100, status: 'pass' },
+    { id: 'l-it3', scenario: 'Sandbox test stream (10/s)', p95Latency: '0.9s', rps: 10, status: 'pass' },
+  ],
+  driftChecks: [
+    { id: 'd-it1', check: 'IT glossary term match rate', baseline: '94%', current: '93.2%', status: 'ok' },
+    { id: 'd-it2', check: 'Integration template routing (builder vs access vs cost)', baseline: 'Builder 45%', current: '43%', status: 'ok' },
+    { id: 'd-it3', check: 'No-match fallback rate', baseline: '13%', current: '17%', status: 'review' },
+  ],
+};
+
 function getTestingSeed(vertical) {
   if (vertical === 'hr') return TESTING_SEED_HR;
   if (vertical === 'marketing') return TESTING_SEED_MARKETING;
+  if (vertical === 'it-saas') return TESTING_SEED_IT_SAAS;
   return TESTING_SEED_HEALTHCARE;
 }
 

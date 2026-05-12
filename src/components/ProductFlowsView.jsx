@@ -3,6 +3,7 @@ import * as LucideIcons from 'lucide-react';
 import { ArrowLeft, HelpCircle } from 'lucide-react';
 import { hrModuleConfigs, HR_PILLAR_DEFAULT } from '../data/hrProductFlows.js';
 import { marketingModuleConfigs, MARKETING_PILLAR_DEFAULT } from '../data/marketingProductFlows.js';
+import { itSaasModuleConfigs, IT_SAAS_PILLAR_DEFAULT } from '../data/itSaasProductFlows.js';
 
 // Population Health pre-built agent templates
 const populationHealthAgents = [
@@ -1370,7 +1371,9 @@ const ProductFlowsView = ({
       ? hrModuleConfigs[productName] || hrModuleConfigs[HR_PILLAR_DEFAULT]
       : vertical === 'marketing'
         ? marketingModuleConfigs[productName] || marketingModuleConfigs[MARKETING_PILLAR_DEFAULT]
-        : moduleConfigs[productName] || moduleConfigs['Population Health'];
+        : vertical === 'it-saas'
+          ? itSaasModuleConfigs[productName] || itSaasModuleConfigs[IT_SAAS_PILLAR_DEFAULT]
+          : moduleConfigs[productName] || moduleConfigs['Population Health'];
   const IconComponent = LucideIcons[config.icon];
 
   return (

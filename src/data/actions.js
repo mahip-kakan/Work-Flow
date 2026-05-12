@@ -1,5 +1,6 @@
 // Action configurations for Health Flow — healthcare-oriented demo workflows
 import { hrActionCategories } from './actionsHr.js';
+import { itSaasActionCategories } from './actionsItSaas.js';
 
 export const actionCategories = [
   {
@@ -289,6 +290,9 @@ export const getAllActions = () => {
   return actionCategories.flatMap(category => category.actions);
 };
 
-/** @param {'healthcare' | 'hr' | 'marketing'} vertical — marketing uses healthcare action library */
-export const getActionCategories = (vertical) =>
-  vertical === 'hr' ? hrActionCategories : actionCategories;
+/** @param {'healthcare' | 'hr' | 'marketing' | 'it-saas'} vertical — marketing uses healthcare action library */
+export const getActionCategories = (vertical) => {
+  if (vertical === 'hr') return hrActionCategories;
+  if (vertical === 'it-saas') return itSaasActionCategories;
+  return actionCategories;
+};

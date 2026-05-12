@@ -4,6 +4,7 @@ import { hrGlossaryData } from '../data/glossaryHr';
 import { healthcareChatGlossary } from '../data/healthcareChatGlossary.js';
 import { HR_FEATURED_FLOWS, hrFeaturedToQuickTemplate } from '../data/hrFeaturedCopilotFlows';
 import { MARKETING_FLOW_TEMPLATES, MARKETING_AI_SUGGESTIONS } from '../data/marketingTemplates';
+import { itSaasGlossaryData } from '../data/glossaryItSaas';
 
 const chatIntroHealthcare =
   "Hi! I'm your AI assistant for Workflow Studio. I can help you:\n• Create healthcare automation agents\n• Explain US healthcare terms\n• Explain automation, interoperability, and AI concepts used in this studio\n\nWhat would you like to do?";
@@ -14,12 +15,15 @@ const chatIntroHr =
 const chatIntroMarketing =
   "Hi! I'm your AI assistant for Workflow Studio (Marketing workspace). I can help you:\n• Spin up campaign, content, and intel automations\n• Match what you type to marketing recipes (debriefs, repurposing, experiments)\n• Talk through how these flows connect to your stack\n\nWhat would you like to do?";
 
+const chatIntroItSaas =
+  "Hi! I'm your AI assistant for the IT / SaaS workspace. I can help you:\n• Generate connectors for any SaaS app from its API docs (try: 'build a Calendly connector')\n• Explain IT/SaaS terms like OAuth, SCIM, rate limiting, MTTR, and SLA\n• Suggest templates for integrations, access management, ITSM, and cost governance\n\nWhat would you like to do?";
+
 const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectTemplate }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'bot',
-      content: vertical === 'hr' ? chatIntroHr : vertical === 'marketing' ? chatIntroMarketing : chatIntroHealthcare,
+      content: vertical === 'hr' ? chatIntroHr : vertical === 'marketing' ? chatIntroMarketing : vertical === 'it-saas' ? chatIntroItSaas : chatIntroHealthcare,
       timestamp: new Date()
     }
   ]);
@@ -29,7 +33,7 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
   const inputRef = useRef(null);
 
   const glossaryData =
-    vertical === 'hr' ? hrGlossaryData : vertical === 'marketing' ? {} : healthcareChatGlossary;
+    vertical === 'hr' ? hrGlossaryData : vertical === 'marketing' ? {} : vertical === 'it-saas' ? itSaasGlossaryData : healthcareChatGlossary;
 
   // Flatten glossary for easy search
   const allGlossaryTerms = Object.values(glossaryData).flat();

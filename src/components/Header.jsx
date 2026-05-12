@@ -55,6 +55,13 @@ const Header = ({ userRole, onUserRoleChange, vertical, onVerticalChange }) => {
           >
             Marketing
           </button>
+          <button
+            type="button"
+            className={vertical === 'it-saas' ? 'active' : ''}
+            onClick={() => onVerticalChange('it-saas')}
+          >
+            IT / SaaS
+          </button>
         </div>
       )}
 

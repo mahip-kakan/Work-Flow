@@ -20,6 +20,8 @@ import AIChatPanel from './components/AIChatPanel';
 import ChatAssistantButton from './components/ChatAssistantButton';
 import TestingDashboardApp from './testing-dashboard/TestingDashboardApp';
 import MarketingGlossary from './components/MarketingGlossary';
+import ItSaasGlossary from './components/ItSaasGlossary';
+import ConnectorCatalog from './components/ConnectorCatalog';
 import { HR_FEATURED_FLOWS } from './data/hrFeaturedCopilotFlows';
 
 const HR_SEED_FLOWS = [
@@ -156,6 +158,7 @@ function App() {
       const v = localStorage.getItem('health-flow-vertical');
       if (v === 'hr') return 'hr';
       if (v === 'marketing') return 'marketing';
+      if (v === 'it-saas') return 'it-saas';
       return 'healthcare';
     } catch {
       return 'healthcare';
@@ -644,9 +647,15 @@ function App() {
               <HRGlossary />
             ) : vertical === 'marketing' ? (
               <MarketingGlossary />
+            ) : vertical === 'it-saas' ? (
+              <ItSaasGlossary />
             ) : (
               <HealthcareGlossary />
             )
+          )}
+
+          {activeView === 'connectors' && vertical === 'it-saas' && (
+            <ConnectorCatalog />
           )}
 
           {activeView === 'editor' && currentFlow && (

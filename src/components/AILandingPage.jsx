@@ -178,6 +178,149 @@ const hrAiSuggestions = [
   { query: 'hrbp', suggestion: 'Manager request triage', template: 'hr-manager-triage' }
 ];
 
+const itSaasQuickTemplates = [
+  {
+    id: 'it-calendly-sync',
+    category: 'Integration Builder',
+    title: 'Calendly → user sync',
+    description: 'AI reads the Calendly API docs and generates a connector to pull users, events, and usage data into CloudEagle',
+    icons: ['Link', 'Code', 'Rocket'],
+    color: '#7C3AED',
+    trigger: {
+      id: 'it-api-doc-submitted',
+      name: 'When API doc URL is submitted',
+      description: 'User pastes Calendly API documentation URL',
+      icon: 'Link',
+      color: '#7C3AED'
+    },
+    actions: [
+      { id: 'ai-generate-connector', name: 'AI: Generate connector code', icon: 'Code', color: '#7C3AED' },
+      { id: 'run-sandbox-test', name: 'Run sandbox test', icon: 'FlaskConical', color: '#0284C7' },
+      { id: 'promote-to-production', name: 'Promote to production', icon: 'Rocket', color: '#059669' }
+    ]
+  },
+  {
+    id: 'it-slack-offboard',
+    category: 'Access & Compliance',
+    title: 'Slack + Notion + GitHub offboarding',
+    description: 'When an employee is terminated, automatically revoke access across all connected SaaS apps in one workflow',
+    icons: ['LogOut', 'UserX', 'MessageSquare'],
+    color: '#DC2626',
+    trigger: {
+      id: 'it-employee-offboarded',
+      name: 'When employee is offboarded',
+      description: 'HR system signals employee termination',
+      icon: 'LogOut',
+      color: '#DC2626'
+    },
+    actions: [
+      { id: 'deprovision-user', name: 'Deprovision user across apps', icon: 'UserX', color: '#DC2626' },
+      { id: 'update-okta-group', name: 'Update Okta group', icon: 'Lock', color: '#007DC1' },
+      { id: 'send-slack-it', name: 'Notify IT on Slack', icon: 'MessageSquare', color: '#4a154b' }
+    ]
+  },
+  {
+    id: 'it-jira-spend-alert',
+    category: 'Cost Governance',
+    title: 'Jira spend threshold alert',
+    description: 'When Jira license spend exceeds budget, notify IT and Finance on Slack with a spend breakdown',
+    icons: ['DollarSign', 'AlertTriangle', 'MessageSquare'],
+    color: '#059669',
+    trigger: {
+      id: 'it-spend-threshold',
+      name: 'When spend threshold is exceeded',
+      description: 'Monthly Jira license cost exceeds budget',
+      icon: 'DollarSign',
+      color: '#DC2626'
+    },
+    actions: [
+      { id: 'export-to-sheets', name: 'Export spend report to Sheets', icon: 'Table', color: '#0F9D58' },
+      { id: 'send-slack-it', name: 'Alert Finance on Slack', icon: 'MessageSquare', color: '#4a154b' }
+    ]
+  },
+  {
+    id: 'it-license-report',
+    category: 'Cost Governance',
+    title: 'Weekly license usage report',
+    description: 'Every Monday, export unused license data across all connected apps to a Google Sheet for IT review',
+    icons: ['Clock', 'Table', 'Mail'],
+    color: '#0F9D58',
+    trigger: {
+      id: 'it-on-schedule',
+      name: 'On a schedule',
+      description: 'Run weekly on Monday at 08:00',
+      icon: 'Clock',
+      color: '#0284C7'
+    },
+    actions: [
+      { id: 'export-to-sheets', name: 'Export to Google Sheets', icon: 'Table', color: '#0F9D58' },
+      { id: 'send-email-it', name: 'Email IT admin', icon: 'Mail', color: '#DC2626' }
+    ]
+  },
+  {
+    id: 'it-hubspot-sync',
+    category: 'Integration Builder',
+    title: 'HubSpot contact import',
+    description: 'AI generates a HubSpot API connector — maps contacts to CloudEagle SaaS users and syncs weekly',
+    icons: ['Link', 'GitMerge', 'MessageSquare'],
+    color: '#FF7A59',
+    trigger: {
+      id: 'it-on-schedule',
+      name: 'On a schedule',
+      description: 'Run weekly on Monday',
+      icon: 'Clock',
+      color: '#D97706'
+    },
+    actions: [
+      { id: 'ai-generate-connector', name: 'AI: Generate HubSpot connector', icon: 'Code', color: '#7C3AED' },
+      { id: 'map-api-fields', name: 'Map API fields to schema', icon: 'GitMerge', color: '#7C3AED' },
+      { id: 'send-slack-it', name: 'Notify on Slack', icon: 'MessageSquare', color: '#4a154b' }
+    ]
+  },
+  {
+    id: 'it-github-access-review',
+    category: 'Access & Compliance',
+    title: 'GitHub quarterly access review',
+    description: 'Audit all GitHub org members quarterly — export last-active dates to Sheets and create review tasks in Jira',
+    icons: ['CalendarCheck', 'Table', 'Ticket'],
+    color: '#24292E',
+    trigger: {
+      id: 'it-quarterly-review',
+      name: 'Quarterly access review',
+      description: 'Scheduled quarterly trigger',
+      icon: 'CalendarCheck',
+      color: '#0284C7'
+    },
+    actions: [
+      { id: 'export-to-sheets', name: 'Export member list to Sheets', icon: 'Table', color: '#0F9D58' },
+      { id: 'create-jira-ticket', name: 'Create Jira review task', icon: 'Ticket', color: '#0052CC' }
+    ]
+  }
+];
+
+const itSaasModules = [
+  { name: 'Integration Builder', icon: 'Zap', color: '#7C3AED' },
+  { name: 'Access & Compliance', icon: 'Shield', color: '#0284C7' },
+  { name: 'ITSM Automation', icon: 'Wrench', color: '#D97706' },
+  { name: 'Cost Governance', icon: 'DollarSign', color: '#059669' }
+];
+
+const itSaasAiSuggestions = [
+  { query: 'calendly', suggestion: 'Calendly → user sync', template: 'it-calendly-sync' },
+  { query: 'api', suggestion: 'Calendly → user sync', template: 'it-calendly-sync' },
+  { query: 'connector', suggestion: 'Calendly → user sync', template: 'it-calendly-sync' },
+  { query: 'offboard', suggestion: 'Slack + Notion + GitHub offboarding', template: 'it-slack-offboard' },
+  { query: 'offboarding', suggestion: 'Slack + Notion + GitHub offboarding', template: 'it-slack-offboard' },
+  { query: 'deprovision', suggestion: 'Slack + Notion + GitHub offboarding', template: 'it-slack-offboard' },
+  { query: 'spend', suggestion: 'Jira spend threshold alert', template: 'it-jira-spend-alert' },
+  { query: 'budget', suggestion: 'Jira spend threshold alert', template: 'it-jira-spend-alert' },
+  { query: 'license', suggestion: 'Weekly license usage report', template: 'it-license-report' },
+  { query: 'unused', suggestion: 'Weekly license usage report', template: 'it-license-report' },
+  { query: 'hubspot', suggestion: 'HubSpot contact import', template: 'it-hubspot-sync' },
+  { query: 'github', suggestion: 'GitHub quarterly access review', template: 'it-github-access-review' },
+  { query: 'access review', suggestion: 'GitHub quarterly access review', template: 'it-github-access-review' }
+];
+
 const knowledgeBases = [
   { id: 'local', label: 'Local', icon: Briefcase },
   { id: 'organization', label: 'Organization', icon: ArrowRight },
@@ -187,9 +330,10 @@ const knowledgeBases = [
 const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProduct, onCreateFlow }) => {
   const isHr = vertical === 'hr';
   const isMarketing = vertical === 'marketing';
-  const activeQuickTemplates = isHr ? hrQuickTemplates : isMarketing ? MARKETING_FLOW_TEMPLATES : quickTemplates;
-  const activeModules = isHr ? hrModules : isMarketing ? MARKETING_MODULES : modules;
-  const activeAiSuggestions = isHr ? hrAiSuggestions : isMarketing ? MARKETING_AI_SUGGESTIONS : aiSuggestions;
+  const isItSaas = vertical === 'it-saas';
+  const activeQuickTemplates = isHr ? hrQuickTemplates : isMarketing ? MARKETING_FLOW_TEMPLATES : isItSaas ? itSaasQuickTemplates : quickTemplates;
+  const activeModules = isHr ? hrModules : isMarketing ? MARKETING_MODULES : isItSaas ? itSaasModules : modules;
+  const activeAiSuggestions = isHr ? hrAiSuggestions : isMarketing ? MARKETING_AI_SUGGESTIONS : isItSaas ? itSaasAiSuggestions : aiSuggestions;
 
   const [inputValue, setInputValue] = useState('');
   const [showSuggestion, setShowSuggestion] = useState(false);
@@ -270,6 +414,10 @@ const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProd
             <>
               Campaigns, content, and GTM automation—in <span className="gradient-text">Workflow Studio</span>
             </>
+          ) : isItSaas ? (
+            <>
+              Build integrations to any SaaS app—<span className="gradient-text">no engineers needed</span>
+            </>
           ) : (
             <>
               Clinical and operational automation—in <span className="gradient-text">Workflow Studio</span>
@@ -281,7 +429,9 @@ const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProd
             ? 'Onboarding, talent, and people ops—tasks, approvals, and notifications across HRBP, TA, and systems teams'
             : isMarketing
               ? 'Debriefs, repurposing, intel briefs, and experiment readouts—aligned with how modern marketing teams ship'
-              : 'Design, deploy, and automate clinical and operational workflows across your health system'}
+              : isItSaas
+                ? 'Point AI at any API documentation and generate a production-ready connector — auth, pagination, error handling, and logging included'
+                : 'Design, deploy, and automate clinical and operational workflows across your health system'}
         </p>
 
         {/* AI Input - search bar with knowledge base */}
@@ -297,7 +447,9 @@ const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProd
                   ? 'Search onboarding, requisitions, HRIS, or policies…'
                   : isMarketing
                     ? 'Search campaigns, content, briefs, or experiments…'
-                    : 'Search workflows, patients, or policies…'
+                    : isItSaas
+                      ? 'Search integrations, connectors, access reviews, or spend…'
+                      : 'Search workflows, patients, or policies…'
               }
               value={inputValue}
               onChange={handleInputChange}
@@ -388,6 +540,16 @@ const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProd
               <span>·</span>
               <span>CRM &amp; MAP connectors</span>
             </>
+          ) : isItSaas ? (
+            <>
+              <span>SOC 2 Type II</span>
+              <span>·</span>
+              <span>ISO 27001</span>
+              <span>·</span>
+              <span>GDPR</span>
+              <span>·</span>
+              <span>Sandbox-first execution</span>
+            </>
           ) : (
             <>
               <span>HIPAA</span>
@@ -471,7 +633,7 @@ const AILandingPage = ({ vertical = 'healthcare', onSelectTemplate, onSelectProd
 
       {/* Browse by Module */}
       <div className="browse-products-section">
-        <h2>{isHr ? 'Browse by HR pillar' : isMarketing ? 'Browse by marketing pillar' : 'Browse by Domain'}</h2>
+        <h2>{isHr ? 'Browse by HR pillar' : isMarketing ? 'Browse by marketing pillar' : isItSaas ? 'Browse by IT pillar' : 'Browse by Domain'}</h2>
         <div className="product-pills">
           {activeModules.map(module => {
             const IconComponent = LucideIcons[module.icon];
