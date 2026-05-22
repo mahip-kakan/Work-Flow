@@ -306,10 +306,30 @@ const IntegrationBuilder = ({ onClose, onConnectorAdded }) => {
   const STEPS = ['New Integration', 'AI Analysis', 'Code Review', 'Test & Deploy'];
 
   const explanations = {
-    auth:   { title: 'Auth Setup',    body: `Securely stores your ${appName} OAuth credentials and auto-renews the access token before it expires. Credentials are read from environment variables — never hard-coded.` },
-    client: { title: 'API Client',    body: 'Creates a reusable HTTPS session that automatically attaches your auth header and enforces a 10-second timeout so the integration never hangs indefinitely.' },
-    users:  { title: 'get_users()',   body: `Fetches every user in your ${appName} organisation one page at a time until all users are retrieved. Each user is mapped to the platform user schema.` },
-    usage:  { title: 'get_usage()',   body: 'Pulls event_type activity as a proxy for usage. Maps activity counts per user to a usage_score. ⚠ Low-confidence mapping — verify after testing.' },
+    auth: {
+      title: 'Auth Setup',
+      what: 'Handles OAuth 2.0 authentication with the ' + appName + ' API.',
+      how: 'Reads your Client ID and Client Secret from environment variables (never hard-coded), exchanges them for a Bearer token, and automatically refreshes it before it expires. All future API calls attach this token in the Authorization header.',
+      why: 'Storing credentials in env vars means they never appear in source code or logs — a key security requirement before promoting any connector to production.',
+    },
+    client: {
+      title: 'API Client',
+      what: 'A reusable HTTP session that all other functions call.',
+      how: 'Wraps Python\'s requests library with a pre-configured base URL, default headers (including the auth token), a 10-second timeout, and automatic retry on 429 / 5xx responses. Every API call in this connector goes through this single client.',
+      why: 'Centralising connection logic means auth changes, timeouts, or base URL updates only need to be made in one place — not scattered across every function.',
+    },
+    users: {
+      title: 'get_users()',
+      what: 'Fetches the full list of users from ' + appName + ' and maps them to a standard schema.',
+      how: 'Calls GET /users in pages (cursor-based), follows next_token until all records are retrieved, then normalises each record — mapping ' + appName + ' field names to standard id, email, name, and last_active fields.',
+      why: 'Pagination ensures the sync never misses users in large orgs. Field normalisation means this connector\'s output is consistent with every other connector — no custom logic needed downstream.',
+    },
+    usage: {
+      title: 'get_usage()',
+      what: 'Estimates how actively each user is using ' + appName + '.',
+      how: 'Calls GET /event_types and counts events per user over the last 30 days. Maps the count to a usage_score (0–100). Note: ' + appName + ' doesn\'t expose a direct "last active" endpoint, so event frequency is used as a proxy.',
+      why: 'Usage scores drive licence reclaim decisions — low-scoring users can be flagged for review. The ⚠ low-confidence label is intentional: verify the mapping matches your definition of "active" before enabling auto-reclaim.',
+    },
   };
 
   const secretStatus = code ? secretsCheck(code) : 'clean';
@@ -601,7 +621,19 @@ const IntegrationBuilder = ({ onClose, onConnectorAdded }) => {
                   return (
                     <button key={s} type="button" className={`ib-explain-card ${isActive ? 'ib-explain-card--active' : ''}`} onClick={() => setActiveSection(s)}>
                       <div className="ib-explain-card-title">{ex.title}</div>
-                      {isActive && <p className="ib-explain-card-body">{ex.body}</p>}
+                      {isActive && (
+                        <div className="ib-explain-card-body">
+                          <p style={{ marginBottom: 10 }}>{ex.what}</p>
+                          <div className="ib-explain-row">
+                            <span className="ib-explain-label">How</span>
+                            <span>{ex.how}</span>
+                          </div>
+                          <div className="ib-explain-row" style={{ marginTop: 8 }}>
+                            <span className="ib-explain-label">Why it matters</span>
+                            <span>{ex.why}</span>
+                          </div>
+                        </div>
+                      )}
                     </button>
                   );
                 })}
