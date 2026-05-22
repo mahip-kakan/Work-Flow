@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Home, BarChart3, Compass, Brain, Settings, HelpCircle, BookOpen, Beaker, Grid } from 'lucide-react';
+import { Plus, Home, BarChart3, Compass, Brain, Settings, HelpCircle, BookOpen, Beaker, Grid, Eye } from 'lucide-react';
 
 const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole, vertical }) => {
   const canAccessTesting = userRole === 'pm' || userRole === 'admin';
@@ -67,6 +67,17 @@ const Sidebar = ({ onNewFlow, activeView, setActiveView, userRole, vertical }) =
               <Grid size={22} />
             </button>
             <span className="sidebar-label">Connect Apps</span>
+
+            <button
+              className={`nav-item ${activeView === 'ai-governance' ? 'active' : ''}`}
+              onClick={() => setActiveView('ai-governance')}
+              title="AI Surfaces"
+              style={{ position: 'relative' }}
+            >
+              <Eye size={22} />
+              <span className="nav-item-badge">AI</span>
+            </button>
+            <span className="sidebar-label">AI Surfaces</span>
           </>
         )}
 

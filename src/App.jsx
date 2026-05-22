@@ -22,6 +22,7 @@ import TestingDashboardApp from './testing-dashboard/TestingDashboardApp';
 import MarketingGlossary from './components/MarketingGlossary';
 import ItSaasGlossary from './components/ItSaasGlossary';
 import ConnectorCatalog from './components/ConnectorCatalog';
+import AIGovernanceDashboard from './components/AIGovernanceDashboard';
 import { HR_FEATURED_FLOWS } from './data/hrFeaturedCopilotFlows';
 
 const HR_SEED_FLOWS = [
@@ -656,6 +657,10 @@ function App() {
 
           {activeView === 'connectors' && vertical === 'it-saas' && (
             <ConnectorCatalog />
+          )}
+
+          {activeView === 'ai-governance' && vertical === 'it-saas' && (
+            <AIGovernanceDashboard />
           )}
 
           {activeView === 'editor' && currentFlow && (
