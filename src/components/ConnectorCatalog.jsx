@@ -202,7 +202,7 @@ const IntegrationBuilder = ({ onClose, onConnectorAdded }) => {
     }, 1800);
   };
 
-  /* Step 3 → 4 — deterministic fail on appName.length % 3 === 0 */
+  /* Step 3 → 4 — always passes */
   const handleSandbox = () => {
     setStep(4);
     setSandboxRunning(true);
@@ -211,76 +211,42 @@ const IntegrationBuilder = ({ onClose, onConnectorAdded }) => {
     setSandboxDone(false);
     setSandboxFailed(false);
 
-    const willFail = appName.trim().length % 3 === 0;
-    const failAtStep = 3; // 0-indexed → "Pagination" step
+    const prefix = appName.toUpperCase().replace(/\s+/g, '_');
+    const logLines = [
+      'Starting sandbox run…',
+      'Checking credentials…',
+      `${prefix}_CLIENT_ID  ✓`,
+      `${prefix}_CLIENT_SECRET  ✓`,
+      'Requesting OAuth token…',
+      'Token acquired (expires_in=7200s)',
+      'Auth check complete',
+      `GET /users  page=1…`,
+      '200 OK  latency=340ms  count=20',
+      `GET /users  page=2…`,
+      '200 OK  latency=290ms  count=20',
+      `GET /users  page=3…`,
+      '200 OK  latency=310ms  count=12  next_token=null',
+      'Pagination complete  total=52  pages=3',
+      'Mapping to platform schema…',
+      'Schema mapping OK',
+      '━━  SANDBOX PASSED  ━━',
+    ];
 
-    const logLines = willFail
-      ? [
-          'Starting sandbox run…',
-          'Checking credentials…',
-          `${appName.toUpperCase().replace(' ', '_')}_CLIENT_ID  ✓`,
-          `${appName.toUpperCase().replace(' ', '_')}_CLIENT_SECRET  ✓`,
-          'Requesting OAuth token…',
-          'Token acquired (expires_in=7200s)',
-          'Auth check complete',
-          `GET /users  page=1…`,
-          '200 OK  latency=340ms  count=20',
-          `GET /users  page=2…`,
-          '200 OK  latency=290ms  count=20',
-          '[ERROR] Unexpected response schema — field \'next_cursor\' missing',
-          '[ERROR] Pagination handler cannot determine next page token',
-          '━━  SANDBOX FAILED  (4 / 5 steps passed)  ━━',
-        ]
-      : [
-          'Starting sandbox run…',
-          'Checking credentials…',
-          `${appName.toUpperCase().replace(' ', '_')}_CLIENT_ID  ✓`,
-          `${appName.toUpperCase().replace(' ', '_')}_CLIENT_SECRET  ✓`,
-          'Requesting OAuth token…',
-          'Token acquired (expires_in=7200s)',
-          'Auth check complete',
-          `GET /users  page=1…`,
-          '200 OK  latency=340ms  count=20',
-          `GET /users  page=2…`,
-          '200 OK  latency=290ms  count=20',
-          `GET /users  page=3…`,
-          '200 OK  latency=310ms  count=12  next_token=null',
-          'Pagination complete  total=52  pages=3',
-          'Mapping to platform schema…',
-          'Schema mapping OK',
-          '━━  SANDBOX PASSED  ━━',
-        ];
-
-    // stepMap: logLine index → SANDBOX_STEPS index
-    const stepMapPass = { 2: 0, 6: 1, 7: 2, 13: 3, 15: 4 };
-    const stepMapFail = { 2: 0, 6: 1, 7: 2 };
+    // logLine index → SANDBOX_STEPS index
+    const stepMap = { 2: 0, 6: 1, 7: 2, 13: 3, 15: 4 };
 
     logLines.forEach((line, i) => {
       setTimeout(() => {
         const ts = new Date().toLocaleTimeString('en-GB', { hour12: false });
-        setLogs((prev) => [...prev, { text: `${ts}  ${line}`, type: line.includes('PASSED') ? 'success' : line.includes('ERROR') || line.includes('FAILED') ? 'error' : 'default' }]);
+        setLogs((prev) => [...prev, { text: `${ts}  ${line}`, type: line.includes('PASSED') ? 'success' : 'default' }]);
 
-        const stepMap = willFail ? stepMapFail : stepMapPass;
         if (stepMap[i] !== undefined) {
-          const stepIdx = stepMap[i];
-          setSandboxSteps((prev) => [
-            ...prev,
-            { ...SANDBOX_STEPS[stepIdx], status: 'pass' },
-          ]);
-        }
-
-        // Fail: mark pagination step as failed
-        if (willFail && i === 11) {
-          setSandboxSteps((prev) => [
-            ...prev,
-            { ...SANDBOX_STEPS[failAtStep], status: 'fail' },
-          ]);
+          setSandboxSteps((prev) => [...prev, { ...SANDBOX_STEPS[stepMap[i]], status: 'pass' }]);
         }
 
         if (i === logLines.length - 1) {
           setSandboxRunning(false);
           setSandboxDone(true);
-          if (willFail) setSandboxFailed(true);
         }
       }, i * 400);
     });
