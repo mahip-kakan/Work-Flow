@@ -4,14 +4,24 @@ import {
   TrendingUp, BarChart3, AlertTriangle, RefreshCw
 } from 'lucide-react';
 
-const adoptionData = [
-  { month: 'Aug', flows: 12 },
-  { month: 'Sep', flows: 18 },
-  { month: 'Oct', flows: 25 },
-  { month: 'Nov', flows: 32 },
-  { month: 'Dec', flows: 41 },
-  { month: 'Jan', flows: 47 },
-];
+const ADOPTION_DATA = {
+  healthcare: [
+    { month: 'Aug', flows: 12 }, { month: 'Sep', flows: 18 }, { month: 'Oct', flows: 25 },
+    { month: 'Nov', flows: 32 }, { month: 'Dec', flows: 41 }, { month: 'Jan', flows: 47 },
+  ],
+  hr: [
+    { month: 'Aug', flows: 8  }, { month: 'Sep', flows: 14 }, { month: 'Oct', flows: 20 },
+    { month: 'Nov', flows: 27 }, { month: 'Dec', flows: 33 }, { month: 'Jan', flows: 38 },
+  ],
+  'it-saas': [
+    { month: 'Aug', flows: 5  }, { month: 'Sep', flows: 9  }, { month: 'Oct', flows: 15 },
+    { month: 'Nov', flows: 21 }, { month: 'Dec', flows: 27 }, { month: 'Jan', flows: 31 },
+  ],
+  marketing: [
+    { month: 'Sep', flows: 6  }, { month: 'Oct', flows: 10 }, { month: 'Nov', flows: 14 },
+    { month: 'Dec', flows: 18 }, { month: 'Jan', flows: 20 }, { month: 'Feb', flows: 22 },
+  ],
+};
 
 const ANALYTICS_BY_VERTICAL = {
   healthcare: {
@@ -148,6 +158,29 @@ const ANALYTICS_BY_VERTICAL = {
       { domain: 'Learning & development', count: 3, color: '#64748b' },
     ],
   },
+  'it-saas': {
+    subtitle: 'Monitor SaaS integration health, connector runs, and AI governance across your tech stack',
+    metrics: [
+      { label: 'Active Connectors', value: '31', icon: Brain, color: '#7C3AED', change: '+4 this week' },
+      { label: 'Connector Runs', value: '2,814', icon: Play, color: '#059669', change: 'This month' },
+      { label: 'IT Admin Hours Saved', value: '218 hrs', icon: Clock, color: '#D97706', change: 'This month' },
+      { label: 'Success Rate', value: '99.1%', icon: CheckCircle, color: '#059669', change: '+0.4%' },
+    ],
+    recentExecutions: [
+      { id: 1, name: 'Slack → platform user sync',        status: 'success', time: 'Today 6:00 AM',       duration: '1.4s',  module: 'Integration Builder' },
+      { id: 2, name: 'GitHub org member daily sync',      status: 'success', time: 'Today 5:30 AM',       duration: '3.8s',  module: 'Integration Builder' },
+      { id: 3, name: 'Unused licence reclaim — Notion',   status: 'failed',  time: 'Yesterday 4:10 PM',   duration: '-',     module: 'Cost Governance', error: 'API rate limit hit' },
+      { id: 4, name: 'Offboarding — Slack + GitHub',      status: 'success', time: 'Yesterday 2:00 PM',   duration: '2.1s',  module: 'Access & Compliance' },
+      { id: 5, name: 'Jira field mapping refresh',        status: 'success', time: 'Yesterday 9:15 AM',   duration: '0.7s',  module: 'Integration Builder' },
+      { id: 6, name: 'AI spend anomaly alert — OpenAI',   status: 'success', time: 'Monday 8:00 AM',      duration: '0.4s',  module: 'AI Surfaces' },
+    ],
+    workflowsByDomain: [
+      { domain: 'Integration Builder', count: 14, color: '#7C3AED' },
+      { domain: 'Access & Compliance', count: 8,  color: '#0284C7' },
+      { domain: 'Cost Governance',     count: 5,  color: '#D97706' },
+      { domain: 'AI Surfaces',         count: 4,  color: '#E2552A' },
+    ],
+  },
   marketing: {
     subtitle: 'Monitor marketing automation across campaigns, content, brand, and lifecycle programs',
     metrics: [
@@ -209,10 +242,13 @@ const ANALYTICS_BY_VERTICAL = {
 };
 
 const AnalyticsDashboard = ({ vertical = 'healthcare' }) => {
-  const key = vertical === 'hr' ? 'hr' : vertical === 'marketing' ? 'marketing' : 'healthcare';
+  const key = ANALYTICS_BY_VERTICAL[vertical] ? vertical : 'healthcare';
   const { subtitle, metrics, recentExecutions, workflowsByDomain } = ANALYTICS_BY_VERTICAL[key];
+  const adoptionData = ADOPTION_DATA[key] || ADOPTION_DATA.healthcare;
   const maxFlows = Math.max(...workflowsByDomain.map(p => p.count));
   const maxAdoption = Math.max(...adoptionData.map(d => d.flows));
+  const adoptionChartTitle = key === 'it-saas' ? 'Connector Adoption' : 'Automation Adoption';
+  const domainChartTitle   = key === 'it-saas' ? 'Connectors by Domain' : 'Workflows by Domain';
 
   return (
     <div className="analytics-dashboard">
@@ -253,7 +289,7 @@ const AnalyticsDashboard = ({ vertical = 'healthcare' }) => {
       <div className="charts-row">
         {/* Adoption Chart */}
         <div className="chart-card">
-          <h3>Automation Adoption</h3>
+          <h3>{adoptionChartTitle}</h3>
           <div className="line-chart">
             <div className="chart-y-axis">
               <span>50</span>
@@ -313,7 +349,7 @@ const AnalyticsDashboard = ({ vertical = 'healthcare' }) => {
 
         {/* Domain Distribution Chart */}
         <div className="chart-card">
-          <h3>Workflows by Domain</h3>
+          <h3>{domainChartTitle}</h3>
           <div className="bar-chart">
             {workflowsByDomain.map((item, index) => (
               <div key={index} className="bar-item">
