@@ -6057,6 +6057,62 @@ input, select, textarea {
 .ag-risk-user  { font-size: 11px; color: var(--text-secondary); font-family: monospace; }
 .ag-risk-time  { font-size: 11px; color: var(--text-secondary); text-align: right; }
 
+/* Agent action strip */
+.ag-agent-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #F8F6FF;
+  border: 1px solid #E0D9F7;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.ag-agent-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5B4ACF;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+.ag-agent-chip {
+  font-size: 12px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid #C4B8F0;
+  background: #fff;
+  color: #4B3AB0;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all .15s;
+}
+.ag-agent-chip:hover {
+  background: #5B4ACF;
+  border-color: #5B4ACF;
+  color: #fff;
+}
+.ag-chat-trigger-btn {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  padding: 7px 13px;
+  border-radius: 8px;
+  border: 1px solid #C4B8F0;
+  background: #F8F6FF;
+  color: #5B4ACF;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all .15s;
+}
+.ag-chat-trigger-btn:hover {
+  background: #5B4ACF;
+  border-color: #5B4ACF;
+  color: #fff;
+}
+
 /* Sidebar badge for AI nav item */
 .nav-item-badge {
   position: absolute;

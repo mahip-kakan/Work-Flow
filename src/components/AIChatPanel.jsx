@@ -18,7 +18,7 @@ const chatIntroMarketing =
 const chatIntroItSaas =
   "Hi! I'm your AI assistant for the IT / SaaS workspace. I can help you:\n• Generate connectors for any SaaS app from its API docs (try: 'build a Calendly connector')\n• Explain IT/SaaS terms like OAuth, SCIM, rate limiting, MTTR, and SLA\n• Suggest templates for integrations, access management, ITSM, and cost governance\n\nWhat would you like to do?";
 
-const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectTemplate }) => {
+const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectTemplate, initialMessage = '' }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -27,10 +27,21 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
       timestamp: new Date()
     }
   ]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(initialMessage);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Auto-send pre-filled message from dashboard
+  useEffect(() => {
+    if (initialMessage && initialMessage.trim()) {
+      const timer = setTimeout(() => {
+        handleSendMessage(initialMessage.trim());
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const glossaryData =
     vertical === 'hr' ? hrGlossaryData : vertical === 'marketing' ? {} : vertical === 'it-saas' ? itSaasGlossaryData : healthcareChatGlossary;
@@ -377,10 +388,8 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
     return null;
   };
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || isTyping) return;
-
-    const userMessage = inputValue.trim();
+  const handleSendMessage = async (userMessage) => {
+    if (!userMessage || isTyping) return;
     setInputValue('');
     
     // Add user message
@@ -460,7 +469,35 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
             lm.includes('talent') ||
             lm.includes('offer');
 
-          if (vertical === 'hr' && hrGlossaryMatch) {
+          // IT/SaaS governance-specific intent handling
+          const isItSaas = vertical === 'it-saas';
+          const itGovernanceIntent =
+            lm.includes('anomal') || lm.includes('spend') || lm.includes('dlp') ||
+            lm.includes('shadow') || lm.includes('risk') || lm.includes('api key') ||
+            lm.includes('revoke') || lm.includes('canary') || lm.includes('haiku') ||
+            lm.includes('gpt-4') || lm.includes('sanctioned') || lm.includes('access review') ||
+            lm.includes('pii') || lm.includes('governance') || lm.includes('licence') ||
+            lm.includes('license') || lm.includes('surface');
+
+          if (isItSaas && itGovernanceIntent) {
+            const lowerMsg = lm;
+            let reply = '';
+            if (lowerMsg.includes('anomal') || lowerMsg.includes('spend')) {
+              reply = `**AI Spend Anomaly Summary**\n\nHere's what EagleEye has flagged this month:\n\n• **OpenAI · GPT-4 Turbo** — $18,420 MTD, +3.8× above 30-day baseline. Primary driver: 12 users running summarisation + extraction tasks.\n• **Anthropic · Claude** — $12,880, within expected range. No action needed.\n• **Embedded AI add-ons** (Notion AI, Copilot) — growing steadily, low individual risk.\n\n**Recommended action:** Route summarisation workloads from GPT-4 Turbo → Claude Haiku. Estimated savings: ~$8,400/month.\n\nWould you like me to set up a canary rollout for that?`;
+            } else if (lowerMsg.includes('revoke') || lowerMsg.includes('api key') || lowerMsg.includes('idle')) {
+              reply = `**Idle API Key Audit**\n\nI found **4 API keys** that have had zero usage for 30+ days:\n\n• OpenAI key \`sk-...8f2a\` — owner: raj.k@acme.com, last used 47d ago\n• Anthropic key \`sk-ant-...c3d1\` — owner: dev-pipeline (no human owner assigned)\n• Perplexity key — shadow tool, no IT record\n• AWS Bedrock key — test environment, never used in prod\n\n**Action:** Revoke all 4 and notify owners via Slack?\n\nI can file a Jira ticket for each revocation and attach to the next access review.`;
+            } else if (lowerMsg.includes('canary') || lowerMsg.includes('haiku') || lowerMsg.includes('gpt-4') || lowerMsg.includes('swap')) {
+              reply = `**Canary Rollout: GPT-4 Turbo → Claude Haiku**\n\nHere's the plan:\n\n1. Identify the 12 users running summarisation + extraction workloads\n2. Route their traffic to Claude Haiku for 2 weeks\n3. Monitor output quality score (>85% acceptable)\n4. Auto-promote to full rollout if quality passes, auto-revert if it drops\n\n**Expected savings:** ~$8,400/month (72% cost reduction for this workload)\n\nShall I send the approval request to your team on Slack?`;
+            } else if (lowerMsg.includes('shadow') || lowerMsg.includes('sanctioned') || lowerMsg.includes('surface')) {
+              reply = `**Shadow AI Surfaces This Month**\n\nEagleEye discovered **26 shadow tools** in use. Top ones to action:\n\n🔴 **Perplexity Pro** — 7 users, personal cards, PII pasted into public model. Recommend: block at SSO level.\n🟡 **Midjourney** — 3 users, design assets uploaded to external service. Recommend: request IT review.\n🟡 **ChatGPT (direct)** — 11 users, personal accounts, HR data submitted. Recommend: deploy enterprise ChatGPT Team or block.\n\nWould you like me to prepare a sanctions review deck for your CISO?`;
+            } else if (lowerMsg.includes('access review') || lowerMsg.includes('pii') || lowerMsg.includes('dlp')) {
+              reply = `**DLP Risk Events — ${new Date().toLocaleDateString('en-GB', {month:'short', year:'numeric'})}**\n\n**What is DLP?** Data Loss Prevention — monitors when sensitive data leaves your org through AI tools.\n\n**High severity (3 events):**\n• Perplexity Pro: customer PII pasted into public prompt (ananya.s)\n• ChatGPT shadow: HR data submitted to public model (raj.k)\n• Midjourney: design assets uploaded to external service\n\n**Recommended actions:**\n1. Block Perplexity at SSO immediately\n2. Notify CISO — escalation SLA is 24h\n3. File access review for all shadow tools with PII events\n\nShall I draft the CISO escalation email?`;
+            } else {
+              reply = `**EagleEye AI Governance**\n\nI can help you take action on your AI spend and risk. Here's what I can do:\n\n• **Spend anomalies** — explain what's spiking and why\n• **API key revocation** — find and revoke idle keys\n• **Model swap canary** — route workloads to cheaper models\n• **Shadow tool review** — sanction or block unreviewed AI tools\n• **DLP escalation** — draft CISO alerts for high-risk events\n• **Access reviews** — file Jira tickets for high-risk surfaces\n\nWhat would you like to act on?`;
+            }
+            const botResponse = { id: Date.now()+1, type:'bot', content: reply, timestamp: new Date() };
+            setMessages(prev => [...prev, botResponse]);
+          } else if (vertical === 'hr' && hrGlossaryMatch) {
             const botResponse = {
               id: Date.now() + 1,
               type: 'bot',
@@ -530,6 +567,11 @@ const AIChatPanel = ({ vertical = 'healthcare', onClose, onCreateFlow, onSelectT
     }
 
     setIsTyping(false);
+  };
+
+  const handleSend = () => {
+    if (!inputValue.trim() || isTyping) return;
+    handleSendMessage(inputValue.trim());
   };
 
   const handleCreateFromTemplate = (template) => {

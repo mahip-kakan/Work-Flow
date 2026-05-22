@@ -174,6 +174,7 @@ function App() {
   
   // Chat assistant state
   const [showChatAssistant, setShowChatAssistant] = useState(false);
+  const [pendingChatMessage, setPendingChatMessage] = useState('');
 
   // Current flow being edited
   const [currentFlow, setCurrentFlow] = useState(null);
@@ -660,7 +661,10 @@ function App() {
           )}
 
           {activeView === 'ai-governance' && vertical === 'it-saas' && (
-            <AIGovernanceDashboard />
+            <AIGovernanceDashboard onOpenChat={(msg) => {
+              setShowChatAssistant(true);
+              setPendingChatMessage(msg || '');
+            }} />
           )}
 
           {activeView === 'editor' && currentFlow && (
@@ -751,9 +755,10 @@ function App() {
         <AIChatPanel
           key={vertical}
           vertical={vertical}
-          onClose={() => setShowChatAssistant(false)}
+          onClose={() => { setShowChatAssistant(false); setPendingChatMessage(''); }}
           onCreateFlow={handleCreateFlow}
           onSelectTemplate={handleSelectTemplate}
+          initialMessage={pendingChatMessage}
         />
       )}
     </div>
