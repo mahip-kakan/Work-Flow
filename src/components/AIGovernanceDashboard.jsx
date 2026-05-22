@@ -117,33 +117,90 @@ function Badge({ type, label, colorMap }) {
   );
 }
 
+// Chart dimensions with proper margins
+const CW = 620, CH = 200;
+const ML = 52, MR = 24, MT = 16, MB = 32;
+const PW = CW - ML - MR;
+const PH = CH - MT - MB;
+
+// Data: monthly spend values ($ thousands) for each series
+const MONTHS = ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'];
+const SEAT_DATA    = [31.2, 31.8, 32.1, 32.5, 32.8, 33.2];
+const CONSUME_DATA = [12.4, 16.1, 21.8, 29.5, 38.1, 47.3];
+const EMBEDDED_DATA= [8.2,  9.6,  11.8, 14.5, 18.2, 23.1];
+
+const Y_MAX = 55, Y_MIN = 0;
+const Y_TICKS = [0, 10, 20, 30, 40, 50];
+
+function xPos(i) { return ML + (i / (MONTHS.length - 1)) * PW; }
+function yPos(v) { return MT + PH - ((v - Y_MIN) / (Y_MAX - Y_MIN)) * PH; }
+
+function toPath(data) {
+  return data.map((v, i) => `${i === 0 ? 'M' : 'L'}${xPos(i).toFixed(1)},${yPos(v).toFixed(1)}`).join(' ');
+}
+
+function toArea(data) {
+  const line = data.map((v, i) => `${xPos(i).toFixed(1)},${yPos(v).toFixed(1)}`).join(' ');
+  const base = `${xPos(data.length - 1).toFixed(1)},${yPos(0).toFixed(1)} ${xPos(0).toFixed(1)},${yPos(0).toFixed(1)}`;
+  return `M ${line} L ${base} Z`;
+}
+
 function SparklineChart() {
-  // Simple SVG inline chart mirroring the HTML version
   return (
-    <svg viewBox="0 0 600 130" preserveAspectRatio="none" aria-hidden="true"
-      style={{ width: '100%', height: 130, display: 'block' }}>
-      <g stroke="#EFE9DA" strokeWidth="1">
-        <line x1="0" y1="20" x2="600" y2="20"/>
-        <line x1="0" y1="55" x2="600" y2="55"/>
-        <line x1="0" y1="90" x2="600" y2="90"/>
-        <line x1="0" y1="125" x2="600" y2="125"/>
-      </g>
-      {/* seat-based (flat) */}
-      <polyline fill="none" stroke="#1F3A57" strokeWidth="2.2"
-        points="10,55 110,52 210,50 310,48 410,46 510,44 590,42"/>
-      {/* consumption-based (rising) */}
-      <polyline fill="none" stroke="#E2552A" strokeWidth="2.4"
-        points="10,112 110,106 210,94 310,78 410,56 510,34 590,14"/>
-      {/* embedded add-ons (dashed) */}
-      <polyline fill="none" stroke="#B98A20" strokeWidth="2" strokeDasharray="4 3"
-        points="10,122 110,118 210,112 310,102 410,89 510,74 590,62"/>
-      <g fill="#9B9580" fontSize="9" fontFamily="monospace">
-        <text x="10" y="128">Dec</text><text x="110" y="128">Jan</text>
-        <text x="210" y="128">Feb</text><text x="310" y="128">Mar</text>
-        <text x="410" y="128">Apr</text><text x="510" y="128">May</text>
-      </g>
-      <circle cx="590" cy="14" r="4" fill="#E2552A"/>
-      <text x="500" y="11" fill="#E2552A" fontSize="9" fontFamily="monospace">+38% MoM</text>
+    <svg viewBox={`0 0 ${CW} ${CH}`} width="100%" height={CH} aria-hidden="true"
+      style={{ display: 'block', overflow: 'visible' }}>
+      <defs>
+        <linearGradient id="grad-consume" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#E2552A" stopOpacity="0.12"/>
+          <stop offset="100%" stopColor="#E2552A" stopOpacity="0.01"/>
+        </linearGradient>
+        <linearGradient id="grad-seat" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1F3A57" stopOpacity="0.07"/>
+          <stop offset="100%" stopColor="#1F3A57" stopOpacity="0.01"/>
+        </linearGradient>
+      </defs>
+
+      {/* Y-axis gridlines + labels */}
+      {Y_TICKS.map(t => (
+        <g key={t}>
+          <line x1={ML} y1={yPos(t)} x2={ML + PW} y2={yPos(t)}
+            stroke={t === 0 ? '#D1CCBF' : '#EEEAD8'} strokeWidth={t === 0 ? 1 : 1} />
+          <text x={ML - 8} y={yPos(t) + 4} textAnchor="end"
+            fontSize="10" fill="#9B9580" fontFamily="ui-sans-serif, system-ui, sans-serif">
+            ${t}k
+          </text>
+        </g>
+      ))}
+
+      {/* X-axis month labels */}
+      {MONTHS.map((m, i) => (
+        <text key={m} x={xPos(i)} y={CH - 6} textAnchor="middle"
+          fontSize="11" fill="#9B9580" fontFamily="ui-sans-serif, system-ui, sans-serif">
+          {m}
+        </text>
+      ))}
+
+      {/* Area fills */}
+      <path d={toArea(SEAT_DATA)} fill="url(#grad-seat)" />
+      <path d={toArea(CONSUME_DATA)} fill="url(#grad-consume)" />
+
+      {/* Lines */}
+      <path d={toPath(SEAT_DATA)} fill="none" stroke="#1F3A57" strokeWidth="2"
+        strokeLinejoin="round" strokeLinecap="round" />
+      <path d={toPath(EMBEDDED_DATA)} fill="none" stroke="#B98A20" strokeWidth="1.8"
+        strokeDasharray="5 3" strokeLinejoin="round" strokeLinecap="round" />
+      <path d={toPath(CONSUME_DATA)} fill="none" stroke="#E2552A" strokeWidth="2.2"
+        strokeLinejoin="round" strokeLinecap="round" />
+
+      {/* End dot + callout on consumption line */}
+      <circle cx={xPos(5)} cy={yPos(CONSUME_DATA[5])} r="4.5" fill="#E2552A" />
+      <rect x={xPos(5) - 52} y={yPos(CONSUME_DATA[5]) - 22} width={50} height={18}
+        rx="4" fill="#E2552A" />
+      <text x={xPos(5) - 27} y={yPos(CONSUME_DATA[5]) - 10} textAnchor="middle"
+        fontSize="10" fill="#fff" fontWeight="600"
+        fontFamily="ui-sans-serif, system-ui, sans-serif">
+        +38% MoM
+      </text>
     </svg>
   );
 }
